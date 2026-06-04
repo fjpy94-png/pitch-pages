@@ -7,161 +7,166 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,900&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { font-family: 'DM Sans', system-ui, sans-serif; background: #0C0C0C; color: #BBCCD7; overflow-x: hidden; }
-a { color: inherit; text-decoration: none; }
-
-@keyframes float {
-  from { transform: translateY(0) rotate(0deg); }
-  to   { transform: translateY(-14px) rotate(8deg); }
+:root {
+  --c-bg:         #0C0C0C;
+  --c-bg2:        #111111;
+  --c-fg:         #BBCCD7;
+  --c-fg2:        rgba(187,204,215,.55);
+  --c-fg3:        rgba(187,204,215,.35);
+  --c-fg4:        rgba(187,204,215,.22);
+  --c-border:     rgba(187,204,215,.06);
+  --c-border2:    rgba(187,204,215,.08);
+  --c-card:       #0C0C0C;
+  --c-card-h:     #141414;
+  --c-accent:     #8e44ad;
+  --c-accent-rgb: 142,68,173;
+  --hero-ov:      linear-gradient(to bottom,rgba(12,12,12,.15) 0%,rgba(12,12,12,.5) 40%,rgba(12,12,12,.96) 85%,#0C0C0C 100%);
+  --h-grad:       linear-gradient(180deg,#646973 0%,#BBCCD7 100%);
+  --price-grad:   linear-gradient(180deg,#646973 0%,#BBCCD7 100%);
+  --btn-r:        50px;
+  --font-h:       'DM Sans',sans-serif;
+  --h-style:      normal;
+  --marquee-text: rgba(187,204,215,.45);
+  --nav-fg:       rgba(187,204,215,.9);
+  --nav-link:     rgba(187,204,215,.6);
+  --tab-sel:      #8e44ad;
+  --stats-bg:     rgba(187,204,215,.08);
 }
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(30px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-.fade-in { opacity:0; animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) forwards; }
 
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-.marquee-track { animation: marquee 24s linear infinite; display:flex; width:max-content; }
-.marquee-track:hover { animation-play-state: paused; }
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family: 'DM Sans',system-ui,sans-serif; background:var(--c-bg); color:var(--c-fg); overflow-x:hidden; transition:background .4s, color .4s; }
+a { color:inherit; text-decoration:none; }
 
-/* ── TABS: pure CSS switching ── */
+@keyframes float  { from{transform:translateY(0) rotate(0deg)} to{transform:translateY(-14px) rotate(8deg)} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+.fade-in { opacity:0; animation:fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) forwards; }
+
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.marquee-track { animation:marquee 24s linear infinite; display:flex; width:max-content; }
+.marquee-track:hover { animation-play-state:paused; }
+
+/* Tabs: pure CSS toggle */
 input[name=design] { display:none; }
-.tab-panels > div { display: none; }
+.tab-panels > div { display:none; }
+#d1:checked ~ .tab-panels #p1,
+#d2:checked ~ .tab-panels #p2,
+#d3:checked ~ .tab-panels #p3 { display:block; }
+.tab-btn { cursor:pointer; padding:10px 22px; border-radius:var(--btn-r); font-size:13px; font-weight:600; letter-spacing:.5px; color:var(--c-fg2); border:1px solid var(--c-border2); transition:all .25s; }
 #d1:checked ~ .tab-btns label[for=d1],
 #d2:checked ~ .tab-btns label[for=d2],
-#d3:checked ~ .tab-btns label[for=d3] { background:#8e44ad; color:#fff; border-color:#8e44ad; }
-#d1:checked ~ .tab-panels #p1 { display: block; }
-#d2:checked ~ .tab-panels #p2 { display: block; }
-#d3:checked ~ .tab-panels #p3 { display: block; }
-.tab-btn { cursor:pointer; padding:10px 22px; border-radius:30px; font-size:13px; font-weight:600; letter-spacing:.5px; color:rgba(187,204,215,.5); border:1px solid rgba(187,204,215,.12); transition:all .25s; }
+#d3:checked ~ .tab-btns label[for=d3] { background:var(--tab-sel); color:#fff; border-color:var(--tab-sel); }
 
-/* ── WA FLOAT ── */
-.wa-float { position:fixed; bottom:28px; right:28px; z-index:999; background:#25D366; color:#fff;
-  width:58px; height:58px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-  box-shadow: 0 0 0 0 rgba(37,211,102,.4); animation: pulse-wa 2s ease-out infinite; }
-@keyframes pulse-wa {
-  0%  { box-shadow: 0 0 0 0 rgba(37,211,102,.5); }
-  70% { box-shadow: 0 0 0 16px rgba(37,211,102,0); }
-  100%{ box-shadow: 0 0 0 0 rgba(37,211,102,0); }
-}
+/* WA Float */
+.wa-float { position:fixed; bottom:28px; right:28px; z-index:999; background:#25D366; color:#fff; width:58px; height:58px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 0 rgba(37,211,102,.4); animation:pulse-wa 2s ease-out infinite; }
+@keyframes pulse-wa { 0%{box-shadow:0 0 0 0 rgba(37,211,102,.5)} 70%{box-shadow:0 0 0 16px rgba(37,211,102,0)} 100%{box-shadow:0 0 0 0 rgba(37,211,102,0)} }
 
 .reveal { opacity:0; transform:translateY(24px); transition:opacity .7s cubic-bezier(0.22,1,0.36,1), transform .7s cubic-bezier(0.22,1,0.36,1); }
 .reveal.visible { opacity:1; transform:none; }
-section { position:relative; }
+
+/* Transitions for theme change */
+section, footer, nav, h1, h2, p, div { transition: background-color .35s, color .35s, border-color .35s; }
 </style>
 </head>
 <body>
 
 <!-- ════ HERO ════ -->
-<section style="height:100vh;min-height:620px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;position:relative">
+<section id="hero-sec" style="height:100vh;min-height:620px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;position:relative">
   <div style="position:absolute;inset:0;background:url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photo_reference=Ab43m-tAerYWMaugpZhzA0_jOVdyNPWmHe5cP7oCJQntQmyFltG2xawenD82VB3fGyIlQlqk3NA1vX8TmlX2pX0NXliDHMVzc1jmPXAUOMOcne4Jp2YkCZqNfTgWn0dxSYknkq4EA4_94GXnwlLJymZhzuiflPt4mkdTAHmsBhjzHdj1S8QWRR8RvsqizZnoriy_QqKFWjPMHwz2IDGfIjWR8agibM9Mqy_eYau2Kk5nw8AevuCsBbLLeeRmD8rHU78KTX0miHq5-EP29CJv5tbT-BOoX9fCBetMMWZUNHIWQ_g--bSHZWC2__-JgUedA-CwpqM8VBU7U4vUwB6c5pf37dSQg9nnvWByGkZfVVZyqtyic9C0Midh8fbPYZN0EIcPbiH6c8_dVV_O7cUrAZN9pk0DavZCJLL0OEFVERsmpPzbWsFVPHhk2aD2FcgYypaG&key=AIzaSyClecoUPRHScSCuABpegra7SYJdj-siIqc') center/cover no-repeat;opacity:.35;filter:saturate(.8)"></div>
-  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(12,12,12,.2) 0%,rgba(12,12,12,.5) 40%,rgba(12,12,12,.95) 85%,#0C0C0C 100%)"></div>
+  <div id="hero-overlay" style="position:absolute;inset:0;background:var(--hero-ov)"></div>
   <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden">
-    <div style="position:absolute;left:6%;top:20%;width:12px;height:12px;
-      background:rgba(255,255,255,0.08);animation:float 3s ease-in-out 0s infinite alternate"></div>
-    <div style="position:absolute;left:13%;top:35%;width:8px;height:8px;
-      background:rgba(255,255,255,0.08);animation:float 3.4s ease-in-out 0.5s infinite alternate"></div>
-    <div style="position:absolute;left:8%;top:50%;width:6px;height:6px;
-      background:rgba(255,255,255,0.08);animation:float 3.8s ease-in-out 1s infinite alternate"></div>
-    <div style="position:absolute;left:88%;top:18%;width:10px;height:10px;
-      background:rgba(255,255,255,0.08);animation:float 4.2s ease-in-out 1.5s infinite alternate"></div>
-    <div style="position:absolute;left:93%;top:32%;width:14px;height:14px;
-      background:rgba(255,255,255,0.08);animation:float 4.6s ease-in-out 2s infinite alternate"></div>
-    <div style="position:absolute;left:85%;top:45%;width:7px;height:7px;
-      background:rgba(255,255,255,0.08);animation:float 5s ease-in-out 2.5s infinite alternate"></div>
-    <div style="position:absolute;left:91%;top:55%;width:5px;height:5px;
-      background:rgba(255,255,255,0.08);animation:float 5.4s ease-in-out 3s infinite alternate"></div></div>
+    <div style="position:absolute;left:6%;top:20%;width:12px;height:12px;background:rgba(255,255,255,0.06);animation:float 3s ease-in-out 0s infinite alternate"></div>
+    <div style="position:absolute;left:13%;top:35%;width:8px;height:8px;background:rgba(255,255,255,0.06);animation:float 3.4s ease-in-out 0.5s infinite alternate"></div>
+    <div style="position:absolute;left:8%;top:50%;width:6px;height:6px;background:rgba(255,255,255,0.06);animation:float 3.8s ease-in-out 1s infinite alternate"></div>
+    <div style="position:absolute;left:88%;top:18%;width:10px;height:10px;background:rgba(255,255,255,0.06);animation:float 4.2s ease-in-out 1.5s infinite alternate"></div>
+    <div style="position:absolute;left:93%;top:32%;width:14px;height:14px;background:rgba(255,255,255,0.06);animation:float 4.6s ease-in-out 2s infinite alternate"></div>
+    <div style="position:absolute;left:85%;top:45%;width:7px;height:7px;background:rgba(255,255,255,0.06);animation:float 5s ease-in-out 2.5s infinite alternate"></div>
+    <div style="position:absolute;left:91%;top:55%;width:5px;height:5px;background:rgba(255,255,255,0.06);animation:float 5.4s ease-in-out 3s infinite alternate"></div></div>
   <nav style="position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:24px 40px;z-index:10">
-    <div style="font-size:13px;font-weight:700;letter-spacing:1px;color:rgba(187,204,215,.9);text-transform:uppercase">Salón Urbano</div>
+    <div style="font-size:13px;font-weight:700;letter-spacing:1px;color:var(--nav-fg);text-transform:uppercase">Salón Urbano</div>
     <div style="display:flex;gap:28px">
-      <a href="#disenos" style="font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:rgba(187,204,215,.6)">Diseños</a>
-      <a href="#precio" style="font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:rgba(187,204,215,.6)">Precio</a>
-      <a href="https://wa.me/34640765515?text=Hola%2C%20vi%20la%20propuesta%20de%20web%20para%20Sal%C3%B3n%20Urbano%20y%20me%20interesa.%20%C2%BFC%C3%B3mo%20procedo%3F" style="font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:rgba(187,204,215,.6)">Contacto</a>
+      <a href="#disenos" style="font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--nav-link)">Diseños</a>
+      <a href="#precio"  style="font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--nav-link)">Precio</a>
+      <a href="https://wa.me/34640765515?text=Hola%2C%20vi%20la%20propuesta%20de%20web%20para%20Sal%C3%B3n%20Urbano%20y%20me%20interesa.%20%C2%BFC%C3%B3mo%20procedo%3F" style="font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--nav-link)">Contacto</a>
     </div>
   </nav>
   <div style="position:relative;z-index:5;padding:0 40px 60px">
     <div class="fade-in" style="animation-delay:.1s;margin-bottom:16px">
-      <span style="display:inline-block;background:#8e44ad;color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;padding:5px 16px;border-radius:20px;text-transform:uppercase">Belleza & Estilo · Guadalajara</span>
+      <span style="display:inline-block;background:var(--c-accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;padding:5px 16px;border-radius:20px;text-transform:uppercase">Belleza & Estilo · Guadalajara</span>
     </div>
-    <h1 class="fade-in" style="animation-delay:.25s;font-size:clamp(2.8rem,8vw,7rem);font-weight:900;line-height:.92;letter-spacing:-.03em;background:linear-gradient(180deg,#646973 0%,#BBCCD7 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px;max-width:800px">Salón Urbano</h1>
+    <h1 class="fade-in" style="animation-delay:.25s;font-size:clamp(2.8rem,8vw,7rem);font-weight:900;line-height:.92;letter-spacing:-.03em;font-style:var(--h-style);font-family:var(--font-h);background:var(--h-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px;max-width:800px">Salón Urbano</h1>
     <div class="fade-in" style="animation-delay:.4s;display:flex;align-items:center;gap:20px;margin-bottom:32px;flex-wrap:wrap">
       <div style="display:flex;align-items:center;gap:6px">
         <span style="color:#f1c40f;font-size:18px">★★★★☆</span>
-        <span style="font-size:22px;font-weight:700;color:#BBCCD7">4.7</span>
+        <span style="font-size:22px;font-weight:700;color:var(--c-fg)">4.7</span>
       </div>
-      <div style="width:1px;height:20px;background:rgba(187,204,215,.2)"></div>
-      <span style="font-size:14px;color:rgba(187,204,215,.6)">610 reseñas en Google</span>
-      <div style="width:1px;height:20px;background:rgba(187,204,215,.2)"></div>
-      <span style="font-size:14px;color:rgba(187,204,215,.6)">📍 Guadalajara</span>
+      <div style="width:1px;height:20px;background:var(--c-border2)"></div>
+      <span style="font-size:14px;color:var(--c-fg2)">610 reseñas en Google</span>
+      <div style="width:1px;height:20px;background:var(--c-border2)"></div>
+      <span style="font-size:14px;color:var(--c-fg2)">📍 Guadalajara</span>
     </div>
     <div class="fade-in" style="animation-delay:.55s;display:flex;gap:14px;flex-wrap:wrap">
-      <a href="#disenos" style="display:inline-flex;align-items:center;gap:8px;background:#8e44ad;color:#fff;font-size:14px;font-weight:700;padding:14px 28px;border-radius:50px;letter-spacing:.5px">
+      <a href="#disenos" style="display:inline-flex;align-items:center;gap:8px;background:var(--c-accent);color:#fff;font-size:14px;font-weight:700;padding:14px 28px;border-radius:var(--btn-r);letter-spacing:.5px">
         Ver propuestas de diseño
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m7 17 10-10M7 7h10v10"/></svg>
       </a>
-      <a href="https://wa.me/34640765515?text=Hola%2C%20vi%20la%20propuesta%20de%20web%20para%20Sal%C3%B3n%20Urbano%20y%20me%20interesa.%20%C2%BFC%C3%B3mo%20procedo%3F" style="display:inline-flex;align-items:center;gap:8px;background:rgba(187,204,215,.06);border:1px solid rgba(187,204,215,.15);color:#BBCCD7;font-size:14px;font-weight:500;padding:14px 28px;border-radius:50px">
+      <a href="https://wa.me/34640765515?text=Hola%2C%20vi%20la%20propuesta%20de%20web%20para%20Sal%C3%B3n%20Urbano%20y%20me%20interesa.%20%C2%BFC%C3%B3mo%20procedo%3F" style="display:inline-flex;align-items:center;gap:8px;background:rgba(var(--c-accent-rgb),.08);border:1px solid var(--c-border2);color:var(--c-fg);font-size:14px;font-weight:500;padding:14px 28px;border-radius:var(--btn-r)">
         💬 Hablar por WhatsApp
       </a>
     </div>
   </div>
   <div style="position:absolute;bottom:28px;right:40px;z-index:5;display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.4">
-    <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase">Scroll</div>
-    <div style="width:1px;height:32px;background:rgba(187,204,215,.4);animation:float 1.5s ease-in-out infinite alternate"></div>
+    <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--c-fg)">Scroll</div>
+    <div style="width:1px;height:32px;background:var(--c-fg2);animation:float 1.5s ease-in-out infinite alternate"></div>
   </div>
 </section>
 
 <!-- ════ PROBLEM + STATS ════ -->
-<section class="reveal" style="padding:80px 40px;background:#0C0C0C;border-top:1px solid rgba(187,204,215,.06)">
+<section class="reveal" style="padding:80px 40px;background:var(--c-bg);border-top:1px solid var(--c-border)">
   <div style="max-width:900px;margin:0 auto">
-    <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#8e44ad;margin-bottom:20px">El problema</div>
-    <h2 style="font-size:clamp(1.8rem,4vw,3.5rem);font-weight:700;line-height:1.2;color:#BBCCD7;margin-bottom:24px">
-      El <span style="color:#8e44ad">87%</span> de tus clientes potenciales<br>
+    <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--c-accent);margin-bottom:20px">El problema</div>
+    <h2 style="font-size:clamp(1.8rem,4vw,3.5rem);font-weight:700;line-height:1.2;font-family:var(--font-h);font-style:var(--h-style);color:var(--c-fg);margin-bottom:24px">
+      El <span style="color:var(--c-accent)">87%</span> de tus clientes potenciales<br>
       te busca en Google antes de visitarte.<br>
-      <span style="color:rgba(187,204,215,.4)">¿Te encuentran a ti o a tu competencia?</span>
+      <span style="color:var(--c-fg3)">¿Te encuentran a ti o a tu competencia?</span>
     </h2>
-    <p style="font-size:16px;color:rgba(187,204,215,.55);line-height:1.75;max-width:580px">
+    <p style="font-size:16px;color:var(--c-fg2);line-height:1.75;max-width:580px">
       Los negocios sin presencia web pierden clientes silenciosamente cada día.
       Una página profesional es la diferencia entre ser encontrado y ser ignorado.
     </p>
   </div>
-  <div style="max-width:900px;margin:48px auto 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:rgba(187,204,215,.08);border-radius:16px;overflow:hidden">
+  <div style="max-width:900px;margin:48px auto 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--stats-bg);border-radius:16px;overflow:hidden">
     
-    <div style="background:#0C0C0C;padding:28px 24px;text-align:center">
-      <div style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:#8e44ad;line-height:1;margin-bottom:8px">87%</div>
-      <div style="font-size:12px;color:rgba(187,204,215,.5);line-height:1.4">busca en Google primero</div>
+    <div style="background:var(--c-bg);padding:28px 24px;text-align:center">
+      <div style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:var(--c-accent);line-height:1;margin-bottom:8px">87%</div>
+      <div style="font-size:12px;color:var(--c-fg2);line-height:1.4">busca en Google primero</div>
     </div>
-    <div style="background:#0C0C0C;padding:28px 24px;text-align:center">
-      <div style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:#8e44ad;line-height:1;margin-bottom:8px">3x</div>
-      <div style="font-size:12px;color:rgba(187,204,215,.5);line-height:1.4">más clientes con web</div>
+    <div style="background:var(--c-bg);padding:28px 24px;text-align:center">
+      <div style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:var(--c-accent);line-height:1;margin-bottom:8px">3x</div>
+      <div style="font-size:12px;color:var(--c-fg2);line-height:1.4">más clientes con web</div>
     </div>
-    <div style="background:#0C0C0C;padding:28px 24px;text-align:center">
-      <div style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:#8e44ad;line-height:1;margin-bottom:8px">48h</div>
-      <div style="font-size:12px;color:rgba(187,204,215,.5);line-height:1.4">tu web lista</div>
+    <div style="background:var(--c-bg);padding:28px 24px;text-align:center">
+      <div style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:var(--c-accent);line-height:1;margin-bottom:8px">48h</div>
+      <div style="font-size:12px;color:var(--c-fg2);line-height:1.4">tu web lista</div>
     </div>
-    <div style="background:#0C0C0C;padding:28px 24px;text-align:center">
-      <div style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:#8e44ad;line-height:1;margin-bottom:8px">$299</div>
-      <div style="font-size:12px;color:rgba(187,204,215,.5);line-height:1.4">pago único, sin mensualidades</div>
+    <div style="background:var(--c-bg);padding:28px 24px;text-align:center">
+      <div style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:var(--c-accent);line-height:1;margin-bottom:8px">$299</div>
+      <div style="font-size:12px;color:var(--c-fg2);line-height:1.4">pago único, sin mensualidades</div>
     </div>
   </div>
 </section>
 
 <!-- ════ DESIGNS ════ -->
-<section id="disenos" style="padding:80px 40px;background:#0C0C0C">
+<section id="disenos" style="padding:80px 40px;background:var(--c-bg)">
   <div style="max-width:1000px;margin:0 auto">
     <div class="reveal" style="margin-bottom:50px">
-      <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#8e44ad;margin-bottom:16px">Diseños exclusivos</div>
-      <h2 style="font-size:clamp(2rem,4vw,3.2rem);font-weight:700;color:#BBCCD7;margin-bottom:8px">3 estilos preparados para <em style="color:rgba(187,204,215,.4);font-style:normal">Salón</em></h2>
-      <p style="font-size:15px;color:rgba(187,204,215,.5);max-width:500px">Visualiza cómo se vería tu negocio en cada estilo. Tú eliges, nosotros lo construimos.</p>
+      <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--c-accent);margin-bottom:16px">Diseños exclusivos</div>
+      <h2 style="font-size:clamp(2rem,4vw,3.2rem);font-weight:700;font-family:var(--font-h);font-style:var(--h-style);color:var(--c-fg);margin-bottom:8px">3 estilos preparados para <em style="color:var(--c-fg3);font-style:normal">Salón</em></h2>
+      <p style="font-size:15px;color:var(--c-fg2);max-width:500px">Haz click en cada estilo para ver cómo quedaría tu página completa. Tú eliges, nosotros lo construimos.</p>
     </div>
-    <!-- Tab radios BEFORE tab-btns and tab-panels so ~ sibling selector works -->
-    <input type="radio" name="design" id="d1" checked>
-    <input type="radio" name="design" id="d2">
-    <input type="radio" name="design" id="d3">
+    <input type="radio" name="design" id="d1" data-theme="moderno" checked>
+    <input type="radio" name="design" id="d2" data-theme="audaz">
+    <input type="radio" name="design" id="d3" data-theme="clasico">
     <div class="tab-btns reveal" style="display:flex;gap:10px;margin-bottom:32px;flex-wrap:wrap">
       <label class="tab-btn" for="d1">✦ Moderno</label>
       <label class="tab-btn" for="d2">◆ Audaz</label>
@@ -169,45 +174,39 @@ section { position:relative; }
     </div>
     <div class="tab-panels reveal">
       <div id="p1">
-        <div style="border:1px solid rgba(187,204,215,.1);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.6)">
+        <div style="border:1px solid var(--c-border2);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.6)">
           <div style="background:#1a1a1a;padding:10px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.05)">
             <div style="width:10px;height:10px;background:#ff5f57;border-radius:50%"></div>
             <div style="width:10px;height:10px;background:#febc2e;border-radius:50%"></div>
             <div style="width:10px;height:10px;background:#28c840;border-radius:50%"></div>
             <div style="flex:1;background:#0C0C0C;border-radius:6px;padding:4px 12px;font-size:11px;color:rgba(255,255,255,.3);margin:0 20px">tu-negocio.com</div>
           </div>
-          <div style="background:#fff;font-family:'DM Sans',sans-serif;height:380px;display:flex;flex-direction:column;border-radius:0 0 12px 12px;overflow:hidden">
+          <div style="background:#fff;font-family:'DM Sans',sans-serif;height:380px;display:flex;flex-direction:column;overflow:hidden">
     <div style="background:#f8f9fa;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e9ecef;flex-shrink:0">
-      <div style="font-weight:800;font-size:13px;color:#111">Salón Urbano</div>
-      <div style="display:flex;gap:14px"><span style="font-size:11px;color:#999">Inicio</span><span style="font-size:11px;color:#999">Servicios</span><span style="font-size:11px;color:#999">Contacto</span></div>
+      <b style="font-size:13px;color:#111">Salón Urbano</b>
+      <div><span style="font-size:11px;color:#999;margin-left:12px">Inicio</span><span style="font-size:11px;color:#999;margin-left:12px">Servicios</span><span style="font-size:11px;color:#999;margin-left:12px">Contacto</span></div>
     </div>
-    <div style="background:linear-gradient(160deg,rgba(142,68,173,.07) 0%,rgba(187,143,206,.04) 100%);padding:26px 18px 18px;text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center">
+    <div style="background:linear-gradient(160deg,rgba(142,68,173,.07),rgba(187,143,206,.04));padding:26px 18px;text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center">
       <div style="font-size:10px;font-weight:700;letter-spacing:2.5px;color:#8e44ad;text-transform:uppercase;margin-bottom:8px">Belleza & Estilo</div>
       <div style="font-size:20px;font-weight:800;color:#111;line-height:1.2;margin-bottom:8px">Salón Urbano</div>
-      <div style="font-size:11px;color:#aaa;margin-bottom:16px">📍 Guadalajara &nbsp;·&nbsp; ⭐ 4.7/5</div>
+      <div style="font-size:11px;color:#aaa;margin-bottom:16px">📍 Guadalajara · ⭐ 4.7/5</div>
       <div style="display:flex;gap:8px;justify-content:center">
         <div style="background:#8e44ad;color:#fff;padding:8px 20px;border-radius:50px;font-size:12px;font-weight:700">Contáctanos →</div>
-        <div style="background:transparent;border:1px solid #e0e0e0;color:#666;padding:8px 14px;border-radius:50px;font-size:12px">Ver más</div>
+        <div style="border:1px solid #e0e0e0;color:#666;padding:8px 14px;border-radius:50px;font-size:12px">Ver más</div>
       </div>
     </div>
     <div style="padding:10px 14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;background:#fff;border-top:1px solid #f0f0f0;flex-shrink:0">
       
       <div style="background:#f8f9fa;border-radius:8px;padding:9px 8px;text-align:center">
-        <div style="width:24px;height:24px;background:rgba(142,68,173,.12);border-radius:6px;margin:0 auto 5px;display:flex;align-items:center;justify-content:center">
-          <div style="width:8px;height:8px;background:#8e44ad;border-radius:2px"></div>
-        </div>
+        <div style="width:24px;height:24px;background:rgba(142,68,173,.12);border-radius:6px;margin:0 auto 5px;display:flex;align-items:center;justify-content:center"><div style="width:8px;height:8px;background:#8e44ad;border-radius:2px"></div></div>
         <div style="font-size:10px;font-weight:600;color:#444">Servicio 1</div>
       </div>
       <div style="background:#f8f9fa;border-radius:8px;padding:9px 8px;text-align:center">
-        <div style="width:24px;height:24px;background:rgba(142,68,173,.12);border-radius:6px;margin:0 auto 5px;display:flex;align-items:center;justify-content:center">
-          <div style="width:8px;height:8px;background:#8e44ad;border-radius:2px"></div>
-        </div>
+        <div style="width:24px;height:24px;background:rgba(142,68,173,.12);border-radius:6px;margin:0 auto 5px;display:flex;align-items:center;justify-content:center"><div style="width:8px;height:8px;background:#8e44ad;border-radius:2px"></div></div>
         <div style="font-size:10px;font-weight:600;color:#444">Servicio 2</div>
       </div>
       <div style="background:#f8f9fa;border-radius:8px;padding:9px 8px;text-align:center">
-        <div style="width:24px;height:24px;background:rgba(142,68,173,.12);border-radius:6px;margin:0 auto 5px;display:flex;align-items:center;justify-content:center">
-          <div style="width:8px;height:8px;background:#8e44ad;border-radius:2px"></div>
-        </div>
+        <div style="width:24px;height:24px;background:rgba(142,68,173,.12);border-radius:6px;margin:0 auto 5px;display:flex;align-items:center;justify-content:center"><div style="width:8px;height:8px;background:#8e44ad;border-radius:2px"></div></div>
         <div style="font-size:10px;font-weight:600;color:#444">Servicio 3</div>
       </div>
     </div>
@@ -218,77 +217,72 @@ section { position:relative; }
   </div>
         </div>
         <div style="margin-top:20px;display:flex;align-items:center;justify-content:space-between;padding:0 4px">
-          <div><span style="font-size:14px;font-weight:600;color:#BBCCD7">✦ Moderno</span><span style="font-size:13px;color:rgba(187,204,215,.4);margin-left:10px">Limpio y profesional</span></div>
-          <a href="https://wa.me/34640765515?text=Hola!%20Me%20interesa%20el%20estilo%20Moderno%20para%20Sal%C3%B3n%20Urbano." style="background:#8e44ad;color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:30px">Elegir este →</a>
+          <div><span style="font-size:14px;font-weight:600;color:var(--c-fg)">✦ Moderno</span><span style="font-size:13px;color:var(--c-fg2);margin-left:10px">Limpio y profesional</span></div>
+          <a href="https://wa.me/34640765515?text=Hola!%20Me%20interesa%20el%20estilo%20Moderno%20para%20Sal%C3%B3n%20Urbano." style="background:var(--c-accent);color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:var(--btn-r)">Elegir este →</a>
         </div>
       </div>
       <div id="p2">
-        <div style="border:1px solid rgba(187,204,215,.1);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.6)">
+        <div style="border:1px solid var(--c-border2);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.6)">
           <div style="background:#1a1a1a;padding:10px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.05)">
             <div style="width:10px;height:10px;background:#ff5f57;border-radius:50%"></div>
             <div style="width:10px;height:10px;background:#febc2e;border-radius:50%"></div>
             <div style="width:10px;height:10px;background:#28c840;border-radius:50%"></div>
             <div style="flex:1;background:#0C0C0C;border-radius:6px;padding:4px 12px;font-size:11px;color:rgba(255,255,255,.3);margin:0 20px">tu-negocio.com</div>
           </div>
-          <div style="background:#080C10;font-family:'DM Sans',sans-serif;height:380px;display:flex;flex-direction:column;border-radius:0 0 12px 12px;overflow:hidden">
-    <div style="background:#0D1117;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0">
-      <div style="font-weight:900;font-size:13px;color:#8e44ad;letter-spacing:.3px">Salón Urbano</div>
-      <div style="display:flex;gap:10px"><span style="font-size:11px;color:rgba(255,255,255,.35)">Inicio</span><span style="font-size:11px;color:rgba(255,255,255,.35)">Servicios</span><span style="font-size:11px;color:rgba(255,255,255,.35)">Contacto</span></div>
+          <div style="background:#06080D;font-family:'DM Sans',sans-serif;height:380px;display:flex;flex-direction:column;overflow:hidden">
+    <div style="background:#0C1018;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(232,240,252,.07);flex-shrink:0">
+      <b style="font-size:13px;color:#8e44ad">Salón Urbano</b>
+      <div><span style="font-size:11px;color:rgba(232,240,252,.35);margin-left:10px">Inicio</span><span style="font-size:11px;color:rgba(232,240,252,.35);margin-left:10px">Servicios</span><span style="font-size:11px;color:rgba(232,240,252,.35);margin-left:10px">Contacto</span></div>
     </div>
-    <!-- Hero: bloque de color sólido category-color, texto a la izquierda -->
     <div style="background:#8e44ad;padding:20px 18px 16px;flex:1;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden">
       <div style="position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:rgba(0,0,0,.15);border-radius:50%"></div>
       <div style="position:absolute;top:10px;right:16px;font-size:9px;font-weight:700;letter-spacing:2.5px;color:rgba(255,255,255,.5);text-transform:uppercase">Belleza & Estilo</div>
-      <div style="font-size:9px;color:rgba(255,255,255,.55);margin-bottom:4px;letter-spacing:.5px">⭐ 4.7/5 &nbsp;·&nbsp; 📍 Guadalajara</div>
-      <div style="font-size:22px;font-weight:900;color:#fff;line-height:1.05;margin-bottom:14px;letter-spacing:-.5px">Salón Urbano</div>
-      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,0,0,.35);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.25);color:#fff;padding:7px 16px;border-radius:4px;font-size:11px;font-weight:700;width:fit-content">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
-        Hablar ahora
-      </div>
+      <div style="font-size:9px;color:rgba(255,255,255,.55);margin-bottom:4px">⭐ 4.7/5 · 📍 Guadalajara</div>
+      <div style="font-size:22px;font-weight:900;color:#fff;line-height:1.05;margin-bottom:12px;letter-spacing:-.5px">Salón Urbano</div>
+      <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.25);color:#fff;padding:7px 16px;border-radius:5px;font-size:11px;font-weight:700;width:fit-content">💬 Hablar ahora</div>
     </div>
-    <!-- Servicios oscuros con borde izquierdo de color -->
-    <div style="padding:10px 14px;display:flex;gap:0;background:#0D1117;border-top:1px solid rgba(255,255,255,.05);flex-shrink:0">
+    <div style="padding:10px 14px;display:flex;gap:0;background:#0C1018;border-top:1px solid rgba(232,240,252,.05);flex-shrink:0">
       
-      <div style="flex:1;padding:6px 10px;border-left:2px solid #8e44ad;margin-left:0">
-        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">01 Consulta</div>
+      <div style="flex:1;padding:6px 10px;border-left:2px solid #8e44ad;">
+        <div style="font-size:10px;font-weight:700;color:rgba(232,240,252,.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">01 Consulta</div>
       </div>
-      <div style="flex:1;padding:6px 10px;border-left:2px solid rgba(255,255,255,.1);margin-left:8px">
-        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">02 Tratamiento</div>
+      <div style="flex:1;padding:6px 10px;border-left:2px solid rgba(232,240,252,.1);margin-left:8px">
+        <div style="font-size:10px;font-weight:700;color:rgba(232,240,252,.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">02 Tratamiento</div>
       </div>
-      <div style="flex:1;padding:6px 10px;border-left:2px solid rgba(255,255,255,.1);margin-left:8px">
-        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">03 Seguimiento</div>
+      <div style="flex:1;padding:6px 10px;border-left:2px solid rgba(232,240,252,.1);margin-left:8px">
+        <div style="font-size:10px;font-weight:700;color:rgba(232,240,252,.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">03 Seguimiento</div>
       </div>
     </div>
-    <div style="padding:8px 16px;background:#080C10;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.04);flex-shrink:0">
-      <div style="font-size:10px;color:rgba(255,255,255,.18)">© 2025 · Propuesta exclusiva</div>
-      <div style="border:1px solid #8e44ad;color:#8e44ad;padding:4px 12px;border-radius:3px;font-size:10px;font-weight:700">Contacto</div>
+    <div style="padding:8px 16px;background:#06080D;display:flex;justify-content:space-between;align-items:center;flex-shrink:0">
+      <div style="font-size:10px;color:rgba(232,240,252,.18)">© 2025 · Propuesta exclusiva</div>
+      <div style="border:1px solid #8e44ad;color:#8e44ad;padding:4px 12px;border-radius:4px;font-size:10px;font-weight:700">Contacto</div>
     </div>
   </div>
         </div>
         <div style="margin-top:20px;display:flex;align-items:center;justify-content:space-between;padding:0 4px">
-          <div><span style="font-size:14px;font-weight:600;color:#BBCCD7">◆ Audaz</span><span style="font-size:13px;color:rgba(187,204,215,.4);margin-left:10px">Oscuro e impactante</span></div>
-          <a href="https://wa.me/34640765515?text=Hola!%20Me%20interesa%20el%20estilo%20Audaz%20para%20Sal%C3%B3n%20Urbano." style="background:#8e44ad;color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:30px">Elegir este →</a>
+          <div><span style="font-size:14px;font-weight:600;color:var(--c-fg)">◆ Audaz</span><span style="font-size:13px;color:var(--c-fg2);margin-left:10px">Oscuro e impactante</span></div>
+          <a href="https://wa.me/34640765515?text=Hola!%20Me%20interesa%20el%20estilo%20Audaz%20para%20Sal%C3%B3n%20Urbano." style="background:var(--c-accent);color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:var(--btn-r)">Elegir este →</a>
         </div>
       </div>
       <div id="p3">
-        <div style="border:1px solid rgba(187,204,215,.1);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.6)">
+        <div style="border:1px solid var(--c-border2);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.6)">
           <div style="background:#1a1a1a;padding:10px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.05)">
             <div style="width:10px;height:10px;background:#ff5f57;border-radius:50%"></div>
             <div style="width:10px;height:10px;background:#febc2e;border-radius:50%"></div>
             <div style="width:10px;height:10px;background:#28c840;border-radius:50%"></div>
             <div style="flex:1;background:#0C0C0C;border-radius:6px;padding:4px 12px;font-size:11px;color:rgba(255,255,255,.3);margin:0 20px">tu-negocio.com</div>
           </div>
-          <div style="background:#FAF7F2;font-family:Georgia,serif;height:380px;display:flex;flex-direction:column;border-radius:0 0 12px 12px;overflow:hidden">
+          <div style="background:#FAF7F2;font-family:Georgia,serif;height:380px;display:flex;flex-direction:column;overflow:hidden">
     <div style="background:#fff;padding:10px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #E8DDD0;flex-shrink:0">
-      <div style="font-weight:700;font-size:13px;color:#2C1810;font-style:italic">Salón Urbano</div>
-      <div style="display:flex;gap:14px"><span style="font-size:11px;color:#9C7A60;font-family:'DM Sans',sans-serif">Inicio</span><span style="font-size:11px;color:#9C7A60;font-family:'DM Sans',sans-serif">Nosotros</span><span style="font-size:11px;color:#9C7A60;font-family:'DM Sans',sans-serif">Contacto</span></div>
+      <i style="font-size:13px;color:#2C1810;font-weight:700">Salón Urbano</i>
+      <div><span style="font-size:11px;color:#9C7A60;font-family:'DM Sans',sans-serif;margin-left:12px">Inicio</span><span style="font-size:11px;color:#9C7A60;font-family:'DM Sans',sans-serif;margin-left:12px">Nosotros</span><span style="font-size:11px;color:#9C7A60;font-family:'DM Sans',sans-serif;margin-left:12px">Contacto</span></div>
     </div>
-    <div style="background:linear-gradient(160deg,#FDF6EE 0%,#EDD9C0 100%);padding:22px 18px 16px;text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center">
-      <div style="font-size:9px;font-weight:400;letter-spacing:3px;color:#9C7A60;text-transform:uppercase;margin-bottom:10px;font-family:'DM Sans',sans-serif">Belleza & Estilo</div>
-      <div style="font-size:22px;font-weight:700;color:#2C1810;line-height:1.25;margin-bottom:6px;font-style:italic">Salón Urbano</div>
+    <div style="background:linear-gradient(160deg,#FDF6EE,#EDD9C0);padding:22px 18px;text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center">
+      <div style="font-size:9px;letter-spacing:3px;color:#9C7A60;text-transform:uppercase;margin-bottom:10px;font-family:'DM Sans',sans-serif">Belleza & Estilo</div>
+      <div style="font-size:21px;font-weight:700;color:#2C1810;line-height:1.25;margin-bottom:6px;font-style:italic">Salón Urbano</div>
       <div style="width:40px;height:2px;background:#6B4C3B;margin:0 auto 10px"></div>
-      <div style="font-size:11px;color:#7A5C48;margin-bottom:16px;font-family:'DM Sans',sans-serif">📍 Guadalajara &nbsp;·&nbsp; ⭐ 4.7/5</div>
-      <div style="display:inline-block;background:#6B4C3B;color:#fff;padding:8px 26px;font-size:12px;font-weight:400;letter-spacing:1.5px;text-transform:uppercase;font-family:'DM Sans',sans-serif">Contáctenos</div>
+      <div style="font-size:11px;color:#7A5C48;margin-bottom:16px;font-family:'DM Sans',sans-serif">📍 Guadalajara · ⭐ 4.7/5</div>
+      <div style="display:inline-block;background:#6B4C3B;color:#fff;padding:8px 26px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-family:'DM Sans',sans-serif">Contáctenos</div>
     </div>
     <div style="padding:10px 16px;display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#fff;border-top:1px solid #E8DDD0;flex-shrink:0">
       
@@ -310,14 +304,14 @@ section { position:relative; }
       </div>
     </div>
     <div style="padding:8px 16px;background:#FAF7F2;border-top:1px solid #E8DDD0;display:flex;justify-content:space-between;align-items:center;flex-shrink:0">
-      <div style="font-size:10px;color:#9C7A60;font-style:italic;font-family:'DM Sans',sans-serif">Guadalajara · Est. 2025</div>
+      <i style="font-size:10px;color:#9C7A60;font-family:'DM Sans',sans-serif">Guadalajara · Est. 2025</i>
       <div style="background:#6B4C3B;color:#fff;padding:4px 14px;font-size:10px;font-family:'DM Sans',sans-serif">WhatsApp</div>
     </div>
   </div>
         </div>
         <div style="margin-top:20px;display:flex;align-items:center;justify-content:space-between;padding:0 4px">
-          <div><span style="font-size:14px;font-weight:600;color:#BBCCD7">◇ Clásico</span><span style="font-size:13px;color:rgba(187,204,215,.4);margin-left:10px">Cálido y cercano</span></div>
-          <a href="https://wa.me/34640765515?text=Hola!%20Me%20interesa%20el%20estilo%20Cl%C3%A1sico%20para%20Sal%C3%B3n%20Urbano." style="background:#8e44ad;color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:30px">Elegir este →</a>
+          <div><span style="font-size:14px;font-weight:600;color:var(--c-fg)">◇ Clásico</span><span style="font-size:13px;color:var(--c-fg2);margin-left:10px">Cálido y cercano</span></div>
+          <a href="https://wa.me/34640765515?text=Hola!%20Me%20interesa%20el%20estilo%20Cl%C3%A1sico%20para%20Sal%C3%B3n%20Urbano." style="background:var(--c-accent);color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:var(--btn-r)">Elegir este →</a>
         </div>
       </div>
     </div>
@@ -325,172 +319,172 @@ section { position:relative; }
 </section>
 
 <!-- ════ INCLUDES ════ -->
-<section style="padding:80px 40px;background:#111111">
+<section style="padding:80px 40px;background:var(--c-bg2)">
   <div style="max-width:1000px;margin:0 auto">
     <div class="reveal" style="margin-bottom:50px">
-      <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#8e44ad;margin-bottom:16px">Qué incluye</div>
-      <h2 style="font-size:clamp(2rem,4vw,3.2rem);font-weight:700;color:#BBCCD7">Todo lo que necesitas,<br><span style="color:rgba(187,204,215,.35)">nada de lo que no.</span></h2>
+      <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--c-accent);margin-bottom:16px">Qué incluye</div>
+      <h2 style="font-size:clamp(2rem,4vw,3.2rem);font-weight:700;font-family:var(--font-h);font-style:var(--h-style);color:var(--c-fg)">Todo lo que necesitas,<br><span style="color:var(--c-fg3)">nada de lo que no.</span></h2>
     </div>
-    <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:rgba(187,204,215,.06);border-radius:20px;overflow:hidden">
+    <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--c-border);border-radius:20px;overflow:hidden">
       
-      <div class="card-wrap" style="position:relative;background:#0C0C0C;padding:32px 26px;overflow:hidden;transition:background .3s" onmouseover="this.style.background='#141414'" onmouseout="this.style.background='#0C0C0C'">
+      <div class="card-wrap" style="background:var(--c-card);padding:32px 26px;position:relative;overflow:hidden;cursor:default;transition:background .25s" onmouseover="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--c-card-h')" onmouseout="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--c-card')">
         <div style="font-size:28px;margin-bottom:14px">📱</div>
-        <div style="font-size:15px;font-weight:700;color:#BBCCD7;margin-bottom:8px">Diseño Responsive</div>
-        <div style="font-size:13px;color:rgba(187,204,215,.45);line-height:1.6">Perfecta en celular, tablet y computadora. Adaptada a todos los dispositivos.</div>
-        <div style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:#8e44ad;transform:scaleX(0);transition:transform .3s;transform-origin:left" class="accent-line"></div>
+        <div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:8px">Diseño Responsive</div>
+        <div style="font-size:13px;color:var(--c-fg2);line-height:1.6">Perfecta en celular, tablet y computadora. Adaptada a todos los dispositivos.</div>
+        <div style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--c-accent);transform:scaleX(0);transition:transform .3s;transform-origin:left" class="accent-line"></div>
       </div>
-      <div class="card-wrap" style="position:relative;background:#0C0C0C;padding:32px 26px;overflow:hidden;transition:background .3s" onmouseover="this.style.background='#141414'" onmouseout="this.style.background='#0C0C0C'">
+      <div class="card-wrap" style="background:var(--c-card);padding:32px 26px;position:relative;overflow:hidden;cursor:default;transition:background .25s" onmouseover="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--c-card-h')" onmouseout="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--c-card')">
         <div style="font-size:28px;margin-bottom:14px">🔍</div>
-        <div style="font-size:15px;font-weight:700;color:#BBCCD7;margin-bottom:8px">SEO Local</div>
-        <div style="font-size:13px;color:rgba(187,204,215,.45);line-height:1.6">Aparece primero cuando busquen "Belleza & Estilo en Guadalajara" en Google.</div>
-        <div style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:#8e44ad;transform:scaleX(0);transition:transform .3s;transform-origin:left" class="accent-line"></div>
+        <div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:8px">SEO Local</div>
+        <div style="font-size:13px;color:var(--c-fg2);line-height:1.6">Aparece primero cuando busquen "Belleza & Estilo en Guadalajara" en Google.</div>
+        <div style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--c-accent);transform:scaleX(0);transition:transform .3s;transform-origin:left" class="accent-line"></div>
       </div>
-      <div class="card-wrap" style="position:relative;background:#0C0C0C;padding:32px 26px;overflow:hidden;transition:background .3s" onmouseover="this.style.background='#141414'" onmouseout="this.style.background='#0C0C0C'">
+      <div class="card-wrap" style="background:var(--c-card);padding:32px 26px;position:relative;overflow:hidden;cursor:default;transition:background .25s" onmouseover="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--c-card-h')" onmouseout="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--c-card')">
         <div style="font-size:28px;margin-bottom:14px">💬</div>
-        <div style="font-size:15px;font-weight:700;color:#BBCCD7;margin-bottom:8px">Chat WhatsApp</div>
-        <div style="font-size:13px;color:rgba(187,204,215,.45);line-height:1.6">Botón flotante para que tus clientes te contacten con un solo toque.</div>
-        <div style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:#8e44ad;transform:scaleX(0);transition:transform .3s;transform-origin:left" class="accent-line"></div>
+        <div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:8px">Chat WhatsApp</div>
+        <div style="font-size:13px;color:var(--c-fg2);line-height:1.6">Botón flotante para que tus clientes te contacten con un solo toque.</div>
+        <div style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--c-accent);transform:scaleX(0);transition:transform .3s;transform-origin:left" class="accent-line"></div>
       </div>
-      <div class="card-wrap" style="position:relative;background:#0C0C0C;padding:32px 26px;overflow:hidden;transition:background .3s" onmouseover="this.style.background='#141414'" onmouseout="this.style.background='#0C0C0C'">
+      <div class="card-wrap" style="background:var(--c-card);padding:32px 26px;position:relative;overflow:hidden;cursor:default;transition:background .25s" onmouseover="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--c-card-h')" onmouseout="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--c-card')">
         <div style="font-size:28px;margin-bottom:14px">📍</div>
-        <div style="font-size:15px;font-weight:700;color:#BBCCD7;margin-bottom:8px">Mapa de Google</div>
-        <div style="font-size:13px;color:rgba(187,204,215,.45);line-height:1.6">Dirección integrada para que tus clientes te encuentren fácilmente.</div>
-        <div style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:#8e44ad;transform:scaleX(0);transition:transform .3s;transform-origin:left" class="accent-line"></div>
+        <div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:8px">Mapa de Google</div>
+        <div style="font-size:13px;color:var(--c-fg2);line-height:1.6">Dirección integrada para que tus clientes te encuentren fácilmente.</div>
+        <div style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--c-accent);transform:scaleX(0);transition:transform .3s;transform-origin:left" class="accent-line"></div>
       </div>
-      <div class="card-wrap" style="position:relative;background:#0C0C0C;padding:32px 26px;overflow:hidden;transition:background .3s" onmouseover="this.style.background='#141414'" onmouseout="this.style.background='#0C0C0C'">
+      <div class="card-wrap" style="background:var(--c-card);padding:32px 26px;position:relative;overflow:hidden;cursor:default;transition:background .25s" onmouseover="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--c-card-h')" onmouseout="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--c-card')">
         <div style="font-size:28px;margin-bottom:14px">⚡</div>
-        <div style="font-size:15px;font-weight:700;color:#BBCCD7;margin-bottom:8px">Carga en <1s</div>
-        <div style="font-size:13px;color:rgba(187,204,215,.45);line-height:1.6">Optimizada para velocidad. El 40% abandona si tarda más de 3 segundos.</div>
-        <div style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:#8e44ad;transform:scaleX(0);transition:transform .3s;transform-origin:left" class="accent-line"></div>
+        <div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:8px">Carga en <1s</div>
+        <div style="font-size:13px;color:var(--c-fg2);line-height:1.6">Optimizada para velocidad. El 40% abandona si tarda más de 3 segundos.</div>
+        <div style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--c-accent);transform:scaleX(0);transition:transform .3s;transform-origin:left" class="accent-line"></div>
       </div>
-      <div class="card-wrap" style="position:relative;background:#0C0C0C;padding:32px 26px;overflow:hidden;transition:background .3s" onmouseover="this.style.background='#141414'" onmouseout="this.style.background='#0C0C0C'">
+      <div class="card-wrap" style="background:var(--c-card);padding:32px 26px;position:relative;overflow:hidden;cursor:default;transition:background .25s" onmouseover="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--c-card-h')" onmouseout="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--c-card')">
         <div style="font-size:28px;margin-bottom:14px">🌐</div>
-        <div style="font-size:15px;font-weight:700;color:#BBCCD7;margin-bottom:8px">Dominio .com / .es</div>
-        <div style="font-size:13px;color:rgba(187,204,215,.45);line-height:1.6">Tu propio dominio profesional incluido en el precio. Sin costos extra.</div>
-        <div style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:#8e44ad;transform:scaleX(0);transition:transform .3s;transform-origin:left" class="accent-line"></div>
+        <div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:8px">Dominio .com / .es</div>
+        <div style="font-size:13px;color:var(--c-fg2);line-height:1.6">Tu propio dominio profesional incluido en el precio. Sin costos extra.</div>
+        <div style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--c-accent);transform:scaleX(0);transition:transform .3s;transform-origin:left" class="accent-line"></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ════ PRICE ════ -->
-<section id="precio" style="padding:80px 40px;background:#0C0C0C;position:relative;overflow:hidden">
-  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(142,68,173,.09) 0%,transparent 70%);pointer-events:none"></div>
+<section id="precio" style="padding:80px 40px;background:var(--c-bg);position:relative;overflow:hidden">
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(var(--c-accent-rgb),.09) 0%,transparent 70%);pointer-events:none"></div>
   <div class="reveal" style="max-width:700px;margin:0 auto;text-align:center;position:relative">
-    <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#8e44ad;margin-bottom:20px">Inversión</div>
-    <h2 style="font-size:clamp(3.5rem,10vw,8rem);font-weight:900;line-height:.9;letter-spacing:-.04em;background:linear-gradient(180deg,#646973 0%,#BBCCD7 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:20px">$299 USD</h2>
-    <p style="font-size:16px;color:rgba(187,204,215,.5);margin-bottom:12px">Pago único · Sin mensualidades · Sin sorpresas</p>
+    <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--c-accent);margin-bottom:20px">Inversión</div>
+    <h2 style="font-size:clamp(3.5rem,10vw,8rem);font-weight:900;line-height:.9;letter-spacing:-.04em;font-family:var(--font-h);font-style:var(--h-style);background:var(--price-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:20px">$299 USD</h2>
+    <p style="font-size:16px;color:var(--c-fg2);margin-bottom:12px">Pago único · Sin mensualidades · Sin sorpresas</p>
     <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:40px;flex-wrap:wrap">
       
-      <span style="display:flex;align-items:center;gap:5px;font-size:13px;color:rgba(187,204,215,.6)">
-        <span style="color:#8e44ad">✓</span> Diseño en 48h
+      <span style="display:flex;align-items:center;gap:5px;font-size:13px;color:var(--c-fg2)">
+        <span style="color:var(--c-accent)">✓</span> Diseño en 48h
       </span>
-      <span style="display:flex;align-items:center;gap:5px;font-size:13px;color:rgba(187,204,215,.6)">
-        <span style="color:#8e44ad">✓</span> SEO incluido
+      <span style="display:flex;align-items:center;gap:5px;font-size:13px;color:var(--c-fg2)">
+        <span style="color:var(--c-accent)">✓</span> SEO incluido
       </span>
-      <span style="display:flex;align-items:center;gap:5px;font-size:13px;color:rgba(187,204,215,.6)">
-        <span style="color:#8e44ad">✓</span> Dominio .com/.es
+      <span style="display:flex;align-items:center;gap:5px;font-size:13px;color:var(--c-fg2)">
+        <span style="color:var(--c-accent)">✓</span> Dominio .com/.es
       </span>
-      <span style="display:flex;align-items:center;gap:5px;font-size:13px;color:rgba(187,204,215,.6)">
-        <span style="color:#8e44ad">✓</span> Hosting 1 año gratis
+      <span style="display:flex;align-items:center;gap:5px;font-size:13px;color:var(--c-fg2)">
+        <span style="color:var(--c-accent)">✓</span> Hosting 1 año gratis
       </span>
     </div>
     <div style="display:flex;flex-direction:column;align-items:center;gap:14px">
-      <a href="https://wa.me/34640765515?text=Hola%2C%20vi%20la%20propuesta%20de%20web%20para%20Sal%C3%B3n%20Urbano%20y%20me%20interesa.%20%C2%BFC%C3%B3mo%20procedo%3F" style="display:inline-flex;align-items:center;gap:10px;background:#8e44ad;color:#fff;font-size:16px;font-weight:700;padding:18px 48px;border-radius:50px;letter-spacing:.3px;box-shadow:0 0 40px rgba(142,68,173,.3)">
+      <a href="https://wa.me/34640765515?text=Hola%2C%20vi%20la%20propuesta%20de%20web%20para%20Sal%C3%B3n%20Urbano%20y%20me%20interesa.%20%C2%BFC%C3%B3mo%20procedo%3F" style="display:inline-flex;align-items:center;gap:10px;background:var(--c-accent);color:#fff;font-size:16px;font-weight:700;padding:18px 48px;border-radius:var(--btn-r);letter-spacing:.3px;box-shadow:0 0 40px rgba(var(--c-accent-rgb),.3)">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Quiero mi web ahora
       </a>
-      <span style="font-size:12px;color:rgba(187,204,215,.3)">Respuesta en menos de 2 horas</span>
+      <span style="font-size:12px;color:var(--c-fg4)">Respuesta en menos de 2 horas</span>
     </div>
   </div>
 </section>
 
 <!-- ════ MAP ════ -->
 <section style="position:relative">
-  <div style="position:absolute;top:0;left:0;right:0;height:60px;background:linear-gradient(to bottom,#0C0C0C,transparent);z-index:1;pointer-events:none"></div>
+  <div style="position:absolute;top:0;left:0;right:0;height:60px;background:linear-gradient(to bottom,var(--c-bg),transparent);z-index:1;pointer-events:none"></div>
   <iframe src="https://maps.google.com/maps?q=20.6739031,-103.3666602&z=15&output=embed" width="100%" height="380" style="border:0;display:block;filter:grayscale(.8) invert(.9) hue-rotate(180deg)" allowfullscreen loading="lazy" title="Salón Urbano"></iframe>
-  <div style="position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to top,#111111,transparent);z-index:1;pointer-events:none"></div>
+  <div style="position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to top,var(--c-bg2),transparent);z-index:1;pointer-events:none"></div>
 </section>
 
 <!-- ════ MARQUEE ════ -->
-<section style="padding:48px 0;background:#111111;overflow:hidden;border-top:1px solid rgba(187,204,215,.05)">
-  <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(187,204,215,.25);text-align:center;margin-bottom:24px">Negocios que ya confían en nosotros</div>
+<section style="padding:48px 0;background:var(--c-bg2);overflow:hidden;border-top:1px solid var(--c-border)">
+  <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--c-fg4);text-align:center;margin-bottom:24px">Negocios que ya confían en nosotros</div>
   <div style="overflow:hidden">
     <div class="marquee-track">
     <div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0">
-      <div style="width:6px;height:6px;background:#8e44ad;border-radius:50%"></div>
-      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:rgba(187,204,215,.5);text-transform:uppercase">Dentify</span>
+      <div style="width:6px;height:6px;background:var(--c-accent);border-radius:50%"></div>
+      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--marquee-text);text-transform:uppercase">Dentify</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0">
-      <div style="width:6px;height:6px;background:#8e44ad;border-radius:50%"></div>
-      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:rgba(187,204,215,.5);text-transform:uppercase">Sabores Co.</span>
+      <div style="width:6px;height:6px;background:var(--c-accent);border-radius:50%"></div>
+      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--marquee-text);text-transform:uppercase">Sabores Co.</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0">
-      <div style="width:6px;height:6px;background:#8e44ad;border-radius:50%"></div>
-      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:rgba(187,204,215,.5);text-transform:uppercase">GlamHouse</span>
+      <div style="width:6px;height:6px;background:var(--c-accent);border-radius:50%"></div>
+      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--marquee-text);text-transform:uppercase">GlamHouse</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0">
-      <div style="width:6px;height:6px;background:#8e44ad;border-radius:50%"></div>
-      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:rgba(187,204,215,.5);text-transform:uppercase">SonrieYa</span>
+      <div style="width:6px;height:6px;background:var(--c-accent);border-radius:50%"></div>
+      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--marquee-text);text-transform:uppercase">SonrieYa</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0">
-      <div style="width:6px;height:6px;background:#8e44ad;border-radius:50%"></div>
-      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:rgba(187,204,215,.5);text-transform:uppercase">Chef & Co.</span>
+      <div style="width:6px;height:6px;background:var(--c-accent);border-radius:50%"></div>
+      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--marquee-text);text-transform:uppercase">Chef & Co.</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0">
-      <div style="width:6px;height:6px;background:#8e44ad;border-radius:50%"></div>
-      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:rgba(187,204,215,.5);text-transform:uppercase">AuraSpa</span>
+      <div style="width:6px;height:6px;background:var(--c-accent);border-radius:50%"></div>
+      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--marquee-text);text-transform:uppercase">AuraSpa</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0">
-      <div style="width:6px;height:6px;background:#8e44ad;border-radius:50%"></div>
-      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:rgba(187,204,215,.5);text-transform:uppercase">MediDental</span>
+      <div style="width:6px;height:6px;background:var(--c-accent);border-radius:50%"></div>
+      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--marquee-text);text-transform:uppercase">MediDental</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0">
-      <div style="width:6px;height:6px;background:#8e44ad;border-radius:50%"></div>
-      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:rgba(187,204,215,.5);text-transform:uppercase">Bistró MX</span>
+      <div style="width:6px;height:6px;background:var(--c-accent);border-radius:50%"></div>
+      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--marquee-text);text-transform:uppercase">Bistró MX</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0">
-      <div style="width:6px;height:6px;background:#8e44ad;border-radius:50%"></div>
-      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:rgba(187,204,215,.5);text-transform:uppercase">Dentify</span>
+      <div style="width:6px;height:6px;background:var(--c-accent);border-radius:50%"></div>
+      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--marquee-text);text-transform:uppercase">Dentify</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0">
-      <div style="width:6px;height:6px;background:#8e44ad;border-radius:50%"></div>
-      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:rgba(187,204,215,.5);text-transform:uppercase">Sabores Co.</span>
+      <div style="width:6px;height:6px;background:var(--c-accent);border-radius:50%"></div>
+      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--marquee-text);text-transform:uppercase">Sabores Co.</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0">
-      <div style="width:6px;height:6px;background:#8e44ad;border-radius:50%"></div>
-      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:rgba(187,204,215,.5);text-transform:uppercase">GlamHouse</span>
+      <div style="width:6px;height:6px;background:var(--c-accent);border-radius:50%"></div>
+      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--marquee-text);text-transform:uppercase">GlamHouse</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0">
-      <div style="width:6px;height:6px;background:#8e44ad;border-radius:50%"></div>
-      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:rgba(187,204,215,.5);text-transform:uppercase">SonrieYa</span>
+      <div style="width:6px;height:6px;background:var(--c-accent);border-radius:50%"></div>
+      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--marquee-text);text-transform:uppercase">SonrieYa</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0">
-      <div style="width:6px;height:6px;background:#8e44ad;border-radius:50%"></div>
-      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:rgba(187,204,215,.5);text-transform:uppercase">Chef & Co.</span>
+      <div style="width:6px;height:6px;background:var(--c-accent);border-radius:50%"></div>
+      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--marquee-text);text-transform:uppercase">Chef & Co.</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0">
-      <div style="width:6px;height:6px;background:#8e44ad;border-radius:50%"></div>
-      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:rgba(187,204,215,.5);text-transform:uppercase">AuraSpa</span>
+      <div style="width:6px;height:6px;background:var(--c-accent);border-radius:50%"></div>
+      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--marquee-text);text-transform:uppercase">AuraSpa</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0">
-      <div style="width:6px;height:6px;background:#8e44ad;border-radius:50%"></div>
-      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:rgba(187,204,215,.5);text-transform:uppercase">MediDental</span>
+      <div style="width:6px;height:6px;background:var(--c-accent);border-radius:50%"></div>
+      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--marquee-text);text-transform:uppercase">MediDental</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0">
-      <div style="width:6px;height:6px;background:#8e44ad;border-radius:50%"></div>
-      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:rgba(187,204,215,.5);text-transform:uppercase">Bistró MX</span>
+      <div style="width:6px;height:6px;background:var(--c-accent);border-radius:50%"></div>
+      <span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--marquee-text);text-transform:uppercase">Bistró MX</span>
     </div></div>
   </div>
 </section>
 
 <!-- ════ FOOTER ════ -->
-<footer style="padding:40px;background:#0C0C0C;border-top:1px solid rgba(187,204,215,.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px">
+<footer style="padding:40px;background:var(--c-bg);border-top:1px solid var(--c-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px">
   <div>
-    <div style="font-size:14px;font-weight:700;color:rgba(187,204,215,.8);margin-bottom:4px">Salón Urbano</div>
-    <div style="font-size:12px;color:rgba(187,204,215,.3)">Belleza & Estilo · Guadalajara · Propuesta exclusiva</div>
+    <div style="font-size:14px;font-weight:700;color:var(--nav-fg);margin-bottom:4px">Salón Urbano</div>
+    <div style="font-size:12px;color:var(--c-fg4)">Belleza & Estilo · Guadalajara · Propuesta exclusiva</div>
   </div>
-  <div style="font-size:12px;color:rgba(187,204,215,.25)">Propuesta válida por 7 días · © 2025</div>
+  <div style="font-size:12px;color:var(--c-fg4)">Propuesta válida por 7 días · © 2025</div>
 </footer>
 
 <!-- ════ WA FLOAT ════ -->
@@ -499,17 +493,115 @@ section { position:relative; }
 </a>
 
 <script>
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-}, { threshold: 0.1, rootMargin: '-40px' });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);} });
+}, {threshold:0.1, rootMargin:'-40px'});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
+// Card hover accent line
 document.querySelectorAll('.card-wrap').forEach(card => {
   const line = card.querySelector('.accent-line');
-  if (!line) return;
-  card.addEventListener('mouseenter', () => line.style.transform = 'scaleX(1)');
-  card.addEventListener('mouseleave', () => line.style.transform = 'scaleX(0)');
+  if(!line) return;
+  card.addEventListener('mouseenter', ()=>line.style.transform='scaleX(1)');
+  card.addEventListener('mouseleave', ()=>line.style.transform='scaleX(0)');
 });
+
+// ── THEME SWITCHER ──
+
+const THEMES = {
+  moderno: {
+    '--c-bg':        '#0C0C0C',
+    '--c-bg2':       '#111111',
+    '--c-fg':        '#BBCCD7',
+    '--c-fg2':       'rgba(187,204,215,.55)',
+    '--c-fg3':       'rgba(187,204,215,.35)',
+    '--c-fg4':       'rgba(187,204,215,.22)',
+    '--c-border':    'rgba(187,204,215,.06)',
+    '--c-border2':   'rgba(187,204,215,.08)',
+    '--c-card':      '#0C0C0C',
+    '--c-card-h':    '#141414',
+    '--c-accent':    '#8e44ad',
+    '--c-accent-rgb':'142,68,173',
+    '--hero-ov':     'linear-gradient(to bottom,rgba(12,12,12,.15) 0%,rgba(12,12,12,.5) 40%,rgba(12,12,12,.96) 85%,#0C0C0C 100%)',
+    '--h-grad':      'linear-gradient(180deg,#646973 0%,#BBCCD7 100%)',
+    '--price-grad':  'linear-gradient(180deg,#646973 0%,#BBCCD7 100%)',
+    '--btn-r':       '50px',
+    '--font-h':      "'DM Sans',sans-serif",
+    '--h-style':     'normal',
+    '--marquee-text':'rgba(187,204,215,.45)',
+    '--nav-fg':      'rgba(187,204,215,.9)',
+    '--nav-link':    'rgba(187,204,215,.6)',
+    '--tab-sel':     '#8e44ad',
+    '--stats-bg':    'rgba(187,204,215,.08)',
+  },
+  audaz: {
+    '--c-bg':        '#06080D',
+    '--c-bg2':       '#0C1018',
+    '--c-fg':        '#E8F0FC',
+    '--c-fg2':       'rgba(232,240,252,.5)',
+    '--c-fg3':       'rgba(232,240,252,.3)',
+    '--c-fg4':       'rgba(232,240,252,.18)',
+    '--c-border':    'rgba(232,240,252,.07)',
+    '--c-border2':   'rgba(232,240,252,.1)',
+    '--c-card':      '#0C1018',
+    '--c-card-h':    '#121A24',
+    '--c-accent':    '#8e44ad',
+    '--c-accent-rgb':'142,68,173',
+    '--hero-ov':     'linear-gradient(to bottom,rgba(6,8,13,.05) 0%,rgba(6,8,13,.4) 40%,rgba(6,8,13,.97) 85%,#06080D 100%)',
+    '--h-grad':      'linear-gradient(90deg,#fff 0%,#bb8fce 100%)',
+    '--price-grad':  'linear-gradient(90deg,#8e44ad 0%,#bb8fce 100%)',
+    '--btn-r':       '6px',
+    '--font-h':      "'DM Sans',sans-serif",
+    '--h-style':     'normal',
+    '--marquee-text':'rgba(232,240,252,.4)',
+    '--nav-fg':      '#E8F0FC',
+    '--nav-link':    'rgba(232,240,252,.5)',
+    '--tab-sel':     '#8e44ad',
+    '--stats-bg':    'rgba(232,240,252,.08)',
+  },
+  clasico: {
+    '--c-bg':        '#FAF7F2',
+    '--c-bg2':       '#FFFFFF',
+    '--c-fg':        '#2C1810',
+    '--c-fg2':       'rgba(44,24,16,.55)',
+    '--c-fg3':       'rgba(44,24,16,.35)',
+    '--c-fg4':       'rgba(44,24,16,.2)',
+    '--c-border':    '#E8DDD0',
+    '--c-border2':   '#DDD0C0',
+    '--c-card':      '#FFFFFF',
+    '--c-card-h':    '#FDF8F3',
+    '--c-accent':    '#6B4C3B',
+    '--c-accent-rgb':'107,76,59',
+    '--hero-ov':     'linear-gradient(to bottom,rgba(250,247,242,.1) 0%,rgba(250,247,242,.45) 40%,rgba(250,247,242,.97) 85%,#FAF7F2 100%)',
+    '--h-grad':      'linear-gradient(180deg,#4A3028 0%,#2C1810 100%)',
+    '--price-grad':  'linear-gradient(180deg,#6B4C3B 0%,#2C1810 100%)',
+    '--btn-r':       '4px',
+    '--font-h':      'Georgia, serif',
+    '--h-style':     'italic',
+    '--marquee-text':'rgba(44,24,16,.35)',
+    '--nav-fg':      'rgba(44,24,16,.9)',
+    '--nav-link':    'rgba(44,24,16,.5)',
+    '--tab-sel':     '#6B4C3B',
+    '--stats-bg':    '#E8DDD0',
+  }
+};
+
+function applyTheme(name) {
+  const t = THEMES[name] || THEMES.moderno;
+  const root = document.documentElement;
+  Object.entries(t).forEach(([k,v]) => root.style.setProperty(k,v));
+  // update body font
+  document.body.style.fontFamily = t['--font-h'];
+}
+
+document.querySelectorAll('input[name=design]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    applyTheme(this.dataset.theme);
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+
 </script>
 </body>
 </html>
