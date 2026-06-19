@@ -148,21 +148,15 @@ body.s-noche .feat-wrap--list .feat-card:hover{background:rgba(239,244,255,.04);
 body.s-noche .stat-grid{gap:0;background:transparent;border-radius:0;margin-top:32px;border-top:1px solid rgba(239,244,255,.1);border-bottom:1px solid rgba(239,244,255,.06)}
 body.s-noche .stat-cell{border-right:1px solid rgba(239,244,255,.06)}
 
-/* ── Photo strip ── */
-.photo-strip{display:none;overflow:hidden}
-body.s-moderno .photo-strip{display:grid;grid-template-columns:1.5fr 1fr 1fr;height:200px;gap:2px}
-body.s-audaz .photo-strip{display:grid;grid-template-columns:1fr 2fr;height:220px;gap:2px}
-body.s-clasico .photo-strip{display:grid;grid-template-columns:1fr;height:240px}
-body.s-premium .photo-strip{display:grid;grid-template-columns:1fr 1fr 1fr;height:200px;gap:2px}
-body.s-innovation .photo-strip{display:grid;grid-template-columns:2fr 1fr 1fr;height:200px;gap:4px}
-body.s-mindloop .photo-strip{display:grid;grid-template-columns:1fr 1fr;height:210px;gap:2px}
-body.s-organico .photo-strip{display:grid;grid-template-columns:1fr 1fr 1fr;height:210px;gap:8px;padding:0 var(--sec-px)}
-body.s-minimal .photo-strip{display:grid;grid-template-columns:1fr;height:280px}
-body.s-luz .photo-strip{display:grid;grid-template-columns:1fr 1fr 1fr;height:200px;gap:8px;padding:0 var(--sec-px)}
-body.s-noche .photo-strip{display:grid;grid-template-columns:1.5fr 1fr 1fr;height:200px;gap:2px}
-.photo-panel{background-size:cover;background-repeat:no-repeat;transition:transform .6s var(--ease)}
-.photo-panel:hover{transform:scale(1.02)}
-body.s-organico .photo-panel,body.s-luz .photo-panel{border-radius:10px}
+/* ── Hero slideshow (Ken Burns) ── */
+@keyframes kb1{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.09) translate(-2%,-1%)}}
+@keyframes kb2{0%{transform:scale(1.06) translate(2%,1%)}100%{transform:scale(1) translate(-1%,2%)}}
+@keyframes kb3{0%{transform:scale(1) translate(-2%,2%)}100%{transform:scale(1.07) translate(2%,-1%)}}
+@keyframes sshow{0%,28%{opacity:1}36%,96%{opacity:0}100%{opacity:1}}
+.hero-slide{position:absolute;inset:0;background-size:cover;background-repeat:no-repeat;filter:saturate(.7);opacity:0}
+.hero-slide:nth-child(1){animation:sshow 18s ease-in-out 0s infinite,kb1 18s ease-in-out 0s infinite}
+.hero-slide:nth-child(2){animation:sshow 18s ease-in-out -6s infinite,kb2 18s ease-in-out -6s infinite}
+.hero-slide:nth-child(3){animation:sshow 18s ease-in-out -12s infinite,kb3 18s ease-in-out -12s infinite}
 
 /* ── Hero illustration ── */
 .hero-illust{position:absolute;right:calc(var(--sec-px) + 20px);bottom:18%;z-index:6;width:min(320px,30vw);display:none;pointer-events:none}
@@ -178,7 +172,9 @@ body.s-noche .cv-audaz{display:block}
 
 <!-- HERO -->
 <section style="height:100vh;min-height:580px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;position:relative">
-  <div style="position:absolute;inset:0;background:url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photo_reference=Ab43m-tAerYWMaugpZhzA0_jOVdyNPWmHe5cP7oCJQntQmyFltG2xawenD82VB3fGyIlQlqk3NA1vX8TmlX2pX0NXliDHMVzc1jmPXAUOMOcne4Jp2YkCZqNfTgWn0dxSYknkq4EA4_94GXnwlLJymZhzuiflPt4mkdTAHmsBhjzHdj1S8QWRR8RvsqizZnoriy_QqKFWjPMHwz2IDGfIjWR8agibM9Mqy_eYau2Kk5nw8AevuCsBbLLeeRmD8rHU78KTX0miHq5-EP29CJv5tbT-BOoX9fCBetMMWZUNHIWQ_g--bSHZWC2__-JgUedA-CwpqM8VBU7U4vUwB6c5pf37dSQg9nnvWByGkZfVVZyqtyic9C0Midh8fbPYZN0EIcPbiH6c8_dVV_O7cUrAZN9pk0DavZCJLL0OEFVERsmpPzbWsFVPHhk2aD2FcgYypaG&key=AIzaSyClecoUPRHScSCuABpegra7SYJdj-siIqc') center/cover no-repeat;opacity:.3;filter:saturate(.7)"></div>
+  <div class="hero-slide" style="background-image:url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photo_reference=Ab43m-tAerYWMaugpZhzA0_jOVdyNPWmHe5cP7oCJQntQmyFltG2xawenD82VB3fGyIlQlqk3NA1vX8TmlX2pX0NXliDHMVzc1jmPXAUOMOcne4Jp2YkCZqNfTgWn0dxSYknkq4EA4_94GXnwlLJymZhzuiflPt4mkdTAHmsBhjzHdj1S8QWRR8RvsqizZnoriy_QqKFWjPMHwz2IDGfIjWR8agibM9Mqy_eYau2Kk5nw8AevuCsBbLLeeRmD8rHU78KTX0miHq5-EP29CJv5tbT-BOoX9fCBetMMWZUNHIWQ_g--bSHZWC2__-JgUedA-CwpqM8VBU7U4vUwB6c5pf37dSQg9nnvWByGkZfVVZyqtyic9C0Midh8fbPYZN0EIcPbiH6c8_dVV_O7cUrAZN9pk0DavZCJLL0OEFVERsmpPzbWsFVPHhk2aD2FcgYypaG&key=AIzaSyClecoUPRHScSCuABpegra7SYJdj-siIqc');background-position:50% 35%"></div>
+  <div class="hero-slide" style="background-image:url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photo_reference=Ab43m-tAerYWMaugpZhzA0_jOVdyNPWmHe5cP7oCJQntQmyFltG2xawenD82VB3fGyIlQlqk3NA1vX8TmlX2pX0NXliDHMVzc1jmPXAUOMOcne4Jp2YkCZqNfTgWn0dxSYknkq4EA4_94GXnwlLJymZhzuiflPt4mkdTAHmsBhjzHdj1S8QWRR8RvsqizZnoriy_QqKFWjPMHwz2IDGfIjWR8agibM9Mqy_eYau2Kk5nw8AevuCsBbLLeeRmD8rHU78KTX0miHq5-EP29CJv5tbT-BOoX9fCBetMMWZUNHIWQ_g--bSHZWC2__-JgUedA-CwpqM8VBU7U4vUwB6c5pf37dSQg9nnvWByGkZfVVZyqtyic9C0Midh8fbPYZN0EIcPbiH6c8_dVV_O7cUrAZN9pk0DavZCJLL0OEFVERsmpPzbWsFVPHhk2aD2FcgYypaG&key=AIzaSyClecoUPRHScSCuABpegra7SYJdj-siIqc');background-position:65% 50%"></div>
+  <div class="hero-slide" style="background-image:url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photo_reference=Ab43m-tAerYWMaugpZhzA0_jOVdyNPWmHe5cP7oCJQntQmyFltG2xawenD82VB3fGyIlQlqk3NA1vX8TmlX2pX0NXliDHMVzc1jmPXAUOMOcne4Jp2YkCZqNfTgWn0dxSYknkq4EA4_94GXnwlLJymZhzuiflPt4mkdTAHmsBhjzHdj1S8QWRR8RvsqizZnoriy_QqKFWjPMHwz2IDGfIjWR8agibM9Mqy_eYau2Kk5nw8AevuCsBbLLeeRmD8rHU78KTX0miHq5-EP29CJv5tbT-BOoX9fCBetMMWZUNHIWQ_g--bSHZWC2__-JgUedA-CwpqM8VBU7U4vUwB6c5pf37dSQg9nnvWByGkZfVVZyqtyic9C0Midh8fbPYZN0EIcPbiH6c8_dVV_O7cUrAZN9pk0DavZCJLL0OEFVERsmpPzbWsFVPHhk2aD2FcgYypaG&key=AIzaSyClecoUPRHScSCuABpegra7SYJdj-siIqc');background-position:35% 65%"></div>
   <div style="position:absolute;inset:0;background:var(--c-hero-ov)"></div>
   <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden"><div style="position:absolute;left:6%;top:20%;width:12px;height:12px;background:rgba(255,255,255,.05);animation:float 3s ease-in-out 0s infinite alternate"></div><div style="position:absolute;left:13%;top:35%;width:8px;height:8px;background:rgba(255,255,255,.05);animation:float 3.4s ease-in-out 0.5s infinite alternate"></div><div style="position:absolute;left:8%;top:50%;width:6px;height:6px;background:rgba(255,255,255,.05);animation:float 3.8s ease-in-out 1s infinite alternate"></div><div style="position:absolute;left:88%;top:18%;width:10px;height:10px;background:rgba(255,255,255,.05);animation:float 4.2s ease-in-out 1.5s infinite alternate"></div><div style="position:absolute;left:93%;top:32%;width:14px;height:14px;background:rgba(255,255,255,.05);animation:float 4.6s ease-in-out 2s infinite alternate"></div><div style="position:absolute;left:85%;top:45%;width:7px;height:7px;background:rgba(255,255,255,.05);animation:float 5s ease-in-out 2.5s infinite alternate"></div></div>
   <nav style="position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:18px var(--sec-px);z-index:50;background:var(--c-nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--c-border)">
@@ -228,13 +224,6 @@ body.s-noche .cv-audaz{display:block}
     </div>
   </div>
 </section>
-
-<!-- FOTO STRIP -->
-<div class="photo-strip">
-  <div class="photo-panel" style="background-image:url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photo_reference=Ab43m-tAerYWMaugpZhzA0_jOVdyNPWmHe5cP7oCJQntQmyFltG2xawenD82VB3fGyIlQlqk3NA1vX8TmlX2pX0NXliDHMVzc1jmPXAUOMOcne4Jp2YkCZqNfTgWn0dxSYknkq4EA4_94GXnwlLJymZhzuiflPt4mkdTAHmsBhjzHdj1S8QWRR8RvsqizZnoriy_QqKFWjPMHwz2IDGfIjWR8agibM9Mqy_eYau2Kk5nw8AevuCsBbLLeeRmD8rHU78KTX0miHq5-EP29CJv5tbT-BOoX9fCBetMMWZUNHIWQ_g--bSHZWC2__-JgUedA-CwpqM8VBU7U4vUwB6c5pf37dSQg9nnvWByGkZfVVZyqtyic9C0Midh8fbPYZN0EIcPbiH6c8_dVV_O7cUrAZN9pk0DavZCJLL0OEFVERsmpPzbWsFVPHhk2aD2FcgYypaG&key=AIzaSyClecoUPRHScSCuABpegra7SYJdj-siIqc');background-position:15% 30%"></div>
-  <div class="photo-panel" style="background-image:url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photo_reference=Ab43m-tAerYWMaugpZhzA0_jOVdyNPWmHe5cP7oCJQntQmyFltG2xawenD82VB3fGyIlQlqk3NA1vX8TmlX2pX0NXliDHMVzc1jmPXAUOMOcne4Jp2YkCZqNfTgWn0dxSYknkq4EA4_94GXnwlLJymZhzuiflPt4mkdTAHmsBhjzHdj1S8QWRR8RvsqizZnoriy_QqKFWjPMHwz2IDGfIjWR8agibM9Mqy_eYau2Kk5nw8AevuCsBbLLeeRmD8rHU78KTX0miHq5-EP29CJv5tbT-BOoX9fCBetMMWZUNHIWQ_g--bSHZWC2__-JgUedA-CwpqM8VBU7U4vUwB6c5pf37dSQg9nnvWByGkZfVVZyqtyic9C0Midh8fbPYZN0EIcPbiH6c8_dVV_O7cUrAZN9pk0DavZCJLL0OEFVERsmpPzbWsFVPHhk2aD2FcgYypaG&key=AIzaSyClecoUPRHScSCuABpegra7SYJdj-siIqc');background-position:50% 50%"></div>
-  <div class="photo-panel" style="background-image:url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photo_reference=Ab43m-tAerYWMaugpZhzA0_jOVdyNPWmHe5cP7oCJQntQmyFltG2xawenD82VB3fGyIlQlqk3NA1vX8TmlX2pX0NXliDHMVzc1jmPXAUOMOcne4Jp2YkCZqNfTgWn0dxSYknkq4EA4_94GXnwlLJymZhzuiflPt4mkdTAHmsBhjzHdj1S8QWRR8RvsqizZnoriy_QqKFWjPMHwz2IDGfIjWR8agibM9Mqy_eYau2Kk5nw8AevuCsBbLLeeRmD8rHU78KTX0miHq5-EP29CJv5tbT-BOoX9fCBetMMWZUNHIWQ_g--bSHZWC2__-JgUedA-CwpqM8VBU7U4vUwB6c5pf37dSQg9nnvWByGkZfVVZyqtyic9C0Midh8fbPYZN0EIcPbiH6c8_dVV_O7cUrAZN9pk0DavZCJLL0OEFVERsmpPzbWsFVPHhk2aD2FcgYypaG&key=AIzaSyClecoUPRHScSCuABpegra7SYJdj-siIqc');background-position:85% 70%"></div>
-</div>
 
 <!-- PROBLEMA -->
 <section class="reveal" style="padding:var(--sec-py) var(--sec-px);background:var(--c-bg);border-top:1px solid var(--c-border)">
