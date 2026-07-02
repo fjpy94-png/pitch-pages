@@ -58,16 +58,22 @@ a{color:inherit;text-decoration:none}
 .feat-wrap{display:none}
 @keyframes cardUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 @keyframes cardRight{from{opacity:0;transform:translateX(36px)}to{opacity:1;transform:none}}
-@keyframes cardScaleIn{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:none}}
+@keyframes cardLeft{from{opacity:0;transform:translateX(-36px)}to{opacity:1;transform:none}}
+@keyframes cardScaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:none}}
 @keyframes cardFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes cardBlurFade{from{opacity:0;filter:blur(6px)}to{opacity:1;filter:none}}
 .feat-card,.feat-item{opacity:0;transition:transform var(--card-hv-t) var(--ease),background var(--dur-f) var(--ease),border-color var(--dur-f) var(--ease)}
 .feat-card.card-in,.feat-item.card-in{animation:cardUp .52s ease-out both}
-body.s-audaz .feat-card.card-in{animation-name:cardRight}
-body.s-innovation .feat-card.card-in{animation-name:cardScaleIn;animation-duration:.4s}
+body.s-audaz .feat-card.card-in{animation-name:cardRight;animation-duration:.45s}
+body.s-clasico .feat-card.card-in,body.s-clasico .feat-item.card-in{animation-name:cardFadeIn;animation-duration:.5s}
+body.s-innovation .feat-card.card-in{animation-name:cardScaleIn;animation-duration:.5s}
 body.s-organico .feat-card.card-in{animation-duration:.65s;animation-timing-function:cubic-bezier(.34,1.1,.64,1)}
-body.s-mindloop .feat-card.card-in,body.s-noche .feat-card.card-in{animation-name:cardFadeIn}
-body.s-premium .feat-item.card-in,body.s-minimal .feat-item.card-in{animation-name:cardFadeIn;animation-duration:.9s}
-.feat-card.card-settled,.feat-item.card-settled{opacity:1;animation:none;transform:none;transition:transform var(--card-hv-t) var(--ease),background var(--dur-f) var(--ease),border-color var(--dur-f) var(--ease)}
+body.s-mindloop .feat-card.card-in{animation-name:cardFadeIn;animation-duration:.6s}
+body.s-luz .feat-card.card-in{animation-name:cardLeft;animation-duration:.52s}
+body.s-noche .feat-card.card-in{animation-name:cardBlurFade;animation-duration:.6s}
+body.s-premium .feat-item.card-in{animation-name:cardFadeIn;animation-duration:.9s}
+body.s-minimal .feat-item.card-in{animation-name:cardFadeIn;animation-duration:.9s}
+.feat-card.card-settled,.feat-item.card-settled{opacity:1;animation:none;transform:none;filter:none;transition:transform var(--card-hv-t) var(--ease),background var(--dur-f) var(--ease),border-color var(--dur-f) var(--ease)}
 .feat-card.card-settled:hover,.feat-item.card-settled:hover{transform:var(--card-hv,none)}
 .stat-cell{opacity:0;transition:opacity .6s ease-out}
 .stat-cell.stat-in{opacity:1}
@@ -88,7 +94,6 @@ body.s-audaz .feat-wrap--list .feat-card:hover{background:rgba(var(--c-accent-rg
 
 /* ── Clásico: no motion (static), centered hero, editorial bordered list ── */
 body.s-clasico .reveal{opacity:1;transform:none;transition:none}
-body.s-clasico .feat-card,body.s-clasico .feat-item{opacity:1;transform:none;animation:none}
 body.s-clasico .feat-wrap--editorial{display:grid;grid-template-columns:1fr 1fr;gap:0}
 body.s-clasico .feat-wrap--editorial .feat-card{background:transparent;border-radius:0;border:none;border-bottom:1px solid var(--c-border);padding:24px 16px}
 body.s-clasico .feat-wrap--editorial .feat-card:hover{background:var(--c-card-h)}
@@ -181,7 +186,7 @@ body.s-moderno .hero-illust,body.s-innovation .hero-illust,body.s-luz .hero-illu
 body.s-luz .cv-default{display:block}
 body.s-noche .cv-audaz{display:block}
 @media(prefers-reduced-motion:reduce){
-  .feat-card,.feat-item{animation:none!important;opacity:1!important;transform:none!important}
+  .feat-card,.feat-item{animation:none!important;opacity:1!important;transform:none!important;filter:none!important}
   .reveal{transition-duration:.01ms!important}
 }
 </style>
@@ -584,21 +589,20 @@ const obs=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isInte
 document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
 document.querySelectorAll('.feat-card').forEach(function(c){var l=c.querySelector('.feat-line');if(!l)return;c.addEventListener('mouseenter',function(){l.style.transform='scaleX(1)';});c.addEventListener('mouseleave',function(){l.style.transform='scaleX(0)';});});
 function countUp(el){var tgt=+el.dataset.counter,fmt=el.dataset.format,dur=1100,s=performance.now();function t(n){var p=Math.min(1,(n-s)/dur),ease=1-Math.pow(1-p,3);el.textContent=fmt.replace('N',Math.round(ease*tgt));if(p<1)requestAnimationFrame(t);}requestAnimationFrame(t);}
-var _fDone=false;
-var featObs=new IntersectionObserver(function(entries){
-  if(!entries[0].isIntersecting||_fDone)return;
-  _fDone=true;featObs.disconnect();
+var _fSeen=false;
+function runFeatAnim(){
   var allC=document.querySelectorAll('.feat-card,.feat-item');
-  allC.forEach(function(c){c.classList.add('card-settled');});
+  allC.forEach(function(c){c.classList.remove('card-in');c.classList.add('card-settled');});
+  if(noMotion)return;
   var aWrap=null;
   document.querySelectorAll('.feat-wrap').forEach(function(w){if(window.getComputedStyle(w).display!=='none')aWrap=w;});
   if(!aWrap)return;
   var cards=Array.from(aWrap.querySelectorAll('.feat-card,.feat-item'));
-  cards.forEach(function(c,i){
-    c.classList.remove('card-settled');
-    var delay=noMotion?0:i*80;
-    setTimeout(function(){c.classList.add('card-in');setTimeout(function(){c.classList.add('card-settled');},550);},delay);
-  });
+  cards.forEach(function(c){c.classList.remove('card-settled');c.style.cssText='opacity:0;transform:none;animation:none;filter:none';});
+  cards.forEach(function(c,i){setTimeout(function(){c.style.cssText='';c.classList.add('card-in');setTimeout(function(){c.classList.remove('card-in');c.classList.add('card-settled');},950);},i*80);});
+}
+var featObs=new IntersectionObserver(function(entries){
+  if(entries[0].isIntersecting){_fSeen=true;runFeatAnim();}else{_fSeen=false;}
 },{threshold:0.05});
 var featSec=document.querySelector('[data-feat-section]');
 if(featSec)featObs.observe(featSec);
