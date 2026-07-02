@@ -121,7 +121,7 @@ body.s-minimal .hero-inner{text-align:center;margin-left:auto;margin-right:auto}
 /* Stats bar per-style */
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--c-stats-bg);border-radius:var(--card-r);overflow:hidden;margin-top:40px}
 .stat-cell{background:var(--c-bg);padding:24px 20px;text-align:center}
-.stat-cell.reveal{transition-delay:var(--stagger-d,0ms)}
+.stat-cell.reveal{--rv-from:translateY(0);transition-delay:var(--stagger-d,0ms)}
 body.s-premium .stat-grid{max-width:480px;margin-left:auto;margin-right:auto;grid-template-columns:repeat(3,1fr)}
 body.s-minimal .stat-grid{display:none}
 body.s-audaz .stat-grid{gap:0;background:transparent;border-radius:0;margin-top:32px;border-top:2px solid var(--c-fg);border-bottom:1px solid var(--c-border)}
@@ -573,7 +573,7 @@ document.querySelectorAll('.pal-dot').forEach(b=>b.addEventListener('click',func
 document.querySelectorAll('.typo-btn').forEach(b=>b.addEventListener('click',function(){applyTypo(this.dataset.typo);}));
 document.querySelectorAll('.bg-btn').forEach(b=>b.addEventListener('click',function(){applyBg(this.dataset.bg);}));
 const noMotion=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');const cards=x.target.querySelectorAll('.feat-card,.feat-item');if(cards.length){if(noMotion){cards.forEach(c=>{c.classList.add('card-in','card-settled');});}else{cards.forEach((c,i)=>{setTimeout(()=>{c.classList.add('card-in');setTimeout(()=>c.classList.add('card-settled'),540);},i*80);});}}obs.unobserve(x.target);}});},{threshold:0.08,rootMargin:'-30px'});
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');const allCards=Array.from(x.target.querySelectorAll('.feat-card,.feat-item'));if(allCards.length){const active=allCards.filter(c=>{const w=c.closest('.feat-wrap');return w&&window.getComputedStyle(w).display!=='none';});const rest=allCards.filter(c=>!active.includes(c));rest.forEach(c=>c.classList.add('card-in','card-settled'));if(noMotion){active.forEach(c=>c.classList.add('card-in','card-settled'));}else{active.forEach((c,i)=>{setTimeout(()=>{c.classList.add('card-in');setTimeout(()=>c.classList.add('card-settled'),540);},i*80);});}}obs.unobserve(x.target);}});},{threshold:0.08,rootMargin:'-30px'});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 document.querySelectorAll('.feat-card').forEach(c=>{const l=c.querySelector('.feat-line');if(!l)return;c.addEventListener('mouseenter',()=>l.style.transform='scaleX(1)');c.addEventListener('mouseleave',()=>l.style.transform='scaleX(0)');});
 if(!noMotion){const countUp=el=>{const tgt=+el.dataset.counter,fmt=el.dataset.format,dur=1100,s=performance.now();const t=n=>{const p=Math.min(1,(n-s)/dur),ease=1-Math.pow(1-p,3);el.textContent=fmt.replace('N',Math.round(ease*tgt));if(p<1)requestAnimationFrame(t);};requestAnimationFrame(t);};const cObs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){countUp(x.target);cObs.unobserve(x.target);}});},{threshold:.55});document.querySelectorAll('[data-counter]').forEach(el=>cObs.observe(el));}
