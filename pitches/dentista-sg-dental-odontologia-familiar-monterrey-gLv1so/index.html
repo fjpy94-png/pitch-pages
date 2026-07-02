@@ -56,12 +56,21 @@ a{color:inherit;text-decoration:none}
 .marquee-track:hover{animation-play-state:paused}
 /* Feature wraps: hidden by default, shown per style via body class */
 .feat-wrap{display:none}
-@keyframes cardIn{from{opacity:0;transform:var(--card-anim-from,translateY(18px))}to{opacity:1;transform:none}}
-:root{--stagger-d:0ms;--card-anim-from:translateY(18px)}
-.feat-card,.feat-item{opacity:0;transform:var(--card-anim-from);transition:transform var(--card-hv-t) var(--ease),background var(--dur-f) var(--ease),border-color var(--dur-f) var(--ease)}
-.feat-card.card-in,.feat-item.card-in{animation:cardIn .52s var(--ease) both}
+@keyframes cardUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes cardRight{from{opacity:0;transform:translateX(36px)}to{opacity:1;transform:none}}
+@keyframes cardScaleIn{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:none}}
+@keyframes cardFadeIn{from{opacity:0}to{opacity:1}}
+.feat-card,.feat-item{opacity:0;transition:transform var(--card-hv-t) var(--ease),background var(--dur-f) var(--ease),border-color var(--dur-f) var(--ease)}
+.feat-card.card-in,.feat-item.card-in{animation:cardUp .52s ease-out both}
+body.s-audaz .feat-card.card-in{animation-name:cardRight}
+body.s-innovation .feat-card.card-in{animation-name:cardScaleIn;animation-duration:.4s}
+body.s-organico .feat-card.card-in{animation-duration:.65s;animation-timing-function:cubic-bezier(.34,1.1,.64,1)}
+body.s-mindloop .feat-card.card-in,body.s-noche .feat-card.card-in{animation-name:cardFadeIn}
+body.s-premium .feat-item.card-in,body.s-minimal .feat-item.card-in{animation-name:cardFadeIn;animation-duration:.9s}
 .feat-card.card-settled,.feat-item.card-settled{opacity:1;animation:none;transform:none;transition:transform var(--card-hv-t) var(--ease),background var(--dur-f) var(--ease),border-color var(--dur-f) var(--ease)}
 .feat-card.card-settled:hover,.feat-item.card-settled:hover{transform:var(--card-hv,none)}
+.stat-cell{opacity:0;transition:opacity .6s ease-out}
+.stat-cell.stat-in{opacity:1}
 
 /* ════════════ PER-STYLE STRUCTURAL OVERRIDES ════════════ */
 
@@ -72,7 +81,7 @@ body.s-moderno .feat-wrap--grid .feat-card{background:var(--c-card);padding:28px
 body.s-moderno .feat-wrap--grid .feat-card:first-child{grid-row:1/3;padding:36px 28px}
 
 /* ── Audaz: slide from right, numbered list, shift on hover ── */
-body.s-audaz{--rv-from:translateX(48px);--rv-dur:.45s;--card-hv:translateX(6px);--card-hv-t:120ms;--card-anim-from:translateX(36px)}
+body.s-audaz{--rv-from:translateX(48px);--rv-dur:.45s;--card-hv:translateX(6px);--card-hv-t:120ms}
 body.s-audaz .feat-wrap--list{display:flex;flex-direction:column}
 body.s-audaz .feat-wrap--list .feat-card{display:grid;grid-template-columns:48px 1fr;gap:0 16px;align-items:start;background:transparent;border-radius:0;border:none;border-bottom:1px solid var(--c-border);padding:18px 0}
 body.s-audaz .feat-wrap--list .feat-card:hover{background:rgba(var(--c-accent-rgb),.06);padding-left:8px;padding-right:8px;border-radius:var(--card-r)}
@@ -86,32 +95,32 @@ body.s-clasico .feat-wrap--editorial .feat-card:hover{background:var(--c-card-h)
 body.s-clasico .hero-inner{text-align:center;margin-left:auto;margin-right:auto}
 
 /* ── Premium: slow dissolve, centered hero, centered minimal list ── */
-body.s-premium{--rv-from:translateY(10px);--rv-dur:.9s;--card-hv:none;--card-anim-from:translateY(6px)}
+body.s-premium{--rv-from:translateY(10px);--rv-dur:.9s;--card-hv:none}
 body.s-premium .feat-wrap--minimal{display:flex;flex-direction:column;max-width:560px;margin:0 auto}
 body.s-premium .feat-wrap--minimal .feat-item{display:flex;align-items:center;gap:20px;padding:18px 0;border-bottom:1px solid var(--c-border)}
 body.s-premium .feat-wrap--minimal .feat-item:last-child{border-bottom:none}
 body.s-premium .hero-inner{text-align:center;margin-left:auto;margin-right:auto}
 
 /* ── Innovation/Studio: scale-in, 2-col studio grid, accent top border ── */
-body.s-innovation{--rv-from:scale(.96);--rv-dur:.4s;--card-hv:translateY(-3px);--card-hv-t:100ms;--card-anim-from:scale(.88)}
+body.s-innovation{--rv-from:scale(.96);--rv-dur:.4s;--card-hv:translateY(-3px);--card-hv-t:100ms}
 body.s-innovation .feat-wrap--studio{display:grid;grid-template-columns:1fr 1fr;gap:1px}
 body.s-innovation .feat-wrap--studio .feat-card{padding:28px 24px;background:var(--c-card);border-top:2px solid transparent;transition:border-top-color var(--dur-f) var(--ease),background var(--dur-f) var(--ease),transform var(--card-hv-t) var(--ease)}
 body.s-innovation .feat-wrap--studio .feat-card:hover{border-top-color:var(--c-accent)}
 
 /* ── Mindloop/Editorial: fade only (no transform), 2-col editorial no cards ── */
-body.s-mindloop{--rv-from:translateY(0);--rv-dur:.7s;--card-hv:none;--card-anim-from:translateY(0)}
+body.s-mindloop{--rv-from:translateY(0);--rv-dur:.7s;--card-hv:none}
 body.s-mindloop .reveal{transform:none}
 body.s-mindloop .feat-wrap--editorial{display:grid;grid-template-columns:1fr 1fr;column-gap:48px;row-gap:0}
 body.s-mindloop .feat-wrap--editorial .feat-card{background:transparent;border-radius:0;border:none;border-bottom:1px solid var(--c-border);padding:16px 0}
 
 /* ── Orgánico: spring easing, equal rounded card grid, scale on hover ── */
-body.s-organico{--rv-from:translateY(20px);--rv-dur:.7s;--ease:cubic-bezier(.34,1.1,.64,1);--card-hv:scale(1.025);--card-hv-t:220ms;--card-anim-from:translateY(32px)}
+body.s-organico{--rv-from:translateY(20px);--rv-dur:.7s;--ease:cubic-bezier(.34,1.1,.64,1);--card-hv:scale(1.025);--card-hv-t:220ms}
 body.s-organico .feat-wrap--grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 body.s-organico .feat-wrap--grid .feat-card{border-radius:20px;border:none;background:var(--c-card);box-shadow:0 2px 14px rgba(0,0,0,.07);padding:28px 20px}
 body.s-organico .feat-wrap--grid .feat-card:first-child{grid-row:auto}
 
 /* ── Minimal: opacity only (no transform), centered hero, text list ── */
-body.s-minimal{--rv-from:translateY(0);--rv-dur:.35s;--card-hv:none;--card-anim-from:translateY(0)}
+body.s-minimal{--rv-from:translateY(0);--rv-dur:.35s;--card-hv:none}
 body.s-minimal .reveal{transform:none}
 body.s-minimal .feat-wrap--minimal{display:flex;flex-direction:column;max-width:440px;margin:0 auto}
 body.s-minimal .feat-wrap--minimal .feat-item{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--c-border);transition:color var(--dur-f) var(--ease)}
@@ -121,7 +130,6 @@ body.s-minimal .hero-inner{text-align:center;margin-left:auto;margin-right:auto}
 /* Stats bar per-style */
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--c-stats-bg);border-radius:var(--card-r);overflow:hidden;margin-top:40px}
 .stat-cell{background:var(--c-bg);padding:24px 20px;text-align:center}
-.stat-cell.reveal{--rv-from:translateY(0);transition-delay:var(--stagger-d,0ms)}
 body.s-premium .stat-grid{max-width:480px;margin-left:auto;margin-right:auto;grid-template-columns:repeat(3,1fr)}
 body.s-minimal .stat-grid{display:none}
 body.s-audaz .stat-grid{gap:0;background:transparent;border-radius:0;margin-top:32px;border-top:2px solid var(--c-fg);border-bottom:1px solid var(--c-border)}
@@ -146,7 +154,7 @@ body.s-luz .feat-wrap--studio .feat-card{padding:28px 24px;background:var(--c-ca
 body.s-luz .feat-wrap--studio .feat-card:hover{border-top-color:var(--c-accent)}
 
 /* ── Noche: no transform, numbered list ── */
-body.s-noche{--rv-from:translateY(0);--rv-dur:.5s;--card-hv:none;--card-anim-from:translateY(0)}
+body.s-noche{--rv-from:translateY(0);--rv-dur:.5s;--card-hv:none}
 body.s-noche .reveal{transform:none}
 body.s-noche .feat-wrap--list{display:flex;flex-direction:column}
 body.s-noche .feat-wrap--list .feat-card{display:grid;grid-template-columns:48px 1fr;gap:0 16px;align-items:start;background:transparent;border-radius:0;border:none;border-bottom:1px solid rgba(239,244,255,.08);padding:18px 0}
@@ -173,8 +181,7 @@ body.s-moderno .hero-illust,body.s-innovation .hero-illust,body.s-luz .hero-illu
 body.s-luz .cv-default{display:block}
 body.s-noche .cv-audaz{display:block}
 @media(prefers-reduced-motion:reduce){
-  .feat-card,.feat-item,.feat-card.card-in,.feat-item.card-in,.feat-card.card-settled,.feat-item.card-settled{animation:none!important;opacity:1!important;transform:none!important;transition:background var(--dur-f) var(--ease),border-color var(--dur-f) var(--ease)!important}
-  .stat-cell.reveal{transition-delay:0ms!important}
+  .feat-card,.feat-item{animation:none!important;opacity:1!important;transform:none!important}
   .reveal{transition-duration:.01ms!important}
 }
 </style>
@@ -248,7 +255,7 @@ body.s-noche .cv-audaz{display:block}
     <p style="font-size:16px;color:var(--c-fg2);line-height:var(--lh-body)">Una página profesional es la diferencia entre ser encontrado y perder clientes sin saberlo.</p>
   </div>
   <div class="stat-grid">
-    <div class="stat-cell reveal" style="--stagger-d:0ms"><div class="stat-val" data-counter="87" data-format="N%" style="font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:var(--fw-d);font-family:var(--f-display);color:var(--c-accent);line-height:1;margin-bottom:6px">87%</div><div style="font-size:12px;color:var(--c-fg2);line-height:1.4">busca en Google primero</div></div><div class="stat-cell reveal" style="--stagger-d:100ms"><div class="stat-val" data-counter="3" data-format="N×" style="font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:var(--fw-d);font-family:var(--f-display);color:var(--c-accent);line-height:1;margin-bottom:6px">3×</div><div style="font-size:12px;color:var(--c-fg2);line-height:1.4">más clientes con web</div></div><div class="stat-cell reveal" style="--stagger-d:200ms"><div class="stat-val" data-counter="48" data-format="N h" style="font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:var(--fw-d);font-family:var(--f-display);color:var(--c-accent);line-height:1;margin-bottom:6px">48 h</div><div style="font-size:12px;color:var(--c-fg2);line-height:1.4">tu web lista</div></div><div class="stat-cell reveal" style="--stagger-d:300ms"><div class="stat-val" data-counter="299" data-format="$N" style="font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:var(--fw-d);font-family:var(--f-display);color:var(--c-accent);line-height:1;margin-bottom:6px">$299</div><div style="font-size:12px;color:var(--c-fg2);line-height:1.4">pago único</div></div>
+    <div class="stat-cell"><div class="stat-val" data-counter="87" data-format="N%" style="font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:var(--fw-d);font-family:var(--f-display);color:var(--c-accent);line-height:1;margin-bottom:6px">87%</div><div style="font-size:12px;color:var(--c-fg2);line-height:1.4">busca en Google primero</div></div><div class="stat-cell"><div class="stat-val" data-counter="3" data-format="N×" style="font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:var(--fw-d);font-family:var(--f-display);color:var(--c-accent);line-height:1;margin-bottom:6px">3×</div><div style="font-size:12px;color:var(--c-fg2);line-height:1.4">más clientes con web</div></div><div class="stat-cell"><div class="stat-val" data-counter="48" data-format="N h" style="font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:var(--fw-d);font-family:var(--f-display);color:var(--c-accent);line-height:1;margin-bottom:6px">48 h</div><div style="font-size:12px;color:var(--c-fg2);line-height:1.4">tu web lista</div></div><div class="stat-cell"><div class="stat-val" data-counter="299" data-format="$N" style="font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:var(--fw-d);font-family:var(--f-display);color:var(--c-accent);line-height:1;margin-bottom:6px">$299</div><div style="font-size:12px;color:var(--c-fg2);line-height:1.4">pago único</div></div>
   </div>
 </section>
 
@@ -435,7 +442,7 @@ body.s-noche .cv-audaz{display:block}
 </section>
 
 <!-- QUÉ INCLUYE -->
-<section style="padding:var(--sec-py) var(--sec-px);background:var(--c-bg2)">
+<section data-feat-section style="padding:var(--sec-py) var(--sec-px);background:var(--c-bg2)">
   <div class="reveal" style="margin-bottom:44px">
     <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--c-accent);margin-bottom:14px">Qué incluye</div>
     <h2 style="font-family:var(--f-heading);font-size:var(--fsize-h2);font-weight:var(--fw-h);color:var(--c-fg);letter-spacing:var(--ls-h)">Todo lo que necesitas.<br><span style="color:var(--c-fg3)">Nada de lo que no.</span></h2>
@@ -573,10 +580,30 @@ document.querySelectorAll('.pal-dot').forEach(b=>b.addEventListener('click',func
 document.querySelectorAll('.typo-btn').forEach(b=>b.addEventListener('click',function(){applyTypo(this.dataset.typo);}));
 document.querySelectorAll('.bg-btn').forEach(b=>b.addEventListener('click',function(){applyBg(this.dataset.bg);}));
 const noMotion=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');const allCards=Array.from(x.target.querySelectorAll('.feat-card,.feat-item'));if(allCards.length){const active=allCards.filter(c=>{const w=c.closest('.feat-wrap');return w&&window.getComputedStyle(w).display!=='none';});const rest=allCards.filter(c=>!active.includes(c));rest.forEach(c=>c.classList.add('card-in','card-settled'));if(noMotion){active.forEach(c=>c.classList.add('card-in','card-settled'));}else{active.forEach((c,i)=>{setTimeout(()=>{c.classList.add('card-in');setTimeout(()=>c.classList.add('card-settled'),540);},i*80);});}}obs.unobserve(x.target);}});},{threshold:0.08,rootMargin:'-30px'});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-document.querySelectorAll('.feat-card').forEach(c=>{const l=c.querySelector('.feat-line');if(!l)return;c.addEventListener('mouseenter',()=>l.style.transform='scaleX(1)');c.addEventListener('mouseleave',()=>l.style.transform='scaleX(0)');});
-if(!noMotion){const countUp=el=>{const tgt=+el.dataset.counter,fmt=el.dataset.format,dur=1100,s=performance.now();const t=n=>{const p=Math.min(1,(n-s)/dur),ease=1-Math.pow(1-p,3);el.textContent=fmt.replace('N',Math.round(ease*tgt));if(p<1)requestAnimationFrame(t);};requestAnimationFrame(t);};const cObs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){countUp(x.target);cObs.unobserve(x.target);}});},{threshold:.55});document.querySelectorAll('[data-counter]').forEach(el=>cObs.observe(el));}
+const obs=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}});},{threshold:0.08,rootMargin:'-30px'});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+document.querySelectorAll('.feat-card').forEach(function(c){var l=c.querySelector('.feat-line');if(!l)return;c.addEventListener('mouseenter',function(){l.style.transform='scaleX(1)';});c.addEventListener('mouseleave',function(){l.style.transform='scaleX(0)';});});
+function countUp(el){var tgt=+el.dataset.counter,fmt=el.dataset.format,dur=1100,s=performance.now();function t(n){var p=Math.min(1,(n-s)/dur),ease=1-Math.pow(1-p,3);el.textContent=fmt.replace('N',Math.round(ease*tgt));if(p<1)requestAnimationFrame(t);}requestAnimationFrame(t);}
+var _fDone=false;
+var featObs=new IntersectionObserver(function(entries){
+  if(!entries[0].isIntersecting||_fDone)return;
+  _fDone=true;featObs.disconnect();
+  var allC=document.querySelectorAll('.feat-card,.feat-item');
+  allC.forEach(function(c){c.classList.add('card-settled');});
+  var aWrap=null;
+  document.querySelectorAll('.feat-wrap').forEach(function(w){if(window.getComputedStyle(w).display!=='none')aWrap=w;});
+  if(!aWrap)return;
+  var cards=Array.from(aWrap.querySelectorAll('.feat-card,.feat-item'));
+  cards.forEach(function(c,i){
+    c.classList.remove('card-settled');
+    var delay=noMotion?0:i*80;
+    setTimeout(function(){c.classList.add('card-in');setTimeout(function(){c.classList.add('card-settled');},550);},delay);
+  });
+},{threshold:0.05});
+var featSec=document.querySelector('[data-feat-section]');
+if(featSec)featObs.observe(featSec);
+var statGrid=document.querySelector('.stat-grid');
+if(statGrid){var sObs=new IntersectionObserver(function(e){if(!e[0].isIntersecting)return;sObs.disconnect();statGrid.querySelectorAll('.stat-cell').forEach(function(cell,i){var delay=noMotion?0:i*110;setTimeout(function(){cell.classList.add('stat-in');var val=cell.querySelector('[data-counter]');if(val&&!noMotion)countUp(val);},delay);});},{threshold:0.25});sObs.observe(statGrid);}
 applyTheme('moderno');
 </script>
 </body>
