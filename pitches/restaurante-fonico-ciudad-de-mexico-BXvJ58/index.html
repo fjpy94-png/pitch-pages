@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fónico · Propuesta de Web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,800;9..40,900&family=Playfair+Display:wght@600;700&family=Cormorant+Garamond:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Archivo:wght@400;500;700&family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+:root{
+  --c-accent:#C53030;--c-accent-rgb:197,48,48;
+  --c-bg:#0C0C0C;--c-bg2:#111;--c-fg:#E2E8F0;--c-fg2:rgba(226,232,240,.58);
+  --c-fg3:rgba(226,232,240,.35);--c-fg4:rgba(226,232,240,.18);
+  --c-border:rgba(226,232,240,.07);--c-border2:rgba(226,232,240,.11);
+  --c-card:#111;--c-card-h:#181818;
+  --c-nav-bg:rgba(12,12,12,.88);--c-nav-fg:rgba(226,232,240,.92);--c-nav-link:rgba(226,232,240,.52);
+  --c-hero-ov:linear-gradient(to bottom,rgba(12,12,12,.08) 0%,rgba(12,12,12,.5) 45%,rgba(12,12,12,.97) 82%,#0C0C0C 100%);
+  --c-stats-bg:rgba(226,232,240,.05);--c-marquee:rgba(226,232,240,.32);
+  --f-display:'DM Sans',sans-serif;--f-heading:'DM Sans',sans-serif;--f-body:'DM Sans',sans-serif;
+  --fw-d:800;--fw-h:700;--fst-d:normal;--fst-h:normal;
+  --fsize-h1:clamp(2.4rem,5vw,4.2rem);--fsize-h2:clamp(1.6rem,3vw,2.6rem);
+  --lh-body:1.78;--lh-h:1.12;--ls-h:-.025em;--ls-body:0em;--max-prose:62ch;
+  --sec-py:96px;--sec-px:48px;--card-r:12px;--btn-r:8px;
+  --ease:cubic-bezier(0.25,0.46,0.45,0.94);--dur-f:140ms;--dur-m:320ms;
+  --rv-from:translateY(22px);--rv-dur:.65s;
+  --card-hv:none;--card-hv-t:var(--dur-f);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--f-body);background:var(--c-bg);color:var(--c-fg);overflow-x:hidden;line-height:var(--lh-body);font-size:16px;transition:background var(--dur-m),color var(--dur-m)}
+a{color:inherit;text-decoration:none}
+@keyframes float{from{transform:translateY(0) rotate(0deg)}to{transform:translateY(-12px) rotate(6deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.fade-in{opacity:0;animation:fadeUp var(--dur-m) var(--ease) forwards}
+.reveal{opacity:0;transform:var(--rv-from);transition:opacity var(--rv-dur) var(--ease),transform var(--rv-dur) var(--ease)}
+.reveal.visible{opacity:1;transform:none}
+.tab-panels>div{display:none}
+#d1:checked~.tab-panels #p1,#d2:checked~.tab-panels #p2,#d3:checked~.tab-panels #p3,
+#d4:checked~.tab-panels #p4,#d5:checked~.tab-panels #p5,#d6:checked~.tab-panels #p6,
+#d7:checked~.tab-panels #p7,#d8:checked~.tab-panels #p8,
+#d9:checked~.tab-panels #p9,#d10:checked~.tab-panels #p10{display:block}
+.tab-btn{cursor:pointer;padding:9px 20px;border-radius:var(--btn-r);font-size:12px;font-weight:600;letter-spacing:.3px;color:var(--c-fg3);border:1px solid var(--c-border2);transition:all var(--dur-f) var(--ease);background:transparent;user-select:none}
+.tab-btn:hover{color:var(--c-fg);border-color:var(--c-border)}
+#d1:checked~.tab-btns label[for=d1],#d2:checked~.tab-btns label[for=d2],#d3:checked~.tab-btns label[for=d3],
+#d4:checked~.tab-btns label[for=d4],#d5:checked~.tab-btns label[for=d5],#d6:checked~.tab-btns label[for=d6],
+#d7:checked~.tab-btns label[for=d7],#d8:checked~.tab-btns label[for=d8],
+#d9:checked~.tab-btns label[for=d9],#d10:checked~.tab-btns label[for=d10]{background:var(--c-accent);color:#fff;border-color:var(--c-accent)}
+.pal-dot{width:22px;height:22px;border-radius:50%;border:none;cursor:pointer;transition:transform var(--dur-f) var(--ease);flex-shrink:0}
+.pal-dot:hover{transform:scale(1.25)}
+.typo-btn{cursor:pointer;padding:6px 16px;border-radius:var(--btn-r);font-size:11px;font-weight:600;letter-spacing:.3px;color:var(--c-fg3);border:1px solid var(--c-border2);transition:all var(--dur-f) var(--ease);background:transparent;user-select:none}
+.typo-btn:hover{color:var(--c-fg);border-color:var(--c-border)}
+.wa-float{position:fixed;bottom:28px;right:28px;z-index:999;background:#25D366;color:#fff;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform var(--dur-f) var(--ease)}
+.wa-float:hover{transform:scale(1.08)}
+.marquee-track{animation:marquee 28s linear infinite;display:flex;width:max-content}
+.marquee-track:hover{animation-play-state:paused}
+/* Feature wraps: hidden by default, shown per style via body class */
+.feat-wrap{display:none}
+@keyframes cardUp{from{opacity:0;transform:translateY(48px)}to{opacity:1;transform:none}}
+@keyframes cardRight{from{opacity:0;transform:translateX(72px)}to{opacity:1;transform:none}}
+@keyframes cardLeft{from{opacity:0;transform:translateX(-72px)}to{opacity:1;transform:none}}
+@keyframes cardScaleIn{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:none}}
+@keyframes cardFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes cardBlurFade{from{opacity:0;filter:blur(12px)}to{opacity:1;filter:none}}
+.feat-card,.feat-item{opacity:0;transition:transform var(--card-hv-t) var(--ease),background var(--dur-f) var(--ease),border-color var(--dur-f) var(--ease)}
+.feat-card.card-in,.feat-item.card-in{animation:cardUp .52s ease-out both}
+body.s-audaz .feat-card.card-in{animation-name:cardRight;animation-duration:.45s}
+body.s-clasico .feat-card.card-in,body.s-clasico .feat-item.card-in{animation-name:cardFadeIn;animation-duration:.5s}
+body.s-innovation .feat-card.card-in{animation-name:cardScaleIn;animation-duration:.5s}
+body.s-organico .feat-card.card-in{animation-duration:.65s;animation-timing-function:cubic-bezier(.34,1.1,.64,1)}
+body.s-mindloop .feat-card.card-in{animation-name:cardFadeIn;animation-duration:.6s}
+body.s-luz .feat-card.card-in{animation-name:cardLeft;animation-duration:.52s}
+body.s-noche .feat-card.card-in{animation-name:cardBlurFade;animation-duration:.6s}
+body.s-premium .feat-item.card-in{animation-name:cardFadeIn;animation-duration:.9s}
+body.s-minimal .feat-item.card-in{animation-name:cardFadeIn;animation-duration:.9s}
+.feat-card.card-settled,.feat-item.card-settled{opacity:1;animation:none;transform:none;filter:none;transition:transform var(--card-hv-t) var(--ease),background var(--dur-f) var(--ease),border-color var(--dur-f) var(--ease)}
+.feat-card.card-settled:hover,.feat-item.card-settled:hover{transform:var(--card-hv,none)}
+.stat-cell{opacity:0;transition:opacity .6s ease-out}
+.stat-cell.stat-in{opacity:1}
+
+/* ════════════ PER-STYLE STRUCTURAL OVERRIDES ════════════ */
+
+/* ── Moderno: asymmetric grid (first card spans 2 rows), fade-up, lift ── */
+body.s-moderno{--rv-from:translateY(28px);--rv-dur:.6s;--card-hv:translateY(-5px);--card-hv-t:var(--dur-f)}
+body.s-moderno .feat-wrap--grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px}
+body.s-moderno .feat-wrap--grid .feat-card{background:var(--c-card);padding:28px 24px}
+body.s-moderno .feat-wrap--grid .feat-card:first-child{grid-row:1/3;padding:36px 28px}
+
+/* ── Audaz: slide from right, numbered list, shift on hover ── */
+body.s-audaz{--rv-from:translateX(48px);--rv-dur:.45s;--card-hv:translateX(6px);--card-hv-t:120ms}
+body.s-audaz .feat-wrap--list{display:flex;flex-direction:column}
+body.s-audaz .feat-wrap--list .feat-card{display:grid;grid-template-columns:48px 1fr;gap:0 16px;align-items:start;background:transparent;border-radius:0;border:none;border-bottom:1px solid var(--c-border);padding:18px 0}
+body.s-audaz .feat-wrap--list .feat-card:hover{background:rgba(var(--c-accent-rgb),.06);padding-left:8px;padding-right:8px;border-radius:var(--card-r)}
+
+/* ── Clásico: no motion (static), centered hero, editorial bordered list ── */
+body.s-clasico .reveal{opacity:1;transform:none;transition:none}
+body.s-clasico .feat-wrap--editorial{display:grid;grid-template-columns:1fr 1fr;gap:0}
+body.s-clasico .feat-wrap--editorial .feat-card{background:transparent;border-radius:0;border:none;border-bottom:1px solid var(--c-border);padding:24px 16px}
+body.s-clasico .feat-wrap--editorial .feat-card:hover{background:var(--c-card-h)}
+body.s-clasico .hero-inner{text-align:center;margin-left:auto;margin-right:auto}
+
+/* ── Premium: slow dissolve, centered hero, centered minimal list ── */
+body.s-premium{--rv-from:translateY(10px);--rv-dur:.9s;--card-hv:none}
+body.s-premium .feat-wrap--minimal{display:flex;flex-direction:column;max-width:560px;margin:0 auto}
+body.s-premium .feat-wrap--minimal .feat-item{display:flex;align-items:center;gap:20px;padding:18px 0;border-bottom:1px solid var(--c-border)}
+body.s-premium .feat-wrap--minimal .feat-item:last-child{border-bottom:none}
+body.s-premium .hero-inner{text-align:center;margin-left:auto;margin-right:auto}
+
+/* ── Innovation/Studio: scale-in, 2-col studio grid, accent top border ── */
+body.s-innovation{--rv-from:scale(.96);--rv-dur:.4s;--card-hv:translateY(-3px);--card-hv-t:100ms}
+body.s-innovation .feat-wrap--studio{display:grid;grid-template-columns:1fr 1fr;gap:1px}
+body.s-innovation .feat-wrap--studio .feat-card{padding:28px 24px;background:var(--c-card);border-top:2px solid transparent;transition:border-top-color var(--dur-f) var(--ease),background var(--dur-f) var(--ease),transform var(--card-hv-t) var(--ease)}
+body.s-innovation .feat-wrap--studio .feat-card:hover{border-top-color:var(--c-accent)}
+
+/* ── Mindloop/Editorial: fade only (no transform), 2-col editorial no cards ── */
+body.s-mindloop{--rv-from:translateY(0);--rv-dur:.7s;--card-hv:none}
+body.s-mindloop .reveal{transform:none}
+body.s-mindloop .feat-wrap--editorial{display:grid;grid-template-columns:1fr 1fr;column-gap:48px;row-gap:0}
+body.s-mindloop .feat-wrap--editorial .feat-card{background:transparent;border-radius:0;border:none;border-bottom:1px solid var(--c-border);padding:16px 0}
+
+/* ── Orgánico: spring easing, equal rounded card grid, scale on hover ── */
+body.s-organico{--rv-from:translateY(20px);--rv-dur:.7s;--ease:cubic-bezier(.34,1.1,.64,1);--card-hv:scale(1.025);--card-hv-t:220ms}
+body.s-organico .feat-wrap--grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+body.s-organico .feat-wrap--grid .feat-card{border-radius:20px;border:none;background:var(--c-card);box-shadow:0 2px 14px rgba(0,0,0,.07);padding:28px 20px}
+body.s-organico .feat-wrap--grid .feat-card:first-child{grid-row:auto}
+
+/* ── Minimal: opacity only (no transform), centered hero, text list ── */
+body.s-minimal{--rv-from:translateY(0);--rv-dur:.35s;--card-hv:none}
+body.s-minimal .reveal{transform:none}
+body.s-minimal .feat-wrap--minimal{display:flex;flex-direction:column;max-width:440px;margin:0 auto}
+body.s-minimal .feat-wrap--minimal .feat-item{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--c-border);transition:color var(--dur-f) var(--ease)}
+body.s-minimal .feat-wrap--minimal .feat-item:hover{color:var(--c-accent)}
+body.s-minimal .hero-inner{text-align:center;margin-left:auto;margin-right:auto}
+
+/* Stats bar per-style */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--c-stats-bg);border-radius:var(--card-r);overflow:hidden;margin-top:40px}
+.stat-cell{background:var(--c-bg);padding:24px 20px;text-align:center}
+body.s-premium .stat-grid{max-width:480px;margin-left:auto;margin-right:auto;grid-template-columns:repeat(3,1fr)}
+body.s-minimal .stat-grid{display:none}
+body.s-audaz .stat-grid{gap:0;background:transparent;border-radius:0;margin-top:32px;border-top:2px solid var(--c-fg);border-bottom:1px solid var(--c-border)}
+body.s-audaz .stat-cell{border-right:1px solid var(--c-border)}
+
+/* Copy variants */
+.cv{display:none}
+body.s-moderno .cv-default,body.s-innovation .cv-default,body.s-organico .cv-default{display:block}
+body.s-audaz .cv-audaz{display:block}
+body.s-clasico .cv-clasico,body.s-mindloop .cv-clasico{display:block}
+body.s-premium .cv-premium{display:block}
+body.s-minimal .cv-minimal{display:block}
+
+/* ── bg-btn ── */
+.bg-btn{cursor:pointer;padding:5px 10px;border-radius:6px;font-size:10px;transition:transform var(--dur-f) var(--ease);outline:2px solid transparent;outline-offset:2px;display:inline-flex;align-items:center;justify-content:center;min-width:52px;height:32px}
+.bg-btn:hover{transform:scale(1.08)}
+
+/* ── Luz: fade-up, 2-col studio grid ── */
+body.s-luz{--rv-from:translateY(18px);--rv-dur:.7s;--card-hv:translateY(-3px);--card-hv-t:var(--dur-f)}
+body.s-luz .feat-wrap--studio{display:grid;grid-template-columns:1fr 1fr;gap:1px}
+body.s-luz .feat-wrap--studio .feat-card{padding:28px 24px;background:var(--c-card);border-top:2px solid transparent;transition:border-top-color var(--dur-f) var(--ease),background var(--dur-f) var(--ease),transform var(--card-hv-t) var(--ease)}
+body.s-luz .feat-wrap--studio .feat-card:hover{border-top-color:var(--c-accent)}
+
+/* ── Noche: no transform, numbered list ── */
+body.s-noche{--rv-from:translateY(0);--rv-dur:.5s;--card-hv:none}
+body.s-noche .reveal{transform:none}
+body.s-noche .feat-wrap--list{display:flex;flex-direction:column}
+body.s-noche .feat-wrap--list .feat-card{display:grid;grid-template-columns:48px 1fr;gap:0 16px;align-items:start;background:transparent;border-radius:0;border:none;border-bottom:1px solid rgba(239,244,255,.08);padding:18px 0}
+body.s-noche .feat-wrap--list .feat-card:hover{background:rgba(239,244,255,.04);padding-left:8px;padding-right:8px;border-radius:var(--card-r)}
+body.s-noche .stat-grid{gap:0;background:transparent;border-radius:0;margin-top:32px;border-top:1px solid rgba(239,244,255,.1);border-bottom:1px solid rgba(239,244,255,.06)}
+body.s-noche .stat-cell{border-right:1px solid rgba(239,244,255,.06)}
+
+/* ── Hero Ken Burns (single slide, continuous pan+zoom) ── */
+@keyframes kbpan{
+  0%  {transform:scale(1)    translate(0,0)}
+  25% {transform:scale(1.06) translate(-1.5%,-1%)}
+  50% {transform:scale(1.1)  translate(1%,1.5%)}
+  75% {transform:scale(1.06) translate(1.5%,-0.5%)}
+  100%{transform:scale(1)    translate(0,0)}
+}
+.hero-slide{position:absolute;inset:0;background-size:cover;background-repeat:no-repeat;background-position:50% 40%;filter:saturate(.75);animation:kbpan 24s ease-in-out infinite}
+
+/* ── Hero illustration ── */
+.hero-illust{position:absolute;right:calc(var(--sec-px) + 20px);bottom:18%;z-index:6;width:min(320px,30vw);display:none;pointer-events:none}
+body.s-moderno .hero-illust,body.s-innovation .hero-illust,body.s-luz .hero-illust,body.s-noche .hero-illust{display:block}
+@media(max-width:900px){.hero-illust{display:none!important}}
+
+/* ── Copy variants for new models ── */
+body.s-luz .cv-default{display:block}
+body.s-noche .cv-audaz{display:block}
+@media(prefers-reduced-motion:reduce){
+  .feat-card,.feat-item{animation:none!important;opacity:1!important;transform:none!important;filter:none!important}
+  .reveal{transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body class="s-moderno">
+
+<!-- HERO -->
+<section style="height:100vh;min-height:580px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;position:relative">
+  <div class="hero-slide" style="background-image:url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photo_reference=AaVGc3mx1ShDyV5_JYe3hMx9TFVpyz4hPa4ZfxhLXX2-5MDMXlKf7N88ZlAPbcuhqS5QHXGKXrz6KMMb3HAJv-qarNj-BOBQwrh82AwaxTVwgTcz2JbpzktjyEDAiQqXlcv0pRlS9vJQAhIAhJsnmIdpC8_-3d2vFauSZPo1EEQdMUdqzufqoJ8BXhxRLleP5OITA8vQZK2PnMugshgSRu_rsKsJywO6rl9LS8NsJQLLa57uw17g8b3ZTDM8-963QQSBqTBIaN_bzdLTo5GkhKBZHXiyAouTXzxMb9Q16VTRTajWPZcVw0n9e619p_qt3uLvID7gtxRP0MBvO3F6wdrxubtBQHvWYMuMMMwHnDzTIGqIObj-jibaIuH3qKGWmj3Ptgl1dQ7ZIM2m6Zw6NokTsZet08YrgPe-dYkBKDr6E1IrCQ&key=AIzaSyClecoUPRHScSCuABpegra7SYJdj-siIqc')"></div>
+  <div style="position:absolute;inset:0;background:var(--c-hero-ov)"></div>
+  <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden"><div style="position:absolute;left:6%;top:20%;width:12px;height:12px;background:rgba(255,255,255,.05);animation:float 3s ease-in-out 0s infinite alternate"></div><div style="position:absolute;left:13%;top:35%;width:8px;height:8px;background:rgba(255,255,255,.05);animation:float 3.4s ease-in-out 0.5s infinite alternate"></div><div style="position:absolute;left:8%;top:50%;width:6px;height:6px;background:rgba(255,255,255,.05);animation:float 3.8s ease-in-out 1s infinite alternate"></div><div style="position:absolute;left:88%;top:18%;width:10px;height:10px;background:rgba(255,255,255,.05);animation:float 4.2s ease-in-out 1.5s infinite alternate"></div><div style="position:absolute;left:93%;top:32%;width:14px;height:14px;background:rgba(255,255,255,.05);animation:float 4.6s ease-in-out 2s infinite alternate"></div><div style="position:absolute;left:85%;top:45%;width:7px;height:7px;background:rgba(255,255,255,.05);animation:float 5s ease-in-out 2.5s infinite alternate"></div></div>
+  <nav style="position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:18px var(--sec-px);z-index:50;background:var(--c-nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--c-border)">
+    <div style="font-size:13px;font-weight:700;letter-spacing:.5px;color:var(--c-nav-fg)">Fónico</div>
+    <div style="display:flex;gap:24px">
+      <a href="#disenos" style="font-size:12px;font-weight:500;color:var(--c-nav-link)">Diseños</a>
+      <a href="#precio" style="font-size:12px;font-weight:500;color:var(--c-nav-link)">Precio</a>
+      <a href="https://wa.me/34640765515?text=Hola%2C%20vi%20la%20propuesta%20de%20web%20para%20F%C3%B3nico%20y%20me%20interesa." style="font-size:12px;font-weight:500;color:var(--c-nav-link)">Contacto</a>
+    </div>
+  </nav>
+  <div class="hero-illust" aria-hidden="true">
+    <div style="border:1px solid rgba(255,255,255,.13);border-radius:12px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.55)">
+      <div style="background:rgba(0,0,0,.38);padding:8px 12px;display:flex;align-items:center;gap:5px;border-bottom:1px solid rgba(255,255,255,.08)">
+        <div style="width:8px;height:8px;background:#ff5f57;border-radius:50%"></div>
+        <div style="width:8px;height:8px;background:#febc2e;border-radius:50%"></div>
+        <div style="width:8px;height:8px;background:#28c840;border-radius:50%"></div>
+        <div style="flex:1;background:rgba(255,255,255,.07);border-radius:4px;padding:2px 10px;font-size:9px;color:rgba(255,255,255,.35);margin:0 12px;overflow:hidden;white-space:nowrap">f-nico.com</div>
+      </div>
+      <div style="background:var(--c-bg2);padding:14px">
+        <div style="height:6px;background:var(--c-accent);border-radius:2px;width:55%;margin-bottom:8px;opacity:.85"></div>
+        <div style="height:3px;background:var(--c-fg4);border-radius:2px;width:80%;margin-bottom:5px"></div>
+        <div style="height:3px;background:var(--c-fg4);border-radius:2px;width:65%;margin-bottom:12px"></div>
+        <div style="background-image:url('https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photo_reference=AaVGc3mx1ShDyV5_JYe3hMx9TFVpyz4hPa4ZfxhLXX2-5MDMXlKf7N88ZlAPbcuhqS5QHXGKXrz6KMMb3HAJv-qarNj-BOBQwrh82AwaxTVwgTcz2JbpzktjyEDAiQqXlcv0pRlS9vJQAhIAhJsnmIdpC8_-3d2vFauSZPo1EEQdMUdqzufqoJ8BXhxRLleP5OITA8vQZK2PnMugshgSRu_rsKsJywO6rl9LS8NsJQLLa57uw17g8b3ZTDM8-963QQSBqTBIaN_bzdLTo5GkhKBZHXiyAouTXzxMb9Q16VTRTajWPZcVw0n9e619p_qt3uLvID7gtxRP0MBvO3F6wdrxubtBQHvWYMuMMMwHnDzTIGqIObj-jibaIuH3qKGWmj3Ptgl1dQ7ZIM2m6Zw6NokTsZet08YrgPe-dYkBKDr6E1IrCQ&key=AIzaSyClecoUPRHScSCuABpegra7SYJdj-siIqc');background-position:center;background-size:cover;height:88px;border-radius:6px;margin-bottom:10px;opacity:.65"></div>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <div style="height:50px;flex:1;background:var(--c-card);border-radius:5px;border:1px solid var(--c-border)"></div>
+          <div style="height:50px;flex:1;background:var(--c-card);border-radius:5px;border:1px solid var(--c-border)"></div>
+          <div style="height:50px;flex:1;background:var(--c-card);border-radius:5px;border:1px solid var(--c-border)"></div>
+        </div>
+        <div style="background:var(--c-accent);height:30px;border-radius:var(--btn-r);display:flex;align-items:center;justify-content:center"><span style="font-size:10px;color:#fff;font-weight:700">Contactar →</span></div>
+      </div>
+    </div>
+  </div>
+  <div style="position:relative;z-index:5;padding:0 var(--sec-px) 56px" class="hero-inner">
+    <div class="fade-in" style="animation-delay:.1s;margin-bottom:14px">
+      <span style="font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--c-accent)">Gastronomía · Ciudad de México</span>
+    </div>
+    <h1 class="fade-in" style="animation-delay:.22s;font-family:var(--f-display);font-size:var(--fsize-h1);font-weight:var(--fw-d);font-style:var(--fst-d);line-height:var(--lh-h);letter-spacing:var(--ls-h);color:var(--c-fg);margin-bottom:14px;max-width:720px">Fónico</h1>
+    <div class="fade-in" style="animation-delay:.38s;display:flex;align-items:center;gap:18px;margin-bottom:28px;flex-wrap:wrap">
+      <span style="color:#f1c40f">★★★★☆</span>
+      <span style="font-size:18px;font-weight:700;color:var(--c-fg)">4.6</span>
+      <div style="width:1px;height:16px;background:var(--c-border2)"></div>
+      <span style="font-size:13px;color:var(--c-fg2)">1,568 reseñas · 📍 Ciudad de México</span>
+    </div>
+    <div class="fade-in" style="animation-delay:.52s;display:flex;gap:12px;flex-wrap:wrap">
+      <a href="#disenos" style="display:inline-flex;align-items:center;gap:8px;background:var(--c-accent);color:#fff;font-size:14px;font-weight:700;padding:13px 26px;border-radius:var(--btn-r)">Ver propuestas de diseño →</a>
+      <a href="https://wa.me/34640765515?text=Hola%2C%20vi%20la%20propuesta%20de%20web%20para%20F%C3%B3nico%20y%20me%20interesa." style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--c-border2);color:var(--c-fg2);font-size:14px;font-weight:500;padding:13px 24px;border-radius:var(--btn-r)">💬 WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section style="padding:var(--sec-py) var(--sec-px);background:var(--c-bg);border-top:1px solid var(--c-border)">
+  <div class="reveal" style="max-width:var(--max-prose)">
+    <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--c-accent);margin-bottom:18px">Por qué importa</div>
+    <h2 style="font-family:var(--f-heading);font-size:var(--fsize-h2);font-weight:var(--fw-h);line-height:var(--lh-h);letter-spacing:var(--ls-h);color:var(--c-fg);margin-bottom:20px">
+      <span class="cv cv-default">El <span style="color:var(--c-accent)">87%</span> de tus clientes te busca en Google antes de visitarte. ¿Te encuentran?</span>
+      <span class="cv cv-audaz">No estar en Google es regalar clientes a tu competencia. Cada día.</span>
+      <span class="cv cv-clasico">La primera impresión ocurre en línea, antes de que crucen tu puerta.</span>
+      <span class="cv cv-premium">Presencia es credibilidad. Tu web es tu carta de presentación permanente.</span>
+      <span class="cv cv-minimal">Sin web. Sin clientes nuevos.</span>
+    </h2>
+    <p style="font-size:16px;color:var(--c-fg2);line-height:var(--lh-body)">Una página profesional es la diferencia entre ser encontrado y perder clientes sin saberlo.</p>
+  </div>
+  <div class="stat-grid">
+    <div class="stat-cell"><div class="stat-val" data-counter="87" data-format="N%" style="font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:var(--fw-d);font-family:var(--f-display);color:var(--c-accent);line-height:1;margin-bottom:6px">87%</div><div style="font-size:12px;color:var(--c-fg2);line-height:1.4">busca en Google primero</div></div><div class="stat-cell"><div class="stat-val" data-counter="3" data-format="N×" style="font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:var(--fw-d);font-family:var(--f-display);color:var(--c-accent);line-height:1;margin-bottom:6px">3×</div><div style="font-size:12px;color:var(--c-fg2);line-height:1.4">más clientes con web</div></div><div class="stat-cell"><div class="stat-val" data-counter="48" data-format="N h" style="font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:var(--fw-d);font-family:var(--f-display);color:var(--c-accent);line-height:1;margin-bottom:6px">48 h</div><div style="font-size:12px;color:var(--c-fg2);line-height:1.4">tu web lista</div></div><div class="stat-cell"><div class="stat-val" data-counter="299" data-format="$N" style="font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:var(--fw-d);font-family:var(--f-display);color:var(--c-accent);line-height:1;margin-bottom:6px">$299</div><div style="font-size:12px;color:var(--c-fg2);line-height:1.4">pago único</div></div>
+  </div>
+</section>
+
+<!-- DISEÑOS -->
+<section id="disenos" style="padding:var(--sec-py) var(--sec-px);background:var(--c-bg)">
+  <div class="reveal" style="margin-bottom:32px">
+    <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--c-accent);margin-bottom:14px">10 estilos de diseño</div>
+    <h2 style="font-family:var(--f-heading);font-size:var(--fsize-h2);font-weight:var(--fw-h);color:var(--c-fg);letter-spacing:var(--ls-h);margin-bottom:8px;text-wrap:balance">Elige el estilo que habla por <em style="color:var(--c-fg3);font-style:normal">Fónico</em></h2>
+    <p style="font-size:14px;color:var(--c-fg2);max-width:520px">Cada estilo tiene su propio color por defecto. Personaliza color y tipografía debajo.</p>
+  </div>
+  <!-- 1: Modelos -->
+  <div class="reveal" style="margin-bottom:20px">
+    <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--c-fg4);margin-bottom:10px">Modelo</div>
+    <input type="radio" name="design" id="d1" data-theme="moderno" checked style="display:none"><input type="radio" name="design" id="d2" data-theme="audaz" style="display:none"><input type="radio" name="design" id="d3" data-theme="clasico" style="display:none"><input type="radio" name="design" id="d4" data-theme="premium" style="display:none"><input type="radio" name="design" id="d5" data-theme="innovation" style="display:none"><input type="radio" name="design" id="d6" data-theme="mindloop" style="display:none"><input type="radio" name="design" id="d7" data-theme="organico" style="display:none"><input type="radio" name="design" id="d8" data-theme="minimal" style="display:none"><input type="radio" name="design" id="d9" data-theme="luz" style="display:none"><input type="radio" name="design" id="d10" data-theme="noche" style="display:none">
+    <div class="tab-btns" style="display:flex;gap:8px;flex-wrap:wrap"><label class="tab-btn" for="d1" title="Espacial">✦ Moderno</label><label class="tab-btn" for="d2" title="Energía">◆ Audaz</label><label class="tab-btn" for="d3" title="Editorial">◇ Clásico</label><label class="tab-btn" for="d4" title="Lujo">✶ Premium</label><label class="tab-btn" for="d5" title="Nítido">▣ Studio</label><label class="tab-btn" for="d6" title="Claridad">◻ Editorial</label><label class="tab-btn" for="d7" title="Calidez">❋ Orgánico</label><label class="tab-btn" for="d8" title="Reducción">― Minimal</label><label class="tab-btn" for="d9" title="Claridad">☀ Luz</label><label class="tab-btn" for="d10" title="OLED">🌙 Noche</label></div>
+  </div>
+  <!-- 2: Colores -->
+  <div class="reveal" style="margin-bottom:20px">
+    <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--c-fg4);margin-bottom:10px">Color</div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><button class="pal-dot" data-palette="brasas" data-hex="#C53030" title="Brasas" style="background:#C53030;outline:2px solid var(--c-fg);outline-offset:3px;" aria-label="Brasas"></button><button class="pal-dot" data-palette="acero" data-hex="#2C5282" title="Acero" style="background:#2C5282;" aria-label="Acero"></button><button class="pal-dot" data-palette="musgo" data-hex="#276749" title="Musgo" style="background:#276749;" aria-label="Musgo"></button><button class="pal-dot" data-palette="ambar" data-hex="#B7791F" title="Ámbar" style="background:#B7791F;" aria-label="Ámbar"></button><button class="pal-dot" data-palette="coral" data-hex="#C05621" title="Coral" style="background:#C05621;" aria-label="Coral"></button><button class="pal-dot" data-palette="indigo" data-hex="#3C366B" title="Índigo" style="background:#3C366B;" aria-label="Índigo"></button><button class="pal-dot" data-palette="terracota" data-hex="#9B4527" title="Terracota" style="background:#9B4527;" aria-label="Terracota"></button><button class="pal-dot" data-palette="marino" data-hex="#1A365D" title="Marino" style="background:#1A365D;" aria-label="Marino"></button><button class="pal-dot" data-palette="esmeralda" data-hex="#234E52" title="Esmeralda" style="background:#234E52;" aria-label="Esmeralda"></button><button class="pal-dot" data-palette="carmesi" data-hex="#822727" title="Carmesí" style="background:#822727;" aria-label="Carmesí"></button></div>
+  </div>
+  <!-- 3: Fondos -->
+  <div class="reveal" style="margin-bottom:20px">
+    <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--c-fg4);margin-bottom:10px">Fondo</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="bg-btn" data-bg="blanco" style="background:#FFFFFF;border:1.5px solid rgba(128,128,128,.25);" title="Blanco"><span style="font-size:9px;font-weight:700;color:#0A0A0A">Blanco</span></button><button class="bg-btn" data-bg="crema" style="background:#FAF9F6;border:1.5px solid rgba(128,128,128,.25);" title="Crema"><span style="font-size:9px;font-weight:700;color:#0A0A0A">Crema</span></button><button class="bg-btn" data-bg="gris" style="background:#F4F4F5;border:1.5px solid rgba(128,128,128,.25);" title="Gris"><span style="font-size:9px;font-weight:700;color:#0A0A0A">Gris</span></button><button class="bg-btn" data-bg="cafe" style="background:#1C1410;border:1.5px solid rgba(128,128,128,.25);" title="Café"><span style="font-size:9px;font-weight:700;color:#FAFAFA">Café</span></button><button class="bg-btn" data-bg="pizarra" style="background:#0F172A;border:1.5px solid rgba(128,128,128,.25);" title="Pizarra"><span style="font-size:9px;font-weight:700;color:#FAFAFA">Pizarra</span></button><button class="bg-btn" data-bg="carbon" style="background:#18181B;border:1.5px solid rgba(128,128,128,.25);outline:2px solid var(--c-fg);outline-offset:2px;" title="Carbón"><span style="font-size:9px;font-weight:700;color:#FAFAFA">Carbón</span></button><button class="bg-btn" data-bg="negro" style="background:#0A0A0A;border:1.5px solid rgba(128,128,128,.25);" title="Negro"><span style="font-size:9px;font-weight:700;color:#FAFAFA">Negro</span></button><button class="bg-btn" data-bg="noche_bg" style="background:#080E1C;border:1.5px solid rgba(128,128,128,.25);" title="Noche"><span style="font-size:9px;font-weight:700;color:#FAFAFA">Noche</span></button></div>
+  </div>
+  <!-- 4: Tipografía -->
+  <div class="reveal" style="margin-bottom:32px">
+    <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--c-fg4);margin-bottom:10px">Tipografía</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="typo-btn" data-typo="sans" style="background:var(--c-accent);color:#fff;border-color:var(--c-accent);">Sans</button><button class="typo-btn" data-typo="serif" >Serif</button><button class="typo-btn" data-typo="garamond" >Garamond</button><button class="typo-btn" data-typo="grotesque" >Grotesque</button><button class="typo-btn" data-typo="slab" >Slab</button><button class="typo-btn" data-typo="organic" >Orgánica</button><button class="typo-btn" data-typo="negra" >Negra</button></div>
+  </div>
+  <!-- Panels -->
+  <div class="tab-panels reveal"><div id="p1"><div style="border:1px solid var(--c-border2);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)"><div style="background:#1a1a1a;padding:9px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.05)"><div style="width:9px;height:9px;background:#ff5f57;border-radius:50%"></div><div style="width:9px;height:9px;background:#febc2e;border-radius:50%"></div><div style="width:9px;height:9px;background:#28c840;border-radius:50%"></div><div style="flex:1;background:#0C0C0C;border-radius:5px;padding:3px 10px;font-size:10px;color:rgba(255,255,255,.28);margin:0 18px">tu-negocio.com</div></div><div style="background:#0C0C0C;font-family:'DM Sans',sans-serif;height:380px;display:grid;grid-template-rows:48px 1fr 100px;overflow:hidden">
+    <div style="padding:0 22px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(226,232,240,.07)">
+      <b style="font-size:12px;font-weight:700;color:#E2E8F0">Fónico</b>
+      <div style="display:flex;gap:18px"><span style="font-size:10px;color:rgba(226,232,240,.38)">Servicios</span><span style="font-size:10px;color:rgba(226,232,240,.38)">Precio</span><span style="font-size:10px;color:rgba(226,232,240,.38)">Contacto</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.7fr 1fr;overflow:hidden">
+      <div style="padding:28px 22px;display:flex;flex-direction:column;justify-content:flex-end;border-right:1px solid rgba(226,232,240,.06)">
+        <div style="font-size:10px;font-weight:600;color:#C53030;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:8px">Gastronomía · Ciudad de México</div>
+        <div style="font-size:24px;font-weight:800;color:#E2E8F0;line-height:1.08;letter-spacing:-.04em;margin-bottom:14px">Fónico</div>
+        <div style="background:#C53030;color:#fff;padding:8px 18px;border-radius:6px;font-size:11px;font-weight:700;display:inline-block">Ver propuesta →</div>
+      </div>
+      <div style="display:grid;grid-template-rows:1fr 1fr 1fr;gap:1px;background:rgba(226,232,240,.06)">
+        <div style="background:#0C0C0C;padding:12px 14px;display:flex;flex-direction:column;justify-content:center"><div style="font-size:14px;font-weight:700;color:#C53030">⭐ 4.6</div><div style="font-size:9px;color:rgba(226,232,240,.32);margin-top:3px">Rating</div></div><div style="background:#0C0C0C;padding:12px 14px;display:flex;flex-direction:column;justify-content:center"><div style="font-size:14px;font-weight:700;color:#C53030">48h</div><div style="font-size:9px;color:rgba(226,232,240,.32);margin-top:3px">Entrega</div></div><div style="background:#0C0C0C;padding:12px 14px;display:flex;flex-direction:column;justify-content:center"><div style="font-size:14px;font-weight:700;color:#C53030">$299</div><div style="font-size:9px;color:rgba(226,232,240,.32);margin-top:3px">Único pago</div></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(226,232,240,.06)">
+      <div style="background:#111;padding:12px 14px"><div style="font-size:10px;font-weight:600;color:#E2E8F0;margin-bottom:4px">Responsive</div><div style="width:16px;height:2px;background:#C53030;border-radius:1px"></div></div><div style="background:#111;padding:12px 14px"><div style="font-size:10px;font-weight:600;color:#E2E8F0;margin-bottom:4px">SEO Local</div><div style="width:16px;height:2px;background:#C53030;border-radius:1px"></div></div><div style="background:#111;padding:12px 14px"><div style="font-size:10px;font-weight:600;color:#E2E8F0;margin-bottom:4px">WhatsApp</div><div style="width:16px;height:2px;background:#C53030;border-radius:1px"></div></div>
+    </div>
+  </div></div><div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;padding:0 2px"><div style="font-size:13px;font-weight:700;color:var(--c-fg)">✦ Moderno <span style="font-size:12px;color:var(--c-fg3);font-weight:400">— Espacial</span></div><a href="https://wa.me/34640765515?text=Hola%2C%20me%20interesa%20el%20estilo%20Moderno%20para%20F%C3%B3nico." style="background:var(--c-accent);color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:var(--btn-r);display:inline-block">Elegir este →</a></div></div><div id="p2"><div style="border:1px solid var(--c-border2);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)"><div style="background:#1a1a1a;padding:9px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.05)"><div style="width:9px;height:9px;background:#ff5f57;border-radius:50%"></div><div style="width:9px;height:9px;background:#febc2e;border-radius:50%"></div><div style="width:9px;height:9px;background:#28c840;border-radius:50%"></div><div style="flex:1;background:#0C0C0C;border-radius:5px;padding:3px 10px;font-size:10px;color:rgba(255,255,255,.28);margin:0 18px">tu-negocio.com</div></div><div style="background:#06080D;font-family:'DM Sans',sans-serif;height:380px;display:flex;flex-direction:column;overflow:hidden">
+    <div style="height:3px;background:#C53030"></div>
+    <div style="padding:12px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #C53030">
+      <b style="font-size:12px;font-weight:900;color:#E8F0FC">FÓNICO</b>
+      <div style="background:#C53030;color:#fff;padding:4px 12px;font-size:10px;font-weight:700">CONTACTAR</div>
+    </div>
+    <div style="flex:1;padding:20px;display:flex;flex-direction:column;justify-content:center">
+      <div style="font-size:9px;font-weight:700;color:rgba(232,240,252,.32);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px">Gastronomía</div>
+      <div style="font-size:34px;font-weight:900;color:#E8F0FC;line-height:.95;letter-spacing:-.06em">Fónico</div>
+      <div style="font-size:34px;font-weight:900;color:#C53030;line-height:.95;letter-spacing:-.06em;margin-bottom:16px">Ciudad de México</div>
+      <div style="padding:7px 0;border-bottom:1px solid rgba(232,240,252,.07);display:flex;align-items:center;gap:10px"><div style="width:3px;height:3px;background:#C53030;border-radius:50%"></div><div style="font-size:11px;color:#E8F0FC;font-weight:600">01 — Consulta gratuita</div></div><div style="padding:7px 0;border-bottom:1px solid rgba(232,240,252,.07);display:flex;align-items:center;gap:10px"><div style="width:3px;height:3px;background:rgba(232,240,252,.2);border-radius:50%"></div><div style="font-size:11px;color:rgba(232,240,252,.38);font-weight:400">02 — Diseño en 24h</div></div><div style="padding:7px 0;border-bottom:1px solid rgba(232,240,252,.07);display:flex;align-items:center;gap:10px"><div style="width:3px;height:3px;background:rgba(232,240,252,.2);border-radius:50%"></div><div style="font-size:11px;color:rgba(232,240,252,.38);font-weight:400">03 — Entrega en 48h</div></div>
+    </div>
+  </div></div><div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;padding:0 2px"><div style="font-size:13px;font-weight:700;color:var(--c-fg)">◆ Audaz <span style="font-size:12px;color:var(--c-fg3);font-weight:400">— Energía</span></div><a href="https://wa.me/34640765515?text=Hola%2C%20me%20interesa%20el%20estilo%20Audaz%20para%20F%C3%B3nico." style="background:var(--c-accent);color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:var(--btn-r);display:inline-block">Elegir este →</a></div></div><div id="p3"><div style="border:1px solid var(--c-border2);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)"><div style="background:#E8E7E3;padding:9px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(0,0,0,.08)"><div style="width:9px;height:9px;background:#ff5f57;border-radius:50%"></div><div style="width:9px;height:9px;background:#febc2e;border-radius:50%"></div><div style="width:9px;height:9px;background:#28c840;border-radius:50%"></div><div style="flex:1;background:#F0EFE9;border-radius:5px;padding:3px 10px;font-size:10px;color:rgba(0,0,0,.35);margin:0 18px">tu-negocio.com</div></div><div style="background:#FAFAF8;font-family:Georgia,serif;height:380px;display:flex;flex-direction:column;overflow:hidden">
+    <div style="background:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #E8E4DE">
+      <div style="font-size:13px;font-weight:700;color:#1A1A1A;letter-spacing:.5px">FÓNICO</div>
+    </div>
+    <div style="flex:1;padding:24px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+      <div style="font-size:10px;font-family:'DM Sans',sans-serif;letter-spacing:2.5px;text-transform:uppercase;color:rgba(26,26,26,.45);margin-bottom:10px">Gastronomía</div>
+      <div style="font-size:26px;font-weight:700;color:#1A1A1A;line-height:1.15;margin-bottom:6px">Fónico</div>
+      <div style="width:40px;height:1px;background:#C53030;margin:0 auto 12px"></div>
+      <div style="font-size:13px;font-family:'DM Sans',sans-serif;color:rgba(26,26,26,.55);margin-bottom:20px">📍 Ciudad de México · ⭐ 4.6/5</div>
+      <div style="background:#C53030;color:#fff;padding:10px 24px;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:700">Solicitar información</div>
+    </div>
+    <div style="border-top:1px solid #E8E4DE;padding:10px 20px">
+      <div style="font-size:10px;font-family:'DM Sans',sans-serif;color:rgba(26,26,26,.45);text-align:center">Diseño profesional · Dominio .com · Entrega 48h</div>
+    </div>
+  </div></div><div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;padding:0 2px"><div style="font-size:13px;font-weight:700;color:var(--c-fg)">◇ Clásico <span style="font-size:12px;color:var(--c-fg3);font-weight:400">— Editorial</span></div><a href="https://wa.me/34640765515?text=Hola%2C%20me%20interesa%20el%20estilo%20Cl%C3%A1sico%20para%20F%C3%B3nico." style="background:var(--c-accent);color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:var(--btn-r);display:inline-block">Elegir este →</a></div></div><div id="p4"><div style="border:1px solid var(--c-border2);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)"><div style="background:#1a1a1a;padding:9px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.05)"><div style="width:9px;height:9px;background:#ff5f57;border-radius:50%"></div><div style="width:9px;height:9px;background:#febc2e;border-radius:50%"></div><div style="width:9px;height:9px;background:#28c840;border-radius:50%"></div><div style="flex:1;background:#0C0C0C;border-radius:5px;padding:3px 10px;font-size:10px;color:rgba(255,255,255,.28);margin:0 18px">tu-negocio.com</div></div><div style="background:#050505;font-family:'DM Sans',sans-serif;height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:0 32px;text-align:center">
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(248,248,248,.28);margin-bottom:20px;font-family:monospace">Gastronomía · Ciudad de México</div>
+    <div style="font-size:28px;font-weight:600;color:rgba(248,248,248,.97);line-height:1.1;letter-spacing:-.02em;margin-bottom:24px">Fónico</div>
+    <div style="font-size:56px;font-weight:600;color:#C53030;line-height:1;margin-bottom:24px">$299</div>
+    <div style="font-size:11px;color:rgba(248,248,248,.32);margin-bottom:24px">Pago único · Sin mensualidades</div>
+    <div style="display:flex;flex-direction:column;gap:8px;width:100%;max-width:280px">
+      <div style="display:flex;align-items:center;gap:8px;justify-content:center"><span style="color:#C53030;font-size:10px">—</span><span style="font-size:11px;color:rgba(248,248,248,.5)">Diseño en 48 horas</span></div><div style="display:flex;align-items:center;gap:8px;justify-content:center"><span style="color:#C53030;font-size:10px">—</span><span style="font-size:11px;color:rgba(248,248,248,.5)">SEO Local incluido</span></div><div style="display:flex;align-items:center;gap:8px;justify-content:center"><span style="color:#C53030;font-size:10px">—</span><span style="font-size:11px;color:rgba(248,248,248,.5)">Dominio .com o .mx</span></div><div style="display:flex;align-items:center;gap:8px;justify-content:center"><span style="color:#C53030;font-size:10px">—</span><span style="font-size:11px;color:rgba(248,248,248,.5)">Hosting 1 año gratis</span></div>
+    </div>
+  </div></div><div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;padding:0 2px"><div style="font-size:13px;font-weight:700;color:var(--c-fg)">✶ Premium <span style="font-size:12px;color:var(--c-fg3);font-weight:400">— Lujo</span></div><a href="https://wa.me/34640765515?text=Hola%2C%20me%20interesa%20el%20estilo%20Premium%20para%20F%C3%B3nico." style="background:var(--c-accent);color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:var(--btn-r);display:inline-block">Elegir este →</a></div></div><div id="p5"><div style="border:1px solid var(--c-border2);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)"><div style="background:#E8E7E3;padding:9px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(0,0,0,.08)"><div style="width:9px;height:9px;background:#ff5f57;border-radius:50%"></div><div style="width:9px;height:9px;background:#febc2e;border-radius:50%"></div><div style="width:9px;height:9px;background:#28c840;border-radius:50%"></div><div style="flex:1;background:#F0EFE9;border-radius:5px;padding:3px 10px;font-size:10px;color:rgba(0,0,0,.35);margin:0 18px">tu-negocio.com</div></div><div style="background:#FFFFFF;font-family:'Space Grotesk','DM Sans',sans-serif;height:380px;display:grid;grid-template-columns:1.2fr 1fr;overflow:hidden">
+    <div style="padding:20px;display:flex;flex-direction:column;justify-content:space-between;border-right:2px solid #0A0A0A">
+      <div style="font-size:11px;font-weight:700;color:#0A0A0A">FÓNICO</div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#C53030;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px">Gastronomía</div>
+        <div style="font-size:22px;font-weight:700;color:#0A0A0A;line-height:1.08;letter-spacing:-.03em;margin-bottom:10px">Fónico</div>
+        <div style="font-size:11px;color:rgba(10,10,10,.45);margin-bottom:14px">⭐ 4.6 · Ciudad de México</div>
+        <div style="background:#C53030;color:#fff;padding:9px 14px;font-size:11px;font-weight:700;display:inline-block">Ver propuesta →</div>
+      </div>
+      <div style="font-size:9px;color:rgba(10,10,10,.3);letter-spacing:1px">RESPUESTA EN 2H</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1px;background:#0A0A0A">
+      <div style="background:#C53030;color:#fff;padding:10px 14px;display:flex;align-items:center;gap:8px;flex:1"><span>📱</span><span style="font-size:10px;font-weight:600">Responsive</span></div><div style="background:#fff;color:rgba(10,10,10,.65);padding:10px 14px;display:flex;align-items:center;gap:8px;flex:1"><span>🔍</span><span style="font-size:10px;font-weight:600">SEO</span></div><div style="background:#fff;color:rgba(10,10,10,.65);padding:10px 14px;display:flex;align-items:center;gap:8px;flex:1"><span>💬</span><span style="font-size:10px;font-weight:600">WhatsApp</span></div><div style="background:#fff;color:rgba(10,10,10,.65);padding:10px 14px;display:flex;align-items:center;gap:8px;flex:1"><span>📍</span><span style="font-size:10px;font-weight:600">Maps</span></div><div style="background:#fff;color:rgba(10,10,10,.65);padding:10px 14px;display:flex;align-items:center;gap:8px;flex:1"><span>⚡</span><span style="font-size:10px;font-weight:600">Rápida</span></div><div style="background:#fff;color:rgba(10,10,10,.65);padding:10px 14px;display:flex;align-items:center;gap:8px;flex:1"><span>🌐</span><span style="font-size:10px;font-weight:600">Dominio</span></div>
+    </div>
+  </div></div><div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;padding:0 2px"><div style="font-size:13px;font-weight:700;color:var(--c-fg)">▣ Studio <span style="font-size:12px;color:var(--c-fg3);font-weight:400">— Nítido</span></div><a href="https://wa.me/34640765515?text=Hola%2C%20me%20interesa%20el%20estilo%20Studio%20para%20F%C3%B3nico." style="background:var(--c-accent);color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:var(--btn-r);display:inline-block">Elegir este →</a></div></div><div id="p6"><div style="border:1px solid var(--c-border2);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)"><div style="background:#E8E7E3;padding:9px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(0,0,0,.08)"><div style="width:9px;height:9px;background:#ff5f57;border-radius:50%"></div><div style="width:9px;height:9px;background:#febc2e;border-radius:50%"></div><div style="width:9px;height:9px;background:#28c840;border-radius:50%"></div><div style="flex:1;background:#F0EFE9;border-radius:5px;padding:3px 10px;font-size:10px;color:rgba(0,0,0,.35);margin:0 18px">tu-negocio.com</div></div><div style="background:#F7F6F1;font-family:'IBM Plex Serif',Georgia,serif;height:380px;display:flex;flex-direction:column;overflow:hidden">
+    <div style="padding:10px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(28,28,24,.12)">
+      <div style="font-size:11px;font-weight:600;color:#1C1C18">Fónico</div>
+      <div style="font-size:9px;font-family:'IBM Plex Sans',sans-serif;color:rgba(28,28,24,.4);letter-spacing:2px">GASTRONOMÍA</div>
+    </div>
+    <div style="flex:1;padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:0 24px;overflow:hidden">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid rgba(28,28,24,.1);padding-right:24px">
+        <div>
+          <div style="font-size:9px;font-family:'IBM Plex Sans',sans-serif;letter-spacing:2px;text-transform:uppercase;color:#C53030;margin-bottom:8px">Tu web en 48 horas</div>
+          <div style="font-size:22px;font-weight:600;color:#1C1C18;line-height:1.2">Fónico</div>
+        </div>
+        <div style="font-size:11px;font-family:'IBM Plex Sans',sans-serif;color:rgba(28,28,24,.5)">📍 Ciudad de México · ⭐ 4.6</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0;justify-content:center">
+        <div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid rgba(28,28,24,.08);align-items:start"><span style="color:#C53030;font-size:12px;flex-shrink:0">—</span><span style="font-size:11px;font-family:'IBM Plex Sans',sans-serif;color:rgba(28,28,24,.65)">Tu web lista en 48h</span></div><div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid rgba(28,28,24,.08);align-items:start"><span style="color:#C53030;font-size:12px;flex-shrink:0">—</span><span style="font-size:11px;font-family:'IBM Plex Sans',sans-serif;color:rgba(28,28,24,.65)">Sin cuotas mensuales</span></div><div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid rgba(28,28,24,.08);align-items:start"><span style="color:#C53030;font-size:12px;flex-shrink:0">—</span><span style="font-size:11px;font-family:'IBM Plex Sans',sans-serif;color:rgba(28,28,24,.65)">Apareces en Google</span></div><div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid rgba(28,28,24,.08);align-items:start"><span style="color:#C53030;font-size:12px;flex-shrink:0">—</span><span style="font-size:11px;font-family:'IBM Plex Sans',sans-serif;color:rgba(28,28,24,.65)">Dominio incluido</span></div>
+      </div>
+    </div>
+    <div style="padding:10px 20px;background:#1C1C18;display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:9px;font-family:'IBM Plex Sans',sans-serif;color:rgba(255,255,255,.32)">Ciudad de México · 2025</div>
+      <div style="background:#C53030;color:#fff;padding:5px 14px;font-size:10px;font-weight:600;font-family:'IBM Plex Sans',sans-serif">Hablar ahora</div>
+    </div>
+  </div></div><div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;padding:0 2px"><div style="font-size:13px;font-weight:700;color:var(--c-fg)">◻ Editorial <span style="font-size:12px;color:var(--c-fg3);font-weight:400">— Claridad</span></div><a href="https://wa.me/34640765515?text=Hola%2C%20me%20interesa%20el%20estilo%20Editorial%20para%20F%C3%B3nico." style="background:var(--c-accent);color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:var(--btn-r);display:inline-block">Elegir este →</a></div></div><div id="p7"><div style="border:1px solid var(--c-border2);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)"><div style="background:#E8E7E3;padding:9px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(0,0,0,.08)"><div style="width:9px;height:9px;background:#ff5f57;border-radius:50%"></div><div style="width:9px;height:9px;background:#febc2e;border-radius:50%"></div><div style="width:9px;height:9px;background:#28c840;border-radius:50%"></div><div style="flex:1;background:#F0EFE9;border-radius:5px;padding:3px 10px;font-size:10px;color:rgba(0,0,0,.35);margin:0 18px">tu-negocio.com</div></div><div style="background:#F5F0E8;font-family:'DM Sans',sans-serif;height:380px;display:flex;flex-direction:column;overflow:hidden">
+    <div style="padding:14px 20px;display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:13px;font-weight:700;color:#2A2116">Fónico</div>
+      <div style="display:flex;gap:5px"><div style="width:7px;height:7px;border-radius:50%;background:#C53030"></div><div style="width:7px;height:7px;border-radius:50%;background:rgba(42,33,22,.15)"></div><div style="width:7px;height:7px;border-radius:50%;background:rgba(42,33,22,.15)"></div></div>
+    </div>
+    <div style="flex:1;padding:8px 16px 16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+      <div style="background:#C53030;border-radius:16px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="font-size:18px">🌿</div><div style="font-size:9px;font-weight:700;color:#fff;text-align:center;text-transform:uppercase;letter-spacing:.5px">Natural</div></div><div style="background:rgba(42,33,22,.07);border-radius:16px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="font-size:18px">⚡</div><div style="font-size:9px;font-weight:700;color:rgba(42,33,22,.65);text-align:center;text-transform:uppercase;letter-spacing:.5px">Rápida</div></div><div style="background:rgba(42,33,22,.07);border-radius:16px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="font-size:18px">🔍</div><div style="font-size:9px;font-weight:700;color:rgba(42,33,22,.65);text-align:center;text-transform:uppercase;letter-spacing:.5px">SEO</div></div><div style="background:rgba(42,33,22,.07);border-radius:16px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="font-size:18px">📍</div><div style="font-size:9px;font-weight:700;color:rgba(42,33,22,.65);text-align:center;text-transform:uppercase;letter-spacing:.5px">Maps</div></div><div style="background:rgba(42,33,22,.07);border-radius:16px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="font-size:18px">💬</div><div style="font-size:9px;font-weight:700;color:rgba(42,33,22,.65);text-align:center;text-transform:uppercase;letter-spacing:.5px">Chat</div></div><div style="background:rgba(42,33,22,.07);border-radius:16px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="font-size:18px">🌐</div><div style="font-size:9px;font-weight:700;color:rgba(42,33,22,.65);text-align:center;text-transform:uppercase;letter-spacing:.5px">Dominio</div></div>
+    </div>
+    <div style="padding:0 16px 16px">
+      <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(42,33,22,.45);margin-bottom:6px">Gastronomía · Ciudad de México</div>
+      <div style="font-size:20px;font-weight:800;color:#2A2116;line-height:1.1;margin-bottom:8px">Fónico</div>
+      <div style="display:flex;gap:8px">
+        <div style="background:#C53030;color:#fff;padding:8px 18px;border-radius:50px;font-size:11px;font-weight:700">Ver diseños →</div>
+        <div style="border:1.5px solid rgba(42,33,22,.2);color:rgba(42,33,22,.7);padding:8px 14px;border-radius:50px;font-size:11px">WhatsApp</div>
+      </div>
+    </div>
+  </div></div><div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;padding:0 2px"><div style="font-size:13px;font-weight:700;color:var(--c-fg)">❋ Orgánico <span style="font-size:12px;color:var(--c-fg3);font-weight:400">— Calidez</span></div><a href="https://wa.me/34640765515?text=Hola%2C%20me%20interesa%20el%20estilo%20Org%C3%A1nico%20para%20F%C3%B3nico." style="background:var(--c-accent);color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:var(--btn-r);display:inline-block">Elegir este →</a></div></div><div id="p8"><div style="border:1px solid var(--c-border2);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)"><div style="background:#E8E7E3;padding:9px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(0,0,0,.08)"><div style="width:9px;height:9px;background:#ff5f57;border-radius:50%"></div><div style="width:9px;height:9px;background:#febc2e;border-radius:50%"></div><div style="width:9px;height:9px;background:#28c840;border-radius:50%"></div><div style="flex:1;background:#F0EFE9;border-radius:5px;padding:3px 10px;font-size:10px;color:rgba(0,0,0,.35);margin:0 18px">tu-negocio.com</div></div><div style="background:#FFFFFF;font-family:'DM Sans',sans-serif;height:380px;display:flex;flex-direction:column;overflow:hidden">
+    <div style="height:2px;background:#000"></div>
+    <div style="flex:1;padding:28px 24px;display:flex;flex-direction:column;justify-content:space-between">
+      <div style="font-size:10px;font-weight:900;color:rgba(0,0,0,.25);letter-spacing:4px;text-transform:uppercase">Gastronomía</div>
+      <div>
+        <div style="font-size:40px;font-weight:900;color:#000;line-height:.92;letter-spacing:-.05em">Fónico</div>
+        <div style="font-size:40px;font-weight:900;color:#C53030;line-height:.92;letter-spacing:-.05em;margin-bottom:16px">Ciudad de México</div>
+        <div style="height:1px;background:#000;margin-bottom:16px"></div>
+        <div style="font-size:11px;color:rgba(0,0,0,.4)">⭐ 4.6 · Tu web en 48h · $299 USD</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:10px;color:rgba(0,0,0,.3);letter-spacing:2px">PROPUESTA EXCLUSIVA</div>
+        <div style="background:#000;color:#fff;padding:8px 16px;font-size:10px;font-weight:700">Contactar →</div>
+      </div>
+    </div>
+  </div></div><div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;padding:0 2px"><div style="font-size:13px;font-weight:700;color:var(--c-fg)">― Minimal <span style="font-size:12px;color:var(--c-fg3);font-weight:400">— Reducción</span></div><a href="https://wa.me/34640765515?text=Hola%2C%20me%20interesa%20el%20estilo%20Minimal%20para%20F%C3%B3nico." style="background:var(--c-accent);color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:var(--btn-r);display:inline-block">Elegir este →</a></div></div><div id="p9"><div style="border:1px solid var(--c-border2);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)"><div style="background:#E8E7E3;padding:9px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(0,0,0,.08)"><div style="width:9px;height:9px;background:#ff5f57;border-radius:50%"></div><div style="width:9px;height:9px;background:#febc2e;border-radius:50%"></div><div style="width:9px;height:9px;background:#28c840;border-radius:50%"></div><div style="flex:1;background:#F0EFE9;border-radius:5px;padding:3px 10px;font-size:10px;color:rgba(0,0,0,.35);margin:0 18px">tu-negocio.com</div></div><div style="background:#FFFFFF;font-family:'DM Sans',sans-serif;height:380px;display:grid;grid-template-columns:1fr 110px;overflow:hidden;border:1px solid #E4E4E7">
+    <div style="padding:28px 24px;display:flex;flex-direction:column;justify-content:space-between">
+      <div>
+        <div style="font-size:9px;font-weight:600;color:rgba(10,10,10,.3);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px">Gastronomía</div>
+        <div style="font-size:20px;font-weight:300;color:#0A0A0A;line-height:1.2;letter-spacing:-.02em">Fónico</div>
+        <div style="font-size:20px;font-weight:700;color:#C53030;line-height:1.2;letter-spacing:-.02em;margin-bottom:18px">Ciudad de México</div>
+        <div style="font-size:11px;color:rgba(10,10,10,.4)">📍 Ciudad de México · ⭐ 4.6</div>
+      </div>
+      <div style="background:#C53030;color:#fff;padding:9px 18px;font-size:11px;font-weight:600;display:inline-block">Ver propuesta →</div>
+      <div style="font-size:9px;color:rgba(10,10,10,.2);letter-spacing:1.5px">DISEÑO 48H</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1px;background:#E4E4E7">
+      <div style="background:#C53030;flex:1;padding:10px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px"><div style="font-size:16px">📱</div><div style="font-size:8px;font-weight:700;color:#fff;text-align:center">Responsive</div></div><div style="background:#FAFAFA;flex:1;padding:10px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px"><div style="font-size:16px">🔍</div><div style="font-size:8px;font-weight:700;color:rgba(10,10,10,.5);text-align:center">SEO Local</div></div><div style="background:#FAFAFA;flex:1;padding:10px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px"><div style="font-size:16px">📍</div><div style="font-size:8px;font-weight:700;color:rgba(10,10,10,.5);text-align:center">Maps</div></div><div style="background:#FAFAFA;flex:1;padding:10px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px"><div style="font-size:16px">💬</div><div style="font-size:8px;font-weight:700;color:rgba(10,10,10,.5);text-align:center">WhatsApp</div></div>
+    </div>
+  </div></div><div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;padding:0 2px"><div style="font-size:13px;font-weight:700;color:var(--c-fg)">☀ Luz <span style="font-size:12px;color:var(--c-fg3);font-weight:400">— Claridad</span></div><a href="https://wa.me/34640765515?text=Hola%2C%20me%20interesa%20el%20estilo%20Luz%20para%20F%C3%B3nico." style="background:var(--c-accent);color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:var(--btn-r);display:inline-block">Elegir este →</a></div></div><div id="p10"><div style="border:1px solid var(--c-border2);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)"><div style="background:#1a1a1a;padding:9px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.05)"><div style="width:9px;height:9px;background:#ff5f57;border-radius:50%"></div><div style="width:9px;height:9px;background:#febc2e;border-radius:50%"></div><div style="width:9px;height:9px;background:#28c840;border-radius:50%"></div><div style="flex:1;background:#0C0C0C;border-radius:5px;padding:3px 10px;font-size:10px;color:rgba(255,255,255,.28);margin:0 18px">tu-negocio.com</div></div><div style="background:#080E1C;font-family:'DM Sans',sans-serif;height:380px;display:flex;flex-direction:column;overflow:hidden">
+    <div style="height:2px;background:linear-gradient(to right,#C53030,transparent)"></div>
+    <div style="padding:12px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.07)">
+      <b style="font-size:12px;font-weight:700;color:#EFF4FF">Fónico</b>
+      <div style="background:#C53030;color:#fff;padding:3px 10px;font-size:9px;font-weight:700;letter-spacing:1px">ONLINE</div>
+    </div>
+    <div style="flex:1;padding:20px;display:flex;flex-direction:column;justify-content:flex-end">
+      <div style="font-size:9px;color:rgba(239,244,255,.28);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:8px">Gastronomía · Ciudad de México</div>
+      <div style="font-size:30px;font-weight:900;color:#EFF4FF;line-height:.98;letter-spacing:-.04em;margin-bottom:3px">Fónico</div>
+      <div style="font-size:30px;font-weight:900;color:#C53030;line-height:.98;letter-spacing:-.04em;margin-bottom:18px;opacity:.9">EN LÍNEA.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <div style="border:1px solid #C53030;color:#C53030;padding:4px 10px;font-size:10px;font-weight:600">Rápida</div><div style="border:1px solid rgba(255,255,255,.1);color:rgba(239,244,255,.45);padding:4px 10px;font-size:10px;font-weight:600">SEO</div><div style="border:1px solid rgba(255,255,255,.1);color:rgba(239,244,255,.45);padding:4px 10px;font-size:10px;font-weight:600">Maps</div><div style="border:1px solid rgba(255,255,255,.1);color:rgba(239,244,255,.45);padding:4px 10px;font-size:10px;font-weight:600">WhatsApp</div>
+      </div>
+    </div>
+    <div style="padding:10px 20px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center">
+      <div style="font-size:9px;color:rgba(239,244,255,.22);letter-spacing:1.5px">⭐ 4.6 · $299 USD</div>
+      <div style="background:#C53030;color:#fff;padding:6px 14px;font-size:10px;font-weight:700">Contratar →</div>
+    </div>
+  </div></div><div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;padding:0 2px"><div style="font-size:13px;font-weight:700;color:var(--c-fg)">🌙 Noche <span style="font-size:12px;color:var(--c-fg3);font-weight:400">— OLED</span></div><a href="https://wa.me/34640765515?text=Hola%2C%20me%20interesa%20el%20estilo%20Noche%20para%20F%C3%B3nico." style="background:var(--c-accent);color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:var(--btn-r);display:inline-block">Elegir este →</a></div></div></div>
+</section>
+
+<!-- QUÉ INCLUYE -->
+<section data-feat-section style="padding:var(--sec-py) var(--sec-px);background:var(--c-bg2)">
+  <div class="reveal" style="margin-bottom:44px">
+    <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--c-accent);margin-bottom:14px">Qué incluye</div>
+    <h2 style="font-family:var(--f-heading);font-size:var(--fsize-h2);font-weight:var(--fw-h);color:var(--c-fg);letter-spacing:var(--ls-h)">Todo lo que necesitas.<br><span style="color:var(--c-fg3)">Nada de lo que no.</span></h2>
+  </div>
+  <div class="reveal">
+    <div class="feat-wrap feat-wrap--grid" style="background:var(--c-border)">
+    <div class="feat-card" style="background:var(--c-card);padding:28px 24px;position:relative;overflow:hidden"><div style="font-size:24px;margin-bottom:14px">📱</div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:8px;line-height:1.3">Diseño Responsive</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.62">Tu web perfecta en celular, tablet y computadora.</div><div class="feat-line" style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--c-accent);transform:scaleX(0);transform-origin:left;transition:transform var(--dur-m) var(--ease)"></div></div><div class="feat-card" style="background:var(--c-card);padding:28px 24px;position:relative;overflow:hidden"><div style="font-size:24px;margin-bottom:14px">🔍</div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:8px;line-height:1.3">SEO Local</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.62">Apareces cuando busquen "Gastronomía en Ciudad de México" en Google.</div><div class="feat-line" style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--c-accent);transform:scaleX(0);transform-origin:left;transition:transform var(--dur-m) var(--ease)"></div></div><div class="feat-card" style="background:var(--c-card);padding:28px 24px;position:relative;overflow:hidden"><div style="font-size:24px;margin-bottom:14px">💬</div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:8px;line-height:1.3">Chat WhatsApp</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.62">Botón fijo para que tus clientes te escriban.</div><div class="feat-line" style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--c-accent);transform:scaleX(0);transform-origin:left;transition:transform var(--dur-m) var(--ease)"></div></div><div class="feat-card" style="background:var(--c-card);padding:28px 24px;position:relative;overflow:hidden"><div style="font-size:24px;margin-bottom:14px">📍</div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:8px;line-height:1.3">Google Maps integrado</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.62">Tu dirección exacta para que lleguen sin perderse.</div><div class="feat-line" style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--c-accent);transform:scaleX(0);transform-origin:left;transition:transform var(--dur-m) var(--ease)"></div></div><div class="feat-card" style="background:var(--c-card);padding:28px 24px;position:relative;overflow:hidden"><div style="font-size:24px;margin-bottom:14px">⚡</div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:8px;line-height:1.3">Carga en menos de 1s</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.62">El 40% abandona si tarda más de 3 segundos.</div><div class="feat-line" style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--c-accent);transform:scaleX(0);transform-origin:left;transition:transform var(--dur-m) var(--ease)"></div></div><div class="feat-card" style="background:var(--c-card);padding:28px 24px;position:relative;overflow:hidden"><div style="font-size:24px;margin-bottom:14px">🌐</div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:8px;line-height:1.3">Dominio .com incluido</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.62">Tu propio dominio sin costos ocultos ni sorpresas.</div><div class="feat-line" style="position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--c-accent);transform:scaleX(0);transform-origin:left;transition:transform var(--dur-m) var(--ease)"></div></div>
+  </div><div class="feat-wrap feat-wrap--list">
+    <div class="feat-card"><div style="font-size:11px;font-weight:900;color:var(--c-accent);letter-spacing:1px;padding-top:4px;flex-shrink:0">01</div><div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:5px;line-height:1.3">Diseño Responsive</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.65">Tu web perfecta en celular, tablet y computadora.</div></div></div><div class="feat-card"><div style="font-size:11px;font-weight:900;color:var(--c-accent);letter-spacing:1px;padding-top:4px;flex-shrink:0">02</div><div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:5px;line-height:1.3">SEO Local</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.65">Apareces cuando busquen "Gastronomía en Ciudad de México" en Google.</div></div></div><div class="feat-card"><div style="font-size:11px;font-weight:900;color:var(--c-accent);letter-spacing:1px;padding-top:4px;flex-shrink:0">03</div><div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:5px;line-height:1.3">Chat WhatsApp</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.65">Botón fijo para que tus clientes te escriban.</div></div></div><div class="feat-card"><div style="font-size:11px;font-weight:900;color:var(--c-accent);letter-spacing:1px;padding-top:4px;flex-shrink:0">04</div><div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:5px;line-height:1.3">Google Maps integrado</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.65">Tu dirección exacta para que lleguen sin perderse.</div></div></div><div class="feat-card"><div style="font-size:11px;font-weight:900;color:var(--c-accent);letter-spacing:1px;padding-top:4px;flex-shrink:0">05</div><div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:5px;line-height:1.3">Carga en menos de 1s</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.65">El 40% abandona si tarda más de 3 segundos.</div></div></div><div class="feat-card"><div style="font-size:11px;font-weight:900;color:var(--c-accent);letter-spacing:1px;padding-top:4px;flex-shrink:0">06</div><div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:5px;line-height:1.3">Dominio .com incluido</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.65">Tu propio dominio sin costos ocultos ni sorpresas.</div></div></div>
+  </div><div class="feat-wrap feat-wrap--editorial">
+    <div class="feat-card"><div style="font-size:11px;font-weight:700;color:var(--c-accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">Diseño Responsive</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.68">Tu web perfecta en celular, tablet y computadora.</div></div><div class="feat-card"><div style="font-size:11px;font-weight:700;color:var(--c-accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">SEO Local</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.68">Apareces cuando busquen "Gastronomía en Ciudad de México" en Google.</div></div><div class="feat-card"><div style="font-size:11px;font-weight:700;color:var(--c-accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">Chat WhatsApp</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.68">Botón fijo para que tus clientes te escriban.</div></div><div class="feat-card"><div style="font-size:11px;font-weight:700;color:var(--c-accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">Google Maps integrado</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.68">Tu dirección exacta para que lleguen sin perderse.</div></div><div class="feat-card"><div style="font-size:11px;font-weight:700;color:var(--c-accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">Carga en menos de 1s</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.68">El 40% abandona si tarda más de 3 segundos.</div></div><div class="feat-card"><div style="font-size:11px;font-weight:700;color:var(--c-accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">Dominio .com incluido</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.68">Tu propio dominio sin costos ocultos ni sorpresas.</div></div>
+  </div><div class="feat-wrap feat-wrap--minimal">
+    <div class="feat-item"><div style="font-size:20px;flex-shrink:0;width:32px">📱</div><div><div style="font-size:14px;font-weight:700;color:var(--c-fg);margin-bottom:3px">Diseño Responsive</div><div style="font-size:12px;color:var(--c-fg3);line-height:1.5">Tu web perfecta en celular, tablet y computadora.</div></div></div><div class="feat-item"><div style="font-size:20px;flex-shrink:0;width:32px">🔍</div><div><div style="font-size:14px;font-weight:700;color:var(--c-fg);margin-bottom:3px">SEO Local</div><div style="font-size:12px;color:var(--c-fg3);line-height:1.5">Apareces cuando busquen "Gastronomía en Ciudad de México" en Google.</div></div></div><div class="feat-item"><div style="font-size:20px;flex-shrink:0;width:32px">💬</div><div><div style="font-size:14px;font-weight:700;color:var(--c-fg);margin-bottom:3px">Chat WhatsApp</div><div style="font-size:12px;color:var(--c-fg3);line-height:1.5">Botón fijo para que tus clientes te escriban.</div></div></div><div class="feat-item"><div style="font-size:20px;flex-shrink:0;width:32px">📍</div><div><div style="font-size:14px;font-weight:700;color:var(--c-fg);margin-bottom:3px">Google Maps integrado</div><div style="font-size:12px;color:var(--c-fg3);line-height:1.5">Tu dirección exacta para que lleguen sin perderse.</div></div></div><div class="feat-item"><div style="font-size:20px;flex-shrink:0;width:32px">⚡</div><div><div style="font-size:14px;font-weight:700;color:var(--c-fg);margin-bottom:3px">Carga en menos de 1s</div><div style="font-size:12px;color:var(--c-fg3);line-height:1.5">El 40% abandona si tarda más de 3 segundos.</div></div></div><div class="feat-item"><div style="font-size:20px;flex-shrink:0;width:32px">🌐</div><div><div style="font-size:14px;font-weight:700;color:var(--c-fg);margin-bottom:3px">Dominio .com incluido</div><div style="font-size:12px;color:var(--c-fg3);line-height:1.5">Tu propio dominio sin costos ocultos ni sorpresas.</div></div></div>
+  </div><div class="feat-wrap feat-wrap--studio" style="background:var(--c-border)">
+    <div class="feat-card" style="background:var(--c-card);padding:28px 24px;border-top:2px solid transparent;position:relative;overflow:hidden"><div style="font-size:24px;margin-bottom:12px">📱</div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:7px;line-height:1.3">Diseño Responsive</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.62">Tu web perfecta en celular, tablet y computadora.</div></div><div class="feat-card" style="background:var(--c-card);padding:28px 24px;border-top:2px solid transparent;position:relative;overflow:hidden"><div style="font-size:24px;margin-bottom:12px">🔍</div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:7px;line-height:1.3">SEO Local</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.62">Apareces cuando busquen "Gastronomía en Ciudad de México" en Google.</div></div><div class="feat-card" style="background:var(--c-card);padding:28px 24px;border-top:2px solid transparent;position:relative;overflow:hidden"><div style="font-size:24px;margin-bottom:12px">💬</div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:7px;line-height:1.3">Chat WhatsApp</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.62">Botón fijo para que tus clientes te escriban.</div></div><div class="feat-card" style="background:var(--c-card);padding:28px 24px;border-top:2px solid transparent;position:relative;overflow:hidden"><div style="font-size:24px;margin-bottom:12px">📍</div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:7px;line-height:1.3">Google Maps integrado</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.62">Tu dirección exacta para que lleguen sin perderse.</div></div><div class="feat-card" style="background:var(--c-card);padding:28px 24px;border-top:2px solid transparent;position:relative;overflow:hidden"><div style="font-size:24px;margin-bottom:12px">⚡</div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:7px;line-height:1.3">Carga en menos de 1s</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.62">El 40% abandona si tarda más de 3 segundos.</div></div><div class="feat-card" style="background:var(--c-card);padding:28px 24px;border-top:2px solid transparent;position:relative;overflow:hidden"><div style="font-size:24px;margin-bottom:12px">🌐</div><div style="font-size:15px;font-weight:700;color:var(--c-fg);margin-bottom:7px;line-height:1.3">Dominio .com incluido</div><div style="font-size:13px;color:var(--c-fg2);line-height:1.62">Tu propio dominio sin costos ocultos ni sorpresas.</div></div>
+  </div>
+  </div>
+</section>
+
+<!-- PRECIO -->
+<section id="precio" style="padding:var(--sec-py) var(--sec-px);background:var(--c-bg)">
+  <div class="reveal" style="max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,72px);align-items:start">
+    <div>
+      <div style="width:40px;height:2px;background:var(--c-accent);border-radius:1px;margin-bottom:28px"></div>
+      <h2 style="font-family:var(--f-heading);font-size:var(--fsize-h2);font-weight:var(--fw-h);line-height:var(--lh-h);letter-spacing:var(--ls-h);color:var(--c-fg);margin-bottom:16px;text-wrap:balance">Inversión única. Tuyo para siempre.</h2>
+      <p style="font-size:16px;color:var(--c-fg2);line-height:var(--lh-body);margin-bottom:28px">Sin mensualidades ocultas, sin plataformas que te cobran comisión. Tu sitio, en tu dominio, funcionando desde el primer día.</p>
+      <a href="https://wa.me/34640765515?text=Hola%2C%20vi%20la%20propuesta%20de%20web%20para%20F%C3%B3nico%20y%20me%20interesa." style="display:inline-flex;align-items:center;gap:8px;background:var(--c-accent);color:#fff;font-size:14px;font-weight:700;padding:14px 28px;border-radius:var(--btn-r)">Empezar ahora →</a>
+    </div>
+    <div style="border:1px solid var(--c-border2);border-radius:16px;overflow:hidden;background:var(--c-bg2)">
+      <div style="padding:32px 36px;border-bottom:1px solid var(--c-border)">
+        <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:6px">
+          <span style="font-size:18px;font-weight:700;color:var(--c-fg2);margin-top:4px">$</span>
+          <span style="font-family:var(--f-display);font-size:clamp(3rem,7vw,4.8rem);font-weight:var(--fw-d);line-height:.95;letter-spacing:var(--ls-h);color:var(--c-fg)">299</span>
+          <span style="font-size:18px;font-weight:700;color:var(--c-fg2)">USD</span>
+        </div>
+        <p style="font-size:13px;color:var(--c-fg3);margin-bottom:14px">pago único · sin comisiones</p>
+        <p style="font-size:15px;color:var(--c-fg2);line-height:1.6">Sitio web profesional, optimizado para Google, listo en 48 horas.</p>
+      </div>
+      <div style="padding:28px 36px 36px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:flex-start;gap:12px"><div style="width:18px;height:18px;border-radius:50%;background:rgba(var(--c-accent-rgb),.15);color:var(--c-accent);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">✓</div><span style="font-size:14px;color:var(--c-fg2);line-height:1.5">Diseño personalizado en tu marca y fotografía</span></div><div style="display:flex;align-items:flex-start;gap:12px"><div style="width:18px;height:18px;border-radius:50%;background:rgba(var(--c-accent-rgb),.15);color:var(--c-accent);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">✓</div><span style="font-size:14px;color:var(--c-fg2);line-height:1.5">Optimizado para aparecer en Google (SEO local)</span></div><div style="display:flex;align-items:flex-start;gap:12px"><div style="width:18px;height:18px;border-radius:50%;background:rgba(var(--c-accent-rgb),.15);color:var(--c-accent);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">✓</div><span style="font-size:14px;color:var(--c-fg2);line-height:1.5">Adaptado para celular, tablet y computadora</span></div><div style="display:flex;align-items:flex-start;gap:12px"><div style="width:18px;height:18px;border-radius:50%;background:rgba(var(--c-accent-rgb),.15);color:var(--c-accent);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">✓</div><span style="font-size:14px;color:var(--c-fg2);line-height:1.5">Formulario de contacto y botón de WhatsApp</span></div><div style="display:flex;align-items:flex-start;gap:12px"><div style="width:18px;height:18px;border-radius:50%;background:rgba(var(--c-accent-rgb),.15);color:var(--c-accent);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">✓</div><span style="font-size:14px;color:var(--c-fg2);line-height:1.5">Entrega en 48 horas hábiles</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAPA -->
+<section style="position:relative">
+  <div style="position:absolute;top:0;left:0;right:0;height:48px;background:linear-gradient(to bottom,var(--c-bg),transparent);z-index:1;pointer-events:none"></div>
+  <iframe src="https://maps.google.com/maps?q=19.4182464,-99.1696613&z=15&output=embed" width="100%" height="360" style="border:0;display:block;filter:grayscale(.85) contrast(.95)" allowfullscreen loading="lazy" title="Fónico"></iframe>
+  <div style="position:absolute;bottom:0;left:0;right:0;height:48px;background:linear-gradient(to top,var(--c-bg2),transparent);z-index:1;pointer-events:none"></div>
+</section>
+
+<!-- CTA FINAL -->
+<section style="padding:var(--sec-py) var(--sec-px);background:var(--c-bg);border-top:1px solid var(--c-border);text-align:center">
+  <div class="reveal" style="max-width:680px;margin:0 auto">
+    <h2 style="font-family:var(--f-heading);font-size:var(--fsize-h2);font-weight:var(--fw-h);line-height:var(--lh-h);letter-spacing:var(--ls-h);color:var(--c-fg);margin-bottom:16px;text-wrap:balance">¿Listo para que <em style="color:var(--c-accent);font-style:normal">Fónico</em> sea el primero en aparecer?</h2>
+    <p style="font-size:16px;color:var(--c-fg2);margin-bottom:36px;line-height:var(--lh-body)">Hablamos hoy. Sin compromisos. Te mostramos exactamente cómo quedaría.</p>
+    <a href="https://wa.me/34640765515?text=Hola%2C%20vi%20la%20propuesta%20de%20web%20para%20F%C3%B3nico%20y%20me%20interesa." style="display:inline-flex;align-items:center;gap:10px;background:var(--c-accent);color:#fff;font-size:15px;font-weight:700;padding:16px 36px;border-radius:var(--btn-r)"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Contactar por WhatsApp</a>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<section style="padding:40px 0;background:var(--c-bg2);overflow:hidden;border-top:1px solid var(--c-border)">
+  <div style="font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--c-fg4);text-align:center;margin-bottom:20px">Más de 50 negocios en México ya tienen su web</div>
+  <div style="overflow:hidden"><div class="marquee-track"><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">Dentify</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">Sabores Co.</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">GlamHouse</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">SonrieYa</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">Chef & Co.</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">AuraSpa</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">MediDental</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">Bistró MX</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">OptimaDent</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">Casa Fuerte</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">Dentify</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">Sabores Co.</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">GlamHouse</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">SonrieYa</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">Chef & Co.</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">AuraSpa</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">MediDental</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">Bistró MX</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">OptimaDent</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 28px;flex-shrink:0"><div style="width:5px;height:5px;background:var(--c-accent);border-radius:50%"></div><span style="white-space:nowrap;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--c-marquee);text-transform:uppercase">Casa Fuerte</span></div></div></div>
+</section>
+
+<!-- FOOTER -->
+<footer style="padding:36px var(--sec-px);background:var(--c-bg);border-top:1px solid var(--c-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
+  <div>
+    <div style="font-size:14px;font-weight:700;color:var(--c-nav-fg);margin-bottom:3px">Fónico</div>
+    <div style="font-size:12px;color:var(--c-fg4)">Gastronomía · Ciudad de México · Propuesta exclusiva</div>
+  </div>
+  <div style="font-size:12px;color:var(--c-fg4)">Propuesta válida 7 días · © 2025</div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/34640765515?text=Hola%2C%20vi%20la%20propuesta%20de%20web%20para%20F%C3%B3nico%20y%20me%20interesa." title="WhatsApp">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+<script>
+const THEMES={
+  moderno:{'--c-bg':'#0C0C0C','--c-bg2':'#111','--c-fg':'#E2E8F0','--c-fg2':'rgba(226,232,240,.58)','--c-fg3':'rgba(226,232,240,.35)','--c-fg4':'rgba(226,232,240,.18)','--c-border':'rgba(226,232,240,.07)','--c-border2':'rgba(226,232,240,.11)','--c-card':'#111','--c-card-h':'#181818','--c-nav-bg':'rgba(12,12,12,.88)','--c-nav-fg':'rgba(226,232,240,.92)','--c-nav-link':'rgba(226,232,240,.52)','--c-hero-ov':'linear-gradient(to bottom,rgba(12,12,12,.08) 0%,rgba(12,12,12,.5) 45%,rgba(12,12,12,.97) 82%,#0C0C0C 100%)','--c-stats-bg':'rgba(226,232,240,.05)','--c-marquee':'rgba(226,232,240,.32)','--f-display':"'DM Sans',sans-serif",'--f-heading':"'DM Sans',sans-serif",'--f-body':"'DM Sans',sans-serif",'--fw-d':'800','--fw-h':'700','--fst-d':'normal','--fst-h':'normal','--fsize-h1':'clamp(2.4rem,5vw,4.2rem)','--fsize-h2':'clamp(1.6rem,3vw,2.6rem)','--lh-body':'1.78','--lh-h':'1.12','--ls-h':'-.025em','--ls-body':'0em','--max-prose':'62ch','--sec-py':'96px','--sec-px':'48px','--card-r':'12px','--btn-r':'8px','--ease':'cubic-bezier(0.25,0.46,0.45,0.94)','--dur-f':'140ms','--dur-m':'320ms'},
+  audaz:{'--c-bg':'#06080D','--c-bg2':'#0C1018','--c-fg':'#E8F0FC','--c-fg2':'rgba(232,240,252,.55)','--c-fg3':'rgba(232,240,252,.32)','--c-fg4':'rgba(232,240,252,.16)','--c-border':'rgba(232,240,252,.06)','--c-border2':'rgba(232,240,252,.1)','--c-card':'#0C1018','--c-card-h':'#121A24','--c-nav-bg':'rgba(6,8,13,.9)','--c-nav-fg':'#E8F0FC','--c-nav-link':'rgba(232,240,252,.5)','--c-hero-ov':'linear-gradient(to bottom,rgba(6,8,13,.05) 0%,rgba(6,8,13,.4) 40%,rgba(6,8,13,.97) 85%,#06080D 100%)','--c-stats-bg':'rgba(232,240,252,.06)','--c-marquee':'rgba(232,240,252,.38)','--f-display':"'DM Sans',sans-serif",'--f-heading':"'DM Sans',sans-serif",'--f-body':"'DM Sans',sans-serif",'--fw-d':'900','--fw-h':'800','--fst-d':'normal','--fst-h':'normal','--fsize-h1':'clamp(3rem,8vw,6.5rem)','--fsize-h2':'clamp(2rem,4vw,3.4rem)','--lh-body':'1.65','--lh-h':'0.95','--ls-h':'-.05em','--ls-body':'0em','--max-prose':'60ch','--sec-py':'80px','--sec-px':'48px','--card-r':'6px','--btn-r':'6px','--ease':'cubic-bezier(0.22,1,0.36,1)','--dur-f':'120ms','--dur-m':'280ms'},
+  clasico:{'--c-bg':'#FAFAF8','--c-bg2':'#FFFFFF','--c-fg':'#1A1A1A','--c-fg2':'rgba(26,26,26,.58)','--c-fg3':'rgba(26,26,26,.38)','--c-fg4':'rgba(26,26,26,.22)','--c-border':'rgba(26,26,26,.1)','--c-border2':'rgba(26,26,26,.15)','--c-card':'#FFFFFF','--c-card-h':'#F5F5F2','--c-nav-bg':'rgba(250,250,248,.95)','--c-nav-fg':'rgba(26,26,26,.9)','--c-nav-link':'rgba(26,26,26,.55)','--c-hero-ov':'linear-gradient(to bottom,rgba(250,250,248,.05) 0%,rgba(250,250,248,.4) 40%,rgba(250,250,248,.97) 85%,#FAFAF8 100%)','--c-stats-bg':'rgba(26,26,26,.04)','--c-marquee':'rgba(26,26,26,.32)','--f-display':"'Playfair Display',Georgia,serif",'--f-heading':"'Playfair Display',Georgia,serif",'--f-body':"'DM Sans',sans-serif",'--fw-d':'700','--fw-h':'600','--fst-d':'normal','--fst-h':'normal','--fsize-h1':'clamp(2.2rem,4.5vw,3.8rem)','--fsize-h2':'clamp(1.6rem,3vw,2.6rem)','--lh-body':'1.82','--lh-h':'1.15','--ls-h':'-.01em','--ls-body':'.005em','--max-prose':'68ch','--sec-py':'88px','--sec-px':'48px','--card-r':'4px','--btn-r':'4px','--ease':'cubic-bezier(0.4,0,0.2,1)','--dur-f':'200ms','--dur-m':'400ms'},
+  premium:{'--c-bg':'#050505','--c-bg2':'#0D0D0D','--c-fg':'rgba(248,248,248,.97)','--c-fg2':'rgba(248,248,248,.52)','--c-fg3':'rgba(248,248,248,.3)','--c-fg4':'rgba(248,248,248,.16)','--c-border':'rgba(248,248,248,.07)','--c-border2':'rgba(248,248,248,.11)','--c-card':'#0D0D0D','--c-card-h':'#161616','--c-nav-bg':'rgba(5,5,5,.92)','--c-nav-fg':'rgba(248,248,248,.96)','--c-nav-link':'rgba(248,248,248,.48)','--c-hero-ov':'linear-gradient(to bottom,rgba(5,5,5,.06) 0%,rgba(5,5,5,.38) 42%,rgba(5,5,5,.97) 84%,#050505 100%)','--c-stats-bg':'rgba(248,248,248,.05)','--c-marquee':'rgba(248,248,248,.28)','--f-display':"'Cormorant Garamond','Playfair Display',Georgia,serif",'--f-heading':"'Cormorant Garamond',Georgia,serif",'--f-body':"'DM Sans',sans-serif",'--fw-d':'600','--fw-h':'600','--fst-d':'normal','--fst-h':'normal','--fsize-h1':'clamp(2.8rem,6vw,5.5rem)','--fsize-h2':'clamp(2rem,4vw,3.2rem)','--lh-body':'1.72','--lh-h':'1.08','--ls-h':'-.01em','--ls-body':'.01em','--max-prose':'60ch','--sec-py':'100px','--sec-px':'56px','--card-r':'2px','--btn-r':'2px','--ease':'cubic-bezier(0.4,0,0.2,1)','--dur-f':'200ms','--dur-m':'500ms'},
+  innovation:{'--c-bg':'#FFFFFF','--c-bg2':'#F8F8F6','--c-fg':'#0A0A0A','--c-fg2':'rgba(10,10,10,.55)','--c-fg3':'rgba(10,10,10,.35)','--c-fg4':'rgba(10,10,10,.18)','--c-border':'rgba(10,10,10,.12)','--c-border2':'rgba(10,10,10,.18)','--c-card':'#F8F8F6','--c-card-h':'#F0F0EE','--c-nav-bg':'rgba(255,255,255,.95)','--c-nav-fg':'#0A0A0A','--c-nav-link':'rgba(10,10,10,.5)','--c-hero-ov':'linear-gradient(to bottom,rgba(255,255,255,.08) 0%,rgba(255,255,255,.45) 42%,rgba(255,255,255,.97) 84%,#FFFFFF 100%)','--c-stats-bg':'rgba(10,10,10,.05)','--c-marquee':'rgba(10,10,10,.35)','--f-display':"'Space Grotesk','DM Sans',sans-serif",'--f-heading':"'Space Grotesk',sans-serif",'--f-body':"'DM Sans',sans-serif",'--fw-d':'700','--fw-h':'700','--fst-d':'normal','--fst-h':'normal','--fsize-h1':'clamp(2.5rem,5.5vw,4.8rem)','--fsize-h2':'clamp(1.8rem,3.5vw,2.8rem)','--lh-body':'1.68','--lh-h':'1.05','--ls-h':'-.03em','--ls-body':'0em','--max-prose':'62ch','--sec-py':'80px','--sec-px':'48px','--card-r':'0px','--btn-r':'0px','--ease':'cubic-bezier(0.25,0.46,0.45,0.94)','--dur-f':'100ms','--dur-m':'250ms'},
+  mindloop:{'--c-bg':'#F7F6F1','--c-bg2':'#FFFFFF','--c-fg':'#1C1C18','--c-fg2':'rgba(28,28,24,.55)','--c-fg3':'rgba(28,28,24,.36)','--c-fg4':'rgba(28,28,24,.2)','--c-border':'rgba(28,28,24,.1)','--c-border2':'rgba(28,28,24,.16)','--c-card':'#FFFFFF','--c-card-h':'#F0EFE9','--c-nav-bg':'rgba(247,246,241,.96)','--c-nav-fg':'#1C1C18','--c-nav-link':'rgba(28,28,24,.5)','--c-hero-ov':'linear-gradient(to bottom,rgba(247,246,241,.08) 0%,rgba(247,246,241,.45) 42%,rgba(247,246,241,.97) 84%,#F7F6F1 100%)','--c-stats-bg':'rgba(28,28,24,.04)','--c-marquee':'rgba(28,28,24,.32)','--f-display':"'IBM Plex Serif',Georgia,serif",'--f-heading':"'IBM Plex Serif',Georgia,serif",'--f-body':"'IBM Plex Sans',system-ui,sans-serif",'--fw-d':'600','--fw-h':'500','--fst-d':'normal','--fst-h':'normal','--fsize-h1':'clamp(2rem,4.5vw,3.8rem)','--fsize-h2':'clamp(1.5rem,3vw,2.4rem)','--lh-body':'1.8','--lh-h':'1.18','--ls-h':'-.01em','--ls-body':'.01em','--max-prose':'70ch','--sec-py':'80px','--sec-px':'48px','--card-r':'8px','--btn-r':'6px','--ease':'cubic-bezier(0.4,0,0.2,1)','--dur-f':'180ms','--dur-m':'380ms'},
+  organico:{'--c-bg':'#F5F0E8','--c-bg2':'#FDF9F4','--c-fg':'#2A2116','--c-fg2':'rgba(42,33,22,.56)','--c-fg3':'rgba(42,33,22,.34)','--c-fg4':'rgba(42,33,22,.18)','--c-border':'rgba(42,33,22,.1)','--c-border2':'rgba(42,33,22,.16)','--c-card':'#FDF9F4','--c-card-h':'#F5EFE4','--c-nav-bg':'rgba(245,240,232,.96)','--c-nav-fg':'#2A2116','--c-nav-link':'rgba(42,33,22,.52)','--c-hero-ov':'linear-gradient(to bottom,rgba(245,240,232,.06) 0%,rgba(245,240,232,.42) 42%,rgba(245,240,232,.97) 84%,#F5F0E8 100%)','--c-stats-bg':'rgba(42,33,22,.05)','--c-marquee':'rgba(42,33,22,.3)','--f-display':"'Fraunces','Playfair Display',Georgia,serif",'--f-heading':"'Fraunces',Georgia,serif",'--f-body':"'DM Sans',system-ui,sans-serif",'--fw-d':'800','--fw-h':'700','--fst-d':'normal','--fst-h':'normal','--fsize-h1':'clamp(2.4rem,5vw,4.4rem)','--fsize-h2':'clamp(1.7rem,3.2vw,2.7rem)','--lh-body':'1.8','--lh-h':'1.12','--ls-h':'-.015em','--ls-body':'.005em','--max-prose':'64ch','--sec-py':'88px','--sec-px':'48px','--card-r':'20px','--btn-r':'50px','--ease':'cubic-bezier(0.34,1.1,0.64,1)','--dur-f':'180ms','--dur-m':'440ms'},
+  minimal:{'--c-bg':'#FFFFFF','--c-bg2':'#F6F6F6','--c-fg':'#000000','--c-fg2':'rgba(0,0,0,.54)','--c-fg3':'rgba(0,0,0,.32)','--c-fg4':'rgba(0,0,0,.16)','--c-border':'rgba(0,0,0,.1)','--c-border2':'rgba(0,0,0,.16)','--c-card':'#F6F6F6','--c-card-h':'#EEEEEE','--c-nav-bg':'rgba(255,255,255,.97)','--c-nav-fg':'#000000','--c-nav-link':'rgba(0,0,0,.48)','--c-hero-ov':'linear-gradient(to bottom,rgba(255,255,255,.06) 0%,rgba(255,255,255,.45) 42%,rgba(255,255,255,.97) 84%,#FFFFFF 100%)','--c-stats-bg':'rgba(0,0,0,.04)','--c-marquee':'rgba(0,0,0,.3)','--f-display':"'Archivo Black','DM Sans',sans-serif",'--f-heading':"'Archivo Black',sans-serif",'--f-body':"'Archivo','DM Sans',sans-serif",'--fw-d':'900','--fw-h':'900','--fst-d':'normal','--fst-h':'normal','--fsize-h1':'clamp(2.8rem,6vw,5.5rem)','--fsize-h2':'clamp(1.8rem,3.5vw,3rem)','--lh-body':'1.68','--lh-h':'1.02','--ls-h':'-.04em','--ls-body':'.01em','--max-prose':'62ch','--sec-py':'80px','--sec-px':'48px','--card-r':'0px','--btn-r':'0px','--ease':'cubic-bezier(0.4,0,0.2,1)','--dur-f':'100ms','--dur-m':'200ms'},
+  luz:{'--c-bg':'#FFFFFF','--c-bg2':'#F8F8F8','--c-fg':'#0A0A0A','--c-fg2':'rgba(10,10,10,.55)','--c-fg3':'rgba(10,10,10,.35)','--c-fg4':'rgba(10,10,10,.18)','--c-border':'rgba(10,10,10,.1)','--c-border2':'rgba(10,10,10,.15)','--c-card':'#F4F4F5','--c-card-h':'#ECECEC','--c-nav-bg':'rgba(255,255,255,.97)','--c-nav-fg':'#0A0A0A','--c-nav-link':'rgba(10,10,10,.48)','--c-hero-ov':'linear-gradient(to bottom,rgba(255,255,255,.06) 0%,rgba(255,255,255,.4) 38%,rgba(255,255,255,.97) 82%,#FFFFFF 100%)','--c-stats-bg':'rgba(10,10,10,.04)','--c-marquee':'rgba(10,10,10,.28)','--f-display':"'DM Sans',sans-serif",'--f-heading':"'DM Sans',sans-serif",'--f-body':"'DM Sans',sans-serif",'--fw-d':'300','--fw-h':'600','--fst-d':'normal','--fst-h':'normal','--fsize-h1':'clamp(2.6rem,5.5vw,4.8rem)','--fsize-h2':'clamp(1.8rem,3.2vw,2.8rem)','--lh-body':'1.78','--lh-h':'1.1','--ls-h':'-.025em','--ls-body':'0em','--max-prose':'64ch','--sec-py':'96px','--sec-px':'48px','--card-r':'8px','--btn-r':'6px','--ease':'cubic-bezier(0.25,0.46,0.45,0.94)','--dur-f':'160ms','--dur-m':'360ms'},
+  noche:{'--c-bg':'#080E1C','--c-bg2':'#0F1829','--c-fg':'#EFF4FF','--c-fg2':'rgba(239,244,255,.55)','--c-fg3':'rgba(239,244,255,.32)','--c-fg4':'rgba(239,244,255,.16)','--c-border':'rgba(239,244,255,.07)','--c-border2':'rgba(239,244,255,.11)','--c-card':'#0F1829','--c-card-h':'#16223A','--c-nav-bg':'rgba(8,14,28,.9)','--c-nav-fg':'#EFF4FF','--c-nav-link':'rgba(239,244,255,.48)','--c-hero-ov':'linear-gradient(to bottom,rgba(8,14,28,.05) 0%,rgba(8,14,28,.42) 42%,rgba(8,14,28,.97) 84%,#080E1C 100%)','--c-stats-bg':'rgba(239,244,255,.05)','--c-marquee':'rgba(239,244,255,.3)','--f-display':"'DM Sans',sans-serif",'--f-heading':"'DM Sans',sans-serif",'--f-body':"'DM Sans',sans-serif",'--fw-d':'900','--fw-h':'800','--fst-d':'normal','--fst-h':'normal','--fsize-h1':'clamp(2.8rem,6.5vw,6rem)','--fsize-h2':'clamp(2rem,4vw,3.4rem)','--lh-body':'1.65','--lh-h':'0.96','--ls-h':'-.04em','--ls-body':'0em','--max-prose':'60ch','--sec-py':'84px','--sec-px':'48px','--card-r':'8px','--btn-r':'4px','--ease':'cubic-bezier(0.22,1,0.36,1)','--dur-f':'120ms','--dur-m':'280ms'}
+};
+const PALETTES={brasas:{'--c-accent':'#C53030','--c-accent-rgb':'197,48,48'},acero:{'--c-accent':'#2C5282','--c-accent-rgb':'44,82,130'},musgo:{'--c-accent':'#276749','--c-accent-rgb':'39,103,73'},ambar:{'--c-accent':'#B7791F','--c-accent-rgb':'183,121,31'},coral:{'--c-accent':'#C05621','--c-accent-rgb':'192,86,33'},indigo:{'--c-accent':'#3C366B','--c-accent-rgb':'60,54,107'},terracota:{'--c-accent':'#9B4527','--c-accent-rgb':'155,69,39'},marino:{'--c-accent':'#1A365D','--c-accent-rgb':'26,54,93'},esmeralda:{'--c-accent':'#234E52','--c-accent-rgb':'35,78,82'},carmesi:{'--c-accent':'#822727','--c-accent-rgb':'130,39,39'}};
+const STYLE_DEFAULTS={moderno:'acero',audaz:'brasas',clasico:'terracota',premium:'carmesi',innovation:'indigo',mindloop:'musgo',organico:'coral',minimal:'ambar',luz:'acero',noche:'brasas'};
+const TYPOS={sans:{"--f-display":"'DM Sans',sans-serif","--f-heading":"'DM Sans',sans-serif","--f-body":"'DM Sans',sans-serif","--fw-d":"800","--fw-h":"700"},serif:{"--f-display":"'Playfair Display',Georgia,serif","--f-heading":"'Playfair Display',serif","--f-body":"'DM Sans',sans-serif","--fw-d":"700","--fw-h":"600"},garamond:{"--f-display":"'Cormorant Garamond',Georgia,serif","--f-heading":"'Cormorant Garamond',serif","--f-body":"'DM Sans',sans-serif","--fw-d":"600","--fw-h":"600"},grotesque:{"--f-display":"'Space Grotesk',sans-serif","--f-heading":"'Space Grotesk',sans-serif","--f-body":"'DM Sans',sans-serif","--fw-d":"700","--fw-h":"700"},slab:{"--f-display":"'IBM Plex Serif',serif","--f-heading":"'IBM Plex Serif',serif","--f-body":"'IBM Plex Sans',sans-serif","--fw-d":"600","--fw-h":"500"},organic:{"--f-display":"'Fraunces',serif","--f-heading":"'Fraunces',serif","--f-body":"'DM Sans',sans-serif","--fw-d":"800","--fw-h":"700"},negra:{"--f-display":"'Archivo Black',sans-serif","--f-heading":"'Archivo Black',sans-serif","--f-body":"'Archivo',sans-serif","--fw-d":"900","--fw-h":"900"}};
+const STYLE_TYPO_DEFAULTS={moderno:'sans',audaz:'sans',clasico:'serif',premium:'garamond',innovation:'grotesque',mindloop:'slab',organico:'organic',minimal:'negra',luz:'sans',noche:'sans'};
+const STYLE_BG_DEFAULTS={moderno:'carbon',audaz:'pizarra',clasico:'crema',premium:'negro',innovation:'blanco',mindloop:'gris',organico:'crema',minimal:'blanco',luz:'blanco',noche:'noche_bg'};
+const BG_META={blanco:{bg:'#FFFFFF',bg2:'#F8F8F8'},crema:{bg:'#FAF9F6',bg2:'#F0EDE8'},gris:{bg:'#F4F4F5',bg2:'#EBEBEB'},cafe:{bg:'#1C1410',bg2:'#241C16'},pizarra:{bg:'#0F172A',bg2:'#1E293B'},carbon:{bg:'#18181B',bg2:'#242424'},negro:{bg:'#0A0A0A',bg2:'#141414'},noche_bg:{bg:'#080E1C',bg2:'#0F1829'}};
+
+function applyPalette(n){
+  const p=PALETTES[n]; if(!p)return;
+  Object.entries(p).forEach(([k,v])=>document.documentElement.style.setProperty(k,v));
+  document.querySelectorAll('.pal-dot').forEach(b=>{b.style.outline='none';b.style.outlineOffset='0';});
+  const d=document.querySelector('.pal-dot[data-palette="'+n+'"]');
+  if(d){d.style.outline='2px solid var(--c-fg)';d.style.outlineOffset='3px';}
+}
+function applyTheme(n){
+  const t=THEMES[n]; if(!t)return;
+  Object.entries(t).forEach(([k,v])=>document.documentElement.style.setProperty(k,v));
+  document.body.style.fontFamily=t['--f-body'];
+  document.body.className=document.body.className.replace(/\bs-\S+/g,'').trim();
+  document.body.classList.add('s-'+n);
+  applyPalette(STYLE_DEFAULTS[n]);
+  applyTypo(STYLE_TYPO_DEFAULTS[n]||'sans');
+  applyBg(STYLE_BG_DEFAULTS[n]||'carbon');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function applyTypo(n){
+  const t=TYPOS[n]; if(!t)return;
+  Object.entries(t).forEach(([k,v])=>document.documentElement.style.setProperty(k,v));
+  document.querySelectorAll('.typo-btn').forEach(b=>{b.style.background='';b.style.color='';b.style.borderColor='';});
+  const b=document.querySelector('.typo-btn[data-typo="'+n+'"]');
+  if(b){b.style.background='var(--c-accent)';b.style.color='#fff';b.style.borderColor='var(--c-accent)';}
+}
+function applyBg(n){
+  const b=BG_META[n]; if(!b)return;
+  document.documentElement.style.setProperty('--c-bg',b.bg);
+  document.documentElement.style.setProperty('--c-bg2',b.bg2);
+  document.querySelectorAll('.bg-btn').forEach(btn=>{btn.style.outline='none';btn.style.outlineOffset='0';});
+  const d=document.querySelector('.bg-btn[data-bg="'+n+'"]');
+  if(d){d.style.outline='2px solid var(--c-fg)';d.style.outlineOffset='2px';}
+}
+document.querySelectorAll('input[name=design]').forEach(r=>r.addEventListener('change',function(){applyTheme(this.dataset.theme);}));
+document.querySelectorAll('.pal-dot').forEach(b=>b.addEventListener('click',function(){applyPalette(this.dataset.palette);}));
+document.querySelectorAll('.typo-btn').forEach(b=>b.addEventListener('click',function(){applyTypo(this.dataset.typo);}));
+document.querySelectorAll('.bg-btn').forEach(b=>b.addEventListener('click',function(){applyBg(this.dataset.bg);}));
+const noMotion=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+const obs=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}});},{threshold:0.08,rootMargin:'-30px'});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+document.querySelectorAll('.feat-card').forEach(function(c){var l=c.querySelector('.feat-line');if(!l)return;c.addEventListener('mouseenter',function(){l.style.transform='scaleX(1)';});c.addEventListener('mouseleave',function(){l.style.transform='scaleX(0)';});});
+function countUp(el){var tgt=+el.dataset.counter,fmt=el.dataset.format,dur=1100,s=performance.now();function t(n){var p=Math.min(1,(n-s)/dur),ease=1-Math.pow(1-p,3);el.textContent=fmt.replace('N',Math.round(ease*tgt));if(p<1)requestAnimationFrame(t);}requestAnimationFrame(t);}
+var _fSeen=false;
+function runFeatAnim(){
+  var allC=document.querySelectorAll('.feat-card,.feat-item');
+  allC.forEach(function(c){c.classList.remove('card-in');c.classList.add('card-settled');});
+  if(noMotion)return;
+  var aWrap=null;
+  document.querySelectorAll('.feat-wrap').forEach(function(w){if(window.getComputedStyle(w).display!=='none')aWrap=w;});
+  if(!aWrap)return;
+  var cards=Array.from(aWrap.querySelectorAll('.feat-card,.feat-item'));
+  cards.forEach(function(c){c.classList.remove('card-settled');c.style.cssText='opacity:0;transform:none;animation:none;filter:none';});
+  cards.forEach(function(c,i){setTimeout(function(){c.style.cssText='';c.classList.add('card-in');setTimeout(function(){c.classList.remove('card-in');c.classList.add('card-settled');},950);},i*120);});
+}
+var featObs=new IntersectionObserver(function(entries){
+  if(entries[0].isIntersecting){_fSeen=true;runFeatAnim();}else{_fSeen=false;}
+},{threshold:0.15});
+var featSec=document.querySelector('[data-feat-section]');
+if(featSec)featObs.observe(featSec);
+var statGrid=document.querySelector('.stat-grid');
+if(statGrid){var sObs=new IntersectionObserver(function(e){if(!e[0].isIntersecting)return;sObs.disconnect();statGrid.querySelectorAll('.stat-cell').forEach(function(cell,i){var delay=noMotion?0:i*140;setTimeout(function(){cell.classList.add('stat-in');var val=cell.querySelector('[data-counter]');if(val&&!noMotion)countUp(val);},delay);});},{threshold:0.5});sObs.observe(statGrid);}
+applyTheme('moderno');
+</script>
+</body>
+</html>
